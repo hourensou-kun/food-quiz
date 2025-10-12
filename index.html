@@ -1,94 +1,91 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>食べ物クイズ</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>食べ物クイズ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="game-container">
+    <div id="quiz-area">
+      <h1 id="question">問題を読み込み中...</h1>
+      <div id="options"></div>
+    </div>
 
-<div id="game-container">
-  <div id="quiz-area">
-    <h1 id="question">問題を読み込み中...</h1>
-    <div id="options"></div>
+    <div id="result-area" class="hidden">
+      <p id="user-choice-text"></p>
+      <img id="answer-image" alt="答えの画像">
+      <video id="answer-video" controls></video>
+    </div>
+
+    <button id="next-btn">次の問題へ</button>
   </div>
 
-  <div id="result-area" class="hidden">
-    <p id="user-choice-text"></p>
-    <img id="answer-image" alt="答えの画像">
-    <video id="answer-video" controls></video>
-  </div>
+  <script>
+    let quizData = [];
+    let currentQuestion = 0;
+    let answered = false;
 
-  <button id="next-btn">次の問題へ</button>
-</div>
+    fetch('quiz.csv')
+      .then(res => res.text())
+      .then(text => {
+        quizData = text.trim().split('\n').slice(1).map(line => {
+          const [question, opt1, opt2, opt3, opt4, answer, image, video] = line.split(',');
+          return { question, options: [opt1, opt2, opt3, opt4], answer, image, video };
+        });
+        showQuestion();
+      })
+      .catch(err => {
+        document.getElementById('question').textContent = 'データを読み込めませんでした。';
+        console.error(err);
+      });
 
-<script>
-let quizData = [];
-let currentQuestion = 0;
-let answered = false;
+    function showQuestion() {
+      const q = quizData[currentQuestion];
+      document.getElementById('question').textContent = q.question;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+      answered = false;
 
-// CSV読み込み
-fetch('quiz.csv')
-  .then(res => res.text())
-  .then(text => {
-    quizData = text.trim().split('\n').slice(1).map(line => {
-      const [question, opt1, opt2, opt3, opt4, answer, image, video] = line.split(',');
-      return { question, options: [opt1, opt2, opt3, opt4], answer, image, video };
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.className = 'option-btn';
+        btn.onclick = () => selectAnswer(option);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById('result-area').classList.add('hidden');
+    }
+
+    function selectAnswer(selected) {
+      if (answered) return;
+      answered = true;
+
+      const q = quizData[currentQuestion];
+      const resultArea = document.getElementById('result-area');
+      const userChoiceText = document.getElementById('user-choice-text');
+      const answerImage = document.getElementById('answer-image');
+      const answerVideo = document.getElementById('answer-video');
+
+      userChoiceText.textContent = `あなたがえらんだのは「${selected}」`;
+
+      answerImage.src = q.image;
+      answerVideo.src = q.video;
+      resultArea.classList.remove('hidden');
+    }
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        showQuestion();
+      } else {
+        document.getElementById('quiz-area').innerHTML = "<h2>おつかれさまでした！</h2>";
+        document.getElementById('result-area').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+      }
     });
-    showQuestion();
-  });
-
-function showQuestion() {
-  const q = quizData[currentQuestion];
-  document.getElementById('question').textContent = q.question;
-  const optionsDiv = document.getElementById('options');
-  optionsDiv.innerHTML = '';
-  answered = false;
-
-  q.options.forEach(option => {
-    const btn = document.createElement('button');
-    btn.textContent = option;
-    btn.className = 'option-btn';
-    btn.onclick = () => selectAnswer(option);
-    optionsDiv.appendChild(btn);
-  });
-
-  document.getElementById('result-area').classList.add('hidden');
-}
-
-function selectAnswer(selected) {
-  if (answered) return;
-  answered = true;
-
-  const q = quizData[currentQuestion];
-  const resultArea = document.getElementById('result-area');
-  const userChoiceText = document.getElementById('user-choice-text');
-  const answerImage = document.getElementById('answer-image');
-  const answerVideo = document.getElementById('answer-video');
-
-  userChoiceText.textContent = `あなたがえらんだのは「${selected}」`;
-
-  // 正解・不正解どちらでも画像・動画表示
-  answerImage.src = q.image;
-  answerImage.classList.remove('hidden');
-  answerVideo.src = q.video;
-  answerVideo.classList.remove('hidden');
-
-  resultArea.classList.remove('hidden');
-}
-
-document.getElementById('next-btn').addEventListener('click', () => {
-  currentQuestion++;
-  if (currentQuestion < quizData.length) {
-    showQuestion();
-  } else {
-    document.getElementById('quiz-area').innerHTML = "<h2>おつかれさまでした！</h2>";
-    document.getElementById('result-area').classList.add('hidden');
-    document.getElementById('next-btn').classList.add('hidden');
-  }
-});
-</script>
-
+  </script>
 </body>
 </html>

@@ -4,302 +4,187 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>たべものクイズ 🍎</title>
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: "Kosugi Maru", sans-serif;
-      background: #fff7ec;
-      text-align: center;
-    }
-
-    /* 📱 縦持ちでも横向きに固定して表示 */
-    @media screen and (max-aspect-ratio: 1/1) {
-      body {
-        transform: rotate(90deg);
-        transform-origin: left top;
-        width: 100vh;
-        height: 100vw;
-        position: absolute;
-        top: 0;
-        left: 0;
-        overflow-x: hidden;
-      }
-    }
-
-    h1 {
-      font-size: 2.2em;
-      color: #ff6b6b;
-    }
-
-    .btn {
-      background: #ffa94d;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 15px 40px;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #ff922b;
-      transform: scale(1.05);
-    }
-
-    #title-screen, #quiz-screen, #result-screen, #end-screen {
-      display: none;
-      padding: 20px;
-      width: 100%;
-      height: 100%;
-    }
-
-    .question-img {
-      width: 80%;
-      max-width: 400px;
-      margin: 20px auto;
-      display: block;
-      border-radius: 15px;
-    }
-
-    .choices {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .choice img {
-      width: 30vw;
-      max-width: 180px;
-      border-radius: 20px;
-      border: 4px solid transparent;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .choice img:hover {
-      border-color: #ffa94d;
-      transform: scale(1.05);
-    }
-
-    video {
-      display: block;
-      margin: 0 auto;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 20px;
-    }
-
-    .result-image {
-      width: 60%;
-      max-width: 250px;
-      margin: 15px auto;
-      display: block;
-      border-radius: 15px;
-    }
-
-    #result-screen {
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #next-btn {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ffa94d;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 20px 60px;
-      font-size: 1.5em;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #next-btn:hover {
-      background: #ff922b;
-      transform: translateX(-50%) scale(1.05);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- タイトル画面 -->
-  <div id="title-screen">
-    <h1>🍎 たべものクイズ 🍌</h1>
-    <button class="btn" onclick="startGame()">▶ はじめる</button>
-  </div>
+  <div id="game-container">
+    <!-- タイトル画面 -->
+    <div id="title-screen" class="screen active">
+      <h1>🍎 たべものクイズ 🍌</h1>
+      <button id="start-btn">▶ はじめる</button>
+    </div>
 
-  <!-- クイズ画面 -->
-  <div id="quiz-screen">
-    <h2 id="question-text"></h2>
-    <img id="question-image" class="question-img" src="" alt="question" />
-    <div class="choices" id="choices-container"></div>
-  </div>
+    <!-- クイズ画面 -->
+    <div id="quiz-screen" class="screen">
+      <h2 id="question-text"></h2>
+      <div id="choices-container"></div>
+    </div>
 
-  <!-- 結果画面 -->
-  <div id="result-screen">
-    <h2 id="result-text"></h2>
-    <p id="answer-text" style="font-size: 1.5em; color: #555;"></p>
-    <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
-    <video 
-      id="result-video" 
-      playsinline 
-      webkit-playsinline 
-      controls 
-      style="display:none;">
-    </video>
-    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだいへ</button>
-  </div>
+    <!-- 結果画面 -->
+    <div id="result-screen" class="screen">
+      <h2 id="result-message"></h2>
+      <p id="user-choice-text"></p>
 
-  <!-- 最終画面 -->
-  <div id="end-screen">
-    <h2>🎉 おつかれさま！</h2>
-    <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
+      <div id="result-images">
+        <div id="user-image-container" class="image-box"></div>
+        <div id="answer-image-container" class="image-box"></div>
+      </div>
+
+      <div id="video-container">
+        <video id="result-video" playsinline></video>
+      </div>
+
+      <p id="answer-text"></p>
+      <button id="next-btn">▶ つぎのもんだい</button>
+    </div>
+
+    <!-- 終了画面 -->
+    <div id="end-screen" class="screen">
+      <h2>🎉 おつかれさま！</h2>
+      <button id="restart-btn">もういちどあそぶ</button>
+    </div>
   </div>
 
   <script>
-    let quizData = [];
-    let current = 0;
-    const MAX = 3;
-    const videoEl = document.getElementById("result-video");
+    const questions = [
+      {
+        question: "これはなに？",
+        answer: "りんご",
+        image: "image/apple.png",
+        video: "image/apple.mp4",
+        choices: [
+          { text: "りんご", image: "image/apple.png" },
+          { text: "バナナ", image: "image/banana.png" },
+          { text: "みかん", image: "image/orange.png" }
+        ]
+      },
+      {
+        question: "これはなに？",
+        answer: "バナナ",
+        image: "image/banana.png",
+        video: "image/banana.mp4",
+        choices: [
+          { text: "ぶどう", image: "image/grape.png" },
+          { text: "バナナ", image: "image/banana.png" },
+          { text: "スイカ", image: "image/watermelon.png" }
+        ]
+      },
+      {
+        question: "これはなに？",
+        answer: "みかん",
+        image: "image/orange.png",
+        video: "image/orange.mp4",
+        choices: [
+          { text: "メロン", image: "image/melon.png" },
+          { text: "いちご", image: "image/strawberry.png" },
+          { text: "みかん", image: "image/orange.png" }
+        ]
+      }
+    ];
 
-    async function loadCSV() {
-      const res = await fetch("data.csv");
-      const text = await res.text();
-      const rows = text.split("\n").slice(1);
-      quizData = rows.filter(r => r.trim() !== "").map(r => {
-        const c = r.split(",");
-        return {
-          question: c[1],
-          image: c[2],
-          choice1: c[3],
-          choice1_img: c[4],
-          choice2: c[5],
-          choice2_img: c[6],
-          choice3: c[7],
-          choice3_img: c[8],
-          answer: parseInt(c[9]),
-          answer_video: c[10]?.trim()
-        };
-      });
-      quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
-    }
+    let currentQuestion = 0;
 
-    function showScreen(id) {
-      document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
-        .forEach(el => el.style.display = "none");
-      document.getElementById(id).style.display = "block";
-    }
+    const titleScreen = document.getElementById("title-screen");
+    const quizScreen = document.getElementById("quiz-screen");
+    const resultScreen = document.getElementById("result-screen");
+    const endScreen = document.getElementById("end-screen");
+    const questionText = document.getElementById("question-text");
+    const choicesContainer = document.getElementById("choices-container");
+    const resultMessage = document.getElementById("result-message");
+    const userChoiceText = document.getElementById("user-choice-text");
+    const userImageContainer = document.getElementById("user-image-container");
+    const answerImageContainer = document.getElementById("answer-image-container");
+    const resultVideo = document.getElementById("result-video");
+    const answerText = document.getElementById("answer-text");
+    const nextBtn = document.getElementById("next-btn");
 
-    function stopVideo() {
-      videoEl.pause();
-      videoEl.currentTime = 0;
-      videoEl.removeAttribute("src");
-      videoEl.load();
-    }
+    document.getElementById("start-btn").addEventListener("click", startQuiz);
+    document.getElementById("restart-btn").addEventListener("click", restartQuiz);
+    nextBtn.addEventListener("click", nextQuestion);
 
-    async function startGame() {
-      await loadCSV();
-      current = 0;
+    function startQuiz() {
+      titleScreen.classList.remove("active");
+      quizScreen.classList.add("active");
       showQuestion();
-      showScreen("quiz-screen");
     }
 
     function showQuestion() {
-      stopVideo();
-      const q = quizData[current];
-      document.getElementById("question-text").textContent = q.question;
-      document.getElementById("question-image").src = q.image;
+      const q = questions[currentQuestion];
+      questionText.textContent = q.question;
+      choicesContainer.innerHTML = "";
 
-      const choices = [
-        { img: q.choice1_img, index: 1 },
-        { img: q.choice2_img, index: 2 },
-        { img: q.choice3_img, index: 3 },
-      ].sort(() => Math.random() - 0.5);
+      const shuffledChoices = [...q.choices].sort(() => Math.random() - 0.5);
+      shuffledChoices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.classList.add("choice-btn");
 
-      const container = document.getElementById("choices-container");
-      container.innerHTML = "";
-      choices.forEach(c => {
-        const div = document.createElement("div");
-        div.className = "choice";
         const img = document.createElement("img");
-        img.src = c.img;
-        img.onclick = () => checkAnswer(c.index);
-        div.appendChild(img);
-        container.appendChild(div);
+        img.src = choice.image;
+        img.alt = choice.text;
+
+        const label = document.createElement("p");
+        label.textContent = choice.text;
+
+        btn.appendChild(img);
+        btn.appendChild(label);
+        btn.addEventListener("click", () => selectAnswer(choice.text, choice.image));
+        choicesContainer.appendChild(btn);
       });
     }
 
-    function checkAnswer(choice) {
-      stopVideo();
-      const q = quizData[current];
-      showScreen("result-screen");
+    function selectAnswer(choice, choiceImage) {
+      const q = questions[currentQuestion];
+      quizScreen.classList.remove("active");
+      resultScreen.classList.add("active");
 
-      const resultText = document.getElementById("result-text");
-      const answerText = document.getElementById("answer-text");
-      const correctImg = document.getElementById("correct-image");
-      const video = document.getElementById("result-video");
+      resultVideo.pause();
+      resultVideo.currentTime = 0;
+      userImageContainer.innerHTML = "";
+      answerImageContainer.innerHTML = "";
 
-      correctImg.style.display = "none";
-      video.style.display = "none";
-      answerText.textContent = "";
+      const userImg = document.createElement("img");
+      const answerImg = document.createElement("img");
 
-      // 正解・不正解共通で正解の情報を取得
-      const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
-      const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
-
-      answerText.textContent = correctName;
-      correctImg.src = correctSrc;
-      correctImg.style.display = "block";
-
-      if (q.answer_video) {
-        video.src = q.answer_video;
-        video.style.display = "block";
-        video.play();
-      }
-
-      // 見出しの表示だけ切り替える
       if (choice === q.answer) {
-        resultText.textContent = "⭕ せいかい！";
-        resultText.style.color = "#ff6b6b";
+        resultMessage.textContent = "⭕ せいかい！";
+        userChoiceText.textContent = "";
+        answerImg.src = q.image;
+        userImageContainer.style.display = "none";
       } else {
-        resultText.textContent = "❌ ざんねん！";
-        resultText.style.color = "#555";
+        resultMessage.textContent = "❌ ざんねん！";
+        userChoiceText.textContent = `あなたが選んだのは「${choice}」です`;
+        userImg.src = choiceImage;
+        answerImg.src = q.image;
+        userImageContainer.style.display = "flex";
+        userImageContainer.appendChild(userImg);
       }
+
+      answerImageContainer.appendChild(answerImg);
+      resultVideo.src = q.video;
+      resultVideo.play();
+      answerText.textContent = `こたえ：${q.answer}`;
     }
 
     function nextQuestion() {
-      stopVideo();
-      current++;
-      if (current < quizData.length) {
-        showScreen("quiz-screen");
+      resultVideo.pause();
+      resultVideo.currentTime = 0;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        resultScreen.classList.remove("active");
+        quizScreen.classList.add("active");
         showQuestion();
       } else {
-        showScreen("end-screen");
+        resultScreen.classList.remove("active");
+        endScreen.classList.add("active");
       }
     }
 
-    function restartGame() {
-      stopVideo();
-      current = 0;
-      showScreen("title-screen");
+    function restartQuiz() {
+      endScreen.classList.remove("active");
+      titleScreen.classList.add("active");
+      currentQuestion = 0;
     }
-
-    showScreen("title-screen");
   </script>
 </body>
 </html>

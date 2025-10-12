@@ -1,129 +1,131 @@
-let quizzes = [];
-let currentQuestion = 0;
-let score = 0;
+let quizData = [];
+let current = 0;
+const MAX = 3;
+const videoEl = document.getElementById("result-video");
 
-// CSVのURL（またはローカル data.csv）
-const CSV_URL = "data.csv";
-
-// ======== 初期処理 =========
-window.onload = async () => {
-  await loadQuizzes();
-  showTitleScreen();
-};
-
-// ======== クイズデータをロード =========
-async function loadQuizzes() {
-  const response = await fetch(CSV_URL);
-  const csvText = await response.text();
-  const rows = csvText.split("\n").map(row => row.split(","));
-  const dataRows = rows.slice(1);
-
-  quizzes = dataRows.map(cols => ({
-    id: cols[0],
-    question: cols[1],
-    image: cols[2],
-    choice1: cols[3],
-    choice1_img: cols[4],
-    choice2: cols[5],
-    choice2_img: cols[6],
-    choice3: cols[7],
-    choice3_img: cols[8],
-    answer: cols[9],
-    answer_video: cols[10]
-  })).filter(q => q.question);
-
-  quizzes = shuffle(quizzes).slice(0, 3);
+async function loadCSV() {
+  const res = await fetch("data.csv");
+  const text = await res.text();
+  const rows = text.split("\n").slice(1);
+  quizData = rows.filter(r => r.trim() !== "").map(r => {
+    const c = r.split(",");
+    return {
+      question: c[1],
+      image: c[2],
+      choice1: c[3],
+      choice1_img: c[4],
+      choice2: c[5],
+      choice2_img: c[6],
+      choice3: c[7],
+      choice3_img: c[8],
+      answer: parseInt(c[9]),
+      answer_video: c[10]?.trim()
+    };
+  });
+  quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
 }
 
-// ======== タイトル画面 =========
-function showTitleScreen() {
-  document.getElementById("app").innerHTML = `
-    <div class="title-screen">
-      <h1>やさいクイズゲーム🥕</h1>
-      <button id="startBtn">スタート！</button>
-    </div>
-  `;
-
-  document.getElementById("startBtn").onclick = () => {
-    currentQuestion = 0;
-    score = 0;
-    showQuestion(currentQuestion);
-  };
+function showScreen(id) {
+  document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
+    .forEach(el => el.style.display = "none");
+  document.getElementById(id).style.display = "block";
 }
 
-// ======== クイズ出題 =========
-function showQuestion(index) {
-  const q = quizzes[index];
-  const choices = [1, 2, 3].map(i => ({
-    index: i,
-    text: q[`choice${i}`],
-    img: q[`choice${i}_img`]
-  }));
-  const shuffled = shuffle(choices);
+function stopVideo() {
+  videoEl.pause();
+  videoEl.currentTime = 0;
+  videoEl.removeAttribute("src");
+  videoEl.load();
+}
 
-  document.getElementById("app").innerHTML = `
-    <div class="question-screen">
-      <h2>${q.question}</h2>
-      <img src="${q.image}" class="question-img" />
-      <div class="choices">
-        ${shuffled.map(c => `
-          <button class="choice" data-index="${c.index}">
-            <img src="${c.img}" />
-          </button>
-        `).join("")}
-      </div>
-    </div>
-  `;
+async function startGame() {
+  await loadCSV();
+  current = 0;
+  showQuestion();
+  showScreen("quiz-screen");
+}
 
-  document.querySelectorAll(".choice").forEach(btn => {
-    btn.onclick = () => checkAnswer(index, btn.dataset.index);
+function showQuestion() {
+  stopVideo();
+  const q = quizData[current];
+  document.getElementById("question-text").textContent = q.question;
+  document.getElementById("question-image").src = q.image;
+
+  const choices = [
+    { img: q.choice1_img, text: q.choice1, index: 1 },
+    { img: q.choice2_img, text: q.choice2, index: 2 },
+    { img: q.choice3_img, text: q.choice3, index: 3 },
+  ].sort(() => Math.random() - 0.5);
+
+  const container = document.getElementById("choices-container");
+  container.innerHTML = "";
+  choices.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "choice";
+    const img = document.createElement("img");
+    img.src = c.img;
+    img.onclick = () => checkAnswer(c.index, c.text);
+    div.appendChild(img);
+    container.appendChild(div);
   });
 }
 
-// ======== 答え合わせ =========
-function checkAnswer(index, selectedIndex) {
-  const q = quizzes[index];
-  const isCorrect = Number(selectedIndex) === Number(q.answer);
-  if (isCorrect) score++;
-  showAnswerScreen(isCorrect, q);
+function checkAnswer(choice, choiceText) {
+  stopVideo();
+  const q = quizData[current];
+  showScreen("result-screen");
+
+  const resultText = document.getElementById("result-text");
+  const selectedText = document.getElementById("selected-text");
+  const answerText = document.getElementById("answer-text");
+  const correctImg = document.getElementById("correct-image");
+  const video = document.getElementById("result-video");
+  const nextBtn = document.getElementById("next-btn");
+
+  nextBtn.style.display = "inline-block";
+  correctImg.style.display = "none";
+  video.style.display = "none";
+  answerText.textContent = "";
+  selectedText.textContent = "";
+
+  const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
+  const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
+
+  if (choice === q.answer) {
+    resultText.textContent = "⭕ せいかい！";
+    resultText.style.color = "#ff6b6b";
+  } else {
+    resultText.textContent = "❌ ざんねん！";
+    resultText.style.color = "#555";
+  }
+
+  selectedText.textContent = `あなたがえらんだのは「${choiceText}」`;
+  answerText.textContent = `せいかいは「${correctName}」`;
+  correctImg.src = correctSrc;
+  correctImg.style.display = "block";
+
+  if (q.answer_video) {
+    video.src = q.answer_video;
+    video.style.display = "block";
+    video.play();
+  }
 }
 
-// ======== 答え合わせ画面 =========
-function showAnswerScreen(isCorrect, q) {
-  document.getElementById("app").innerHTML = `
-    <div class="answer-screen">
-      <h2>${isCorrect ? "⭕ せいかい！" : "❌ ざんねん！"}</h2>
-      <video src="${q.answer_video}" controls autoplay width="80%"></video>
-      <button id="nextBtn">つぎへ</button>
-    </div>
-  `;
-
-  document.getElementById("nextBtn").onclick = () => {
-    currentQuestion++;
-    if (currentQuestion < quizzes.length) {
-      showQuestion(currentQuestion);
-    } else {
-      showResultScreen();
-    }
-  };
+function nextQuestion() {
+  stopVideo();
+  current++;
+  if (current < quizData.length) {
+    showScreen("quiz-screen");
+    showQuestion();
+  } else {
+    showScreen("end-screen");
+  }
 }
 
-// ======== 結果画面 =========
-function showResultScreen() {
-  document.getElementById("app").innerHTML = `
-    <div class="result-screen">
-      <h2>けっかはっぴょう！</h2>
-      <p>${quizzes.length}もんちゅう ${score}もんせいかい！</p>
-      <button id="retryBtn">もういちどあそぶ</button>
-    </div>
-  `;
-
-  document.getElementById("retryBtn").onclick = () => {
-    loadQuizzes().then(() => showTitleScreen());
-  };
+function restartGame() {
+  stopVideo();
+  current = 0;
+  showScreen("title-screen");
 }
 
-// ======== 配列シャッフル =========
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+showScreen("title-screen");

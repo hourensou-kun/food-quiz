@@ -5,14 +5,15 @@ id,question,image,choice1,choice1_img,choice2,choice2_img,choice3,choice3_img,an
 4,きゅうりを きったら どんな かたち？,image/question_cucumber.jpg,きゅうり,image/cucumber_cut.png,れんこん,image/lotusroot_cut.png,トマト,image/tomato_cut1.png,1,video/cucumber.mp4
 5,なすを きったら どんな かたち？,image/question_eggplant.jpg,なす,image/eggplant_cut2.png,たまねぎ,image/onion_cut.png,もも,image/peach_cut1.png,1,video/eggplant.mp4
 6,ももを きったら どんな かたち？,image/question_peach.jpg,もも,image/peach_cut1.png,れんこん,image/lotusroot_cut.png,キャベツ,image/cabbage_cut.png,1,video/peach.mp4
-7,ぶどうを きったら どんな かたち？,image/question_grape.jpg,ぶどう,image/grape_cut.png,オレンジ,image/orange_cut.png,きゅうり,image/cucumber_cut.png,1,video/grape.mp4
+7,ぶどうを きったら どんな かたち？,image/question_grape.jpg,ぶどう,image/grape_cut.png,オレンジ,image/orange_cut1.png,きゅうり,image/cucumber_cut.png,1,video/grape.mp4
 8,バナナを きったら どんな かたち？,image/question_banana.jpg,バナナ,image/banana_cut.png,れんこん,image/lotusroot_cut.png,きゅうり,image/cucumber_cut.png,1,video/banana.mp4
 9,たまねぎを きったら どんな かたち？,image/question_onion.jpg,たまねぎ,image/onion_cut.png,もも,image/peach_cut1.png,なす,image/eggplant_cut2.png,1,video/onion.mp4
 10,キャベツを きったら どんな かたち？,image/question_cabbage.jpg,キャベツ,image/cabbage_cut.png,たまねぎ,image/onion_cut.png,トマト,image/tomato_cut1.png,1,video/cabbage.mp4
 11,オクラを きったら どんな かたち？,image/question_okura.jpg,オクラ,image/okura_cut.png,れんこん,image/lotusroot_cut.png,なす,image/eggplant_cut2.png,1,video/okura_1.mp4
-12,オレンジを きったら どんな かたち？,image/question_orange.jpg,オレンジ,image/orange_cut.png,もも,image/peach_cut.png,きゅうり,image/cucumber_cut.png,1,video/orange_1.mp4
-13,ねぎを きったら どんな かたち？,image/question_greenonion.jpg,ねぎ,image/greenonion_cut.png,オレンジ,image/orange_cut.png,キャベツ,image/cabbage_cut.png,1,video/greenonion.mp4
-14,れんこんを きったら どんな かたち？,image/question_lotusroot.jpg,れんこん,image/lotusroot_cut.png,たまねぎ,image/onion_cut.png,もも,image/peach_cut.png,1,video/lotusroot.mp4
+12,オレンジを きったら どんな かたち？,image/question_orange.jpg,オレンジ,image/orange_cut1.png,もも,image/peach_cut1.png,きゅうり,image/cucumber_cut.png,1,video/orange_1.mp4
+13,ねぎを きったら どんな かたち？,image/question_greenonion.jpg,ねぎ,image/greenonion_cut.png,オレンジ,image/orange_cut1.png,キャベツ,image/cabbage_cut.png,1,video/greenonion.mp4
+14,れんこんを きったら どんな かたち？,image/question_lotusroot.jpg,れんこん,image/lotusroot_cut.png,たまねぎ,image/onion_cut.png,もも,image/peach_cut1.png,1,video/lotusroot.mp4
+
 
 
 

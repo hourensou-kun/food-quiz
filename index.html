@@ -5,35 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>たべものクイズ 🍎</title>
 
-  <!-- フォントと基本スタイル -->
   <style>
-    body {
-      font-family: "Kosugi Maru", sans-serif;
-      background: #fff7ec;
+    html, body {
+      width: 100%;
+      height: 100%;
       margin: 0;
-      text-align: center;
+      padding: 0;
       overflow: hidden;
+      background: #fff7ec;
+      font-family: "Kosugi Maru", sans-serif;
+      text-align: center;
+      touch-action: manipulation;
     }
 
-    #title-screen, #quiz-screen, #result-screen, #end-screen {
-      display: none;
-      padding: 20px;
+    /* ====== 横画面固定サイズレイアウト（16:9比率） ====== */
+    #app-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 56.25vw; /* 9/16 = 0.5625 */
+      max-height: 100vh;
+      max-width: 177.78vh; /* 16/9 = 1.7778 */
+      background: #fff7ec;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 1rem;
     }
 
     h1 {
-      font-size: 2.2em;
+      font-size: 3vw;
       color: #ff6b6b;
+      margin: 0.5em 0;
+    }
+
+    h2 {
+      font-size: 2.2vw;
+      color: #444;
+      margin: 0.4em 0;
     }
 
     .btn {
       background: #ffa94d;
       color: white;
       border: none;
-      border-radius: 30px;
-      padding: 15px 40px;
-      font-size: 1.2em;
+      border-radius: 25px;
+      padding: 1vw 3vw;
+      font-size: 1.6vw;
       cursor: pointer;
-      margin-top: 20px;
+      margin-top: 1vw;
+      transition: 0.3s;
     }
 
     .btn:hover {
@@ -41,27 +66,26 @@
     }
 
     .question-img {
-      width: 80%;
-      max-width: 400px;
-      margin: 20px auto;
-      display: block;
-      border-radius: 15px;
+      width: 35%;
+      border-radius: 20px;
+      margin: 1vw auto;
     }
 
     .choices {
       display: flex;
       justify-content: center;
+      align-items: center;
+      gap: 2vw;
+      margin-top: 1vw;
       flex-wrap: wrap;
-      gap: 20px;
     }
 
     .choice img {
-      width: 30vw;
-      max-width: 180px;
-      border-radius: 20px;
-      border: 4px solid transparent;
+      width: 12vw;
+      border-radius: 15px;
+      border: 0.5vw solid transparent;
+      transition: transform 0.3s, border 0.3s;
       cursor: pointer;
-      transition: 0.3s;
     }
 
     .choice img:hover {
@@ -71,32 +95,40 @@
 
     video {
       display: block;
-      margin: 0 auto;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 20px;
+      width: 40%;
+      border-radius: 15px;
+      margin: 1vw auto;
     }
 
     .result-image {
-      width: 60%;
-      max-width: 250px;
-      margin: 15px auto;
-      display: block;
+      width: 20%;
       border-radius: 15px;
+      margin: 1vw auto;
     }
 
-    /* --- 縦画面のときに操作禁止メッセージを表示 --- */
+    #answer-text {
+      font-size: 2vw;
+      color: #444;
+      margin: 0.5vw 0;
+    }
+
+    /* ---- 縦画面時にロック表示 ---- */
     @media screen and (orientation: portrait) {
+      #app-container {
+        display: none;
+      }
+
       body::before {
-        content: "📱 画面を横向きにしてね！";
+        content: "📱 スマホを横向きにしてね！";
         position: fixed;
         inset: 0;
         background: #fff7ec;
         color: #ff6b6b;
-        font-size: 1.5em;
+        font-size: 5vw;
         display: flex;
         align-items: center;
         justify-content: center;
+        text-align: center;
         z-index: 9999;
       }
     }
@@ -104,38 +136,34 @@
 </head>
 
 <body>
-  <!-- タイトル画面 -->
-  <div id="title-screen">
-    <h1>🍎 たべものクイズ 🍌</h1>
-    <button class="btn" onclick="startGame()">▶ はじめる</button>
-  </div>
+  <div id="app-container">
+    <!-- タイトル -->
+    <div id="title-screen">
+      <h1>🍎 たべものクイズ 🍌</h1>
+      <button class="btn" onclick="startGame()">▶ はじめる</button>
+    </div>
 
-  <!-- クイズ画面 -->
-  <div id="quiz-screen">
-    <h2 id="question-text"></h2>
-    <img id="question-image" class="question-img" src="" alt="question" />
-    <div class="choices" id="choices-container"></div>
-  </div>
+    <!-- クイズ -->
+    <div id="quiz-screen" style="display:none;">
+      <h2 id="question-text"></h2>
+      <img id="question-image" class="question-img" src="" alt="question" />
+      <div class="choices" id="choices-container"></div>
+    </div>
 
-  <!-- 結果画面 -->
-  <div id="result-screen">
-    <h2 id="result-text"></h2>
-    <p id="answer-text" style="font-size: 1.5em; color: #555;"></p>
-    <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
-    <video 
-      id="result-video" 
-      playsinline 
-      webkit-playsinline 
-      controls 
-      style="display:none;">
-    </video>
-    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
-  </div>
+    <!-- 結果 -->
+    <div id="result-screen" style="display:none;">
+      <h2 id="result-text"></h2>
+      <p id="answer-text"></p>
+      <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
+      <video id="result-video" playsinline webkit-playsinline controls style="display:none;"></video>
+      <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
+    </div>
 
-  <!-- 最終画面 -->
-  <div id="end-screen">
-    <h2>🎉 おつかれさま！</h2>
-    <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
+    <!-- 終了 -->
+    <div id="end-screen" style="display:none;">
+      <h2>🎉 おつかれさま！</h2>
+      <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
+    </div>
   </div>
 
   <script>
@@ -167,8 +195,9 @@
     }
 
     function showScreen(id) {
-      document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
-        .forEach(el => el.style.display = "none");
+      ["title-screen", "quiz-screen", "result-screen", "end-screen"].forEach(s => {
+        document.getElementById(s).style.display = "none";
+      });
       document.getElementById(id).style.display = "block";
     }
 
@@ -180,11 +209,9 @@
     }
 
     async function startGame() {
-      // Androidでは横画面に自動ロック
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock("landscape").catch(() => {});
       }
-
       await loadCSV();
       current = 0;
       showQuestion();

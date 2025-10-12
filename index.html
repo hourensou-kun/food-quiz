@@ -7,174 +7,177 @@
   <style>
     body {
       font-family: "Kosugi Maru", sans-serif;
-      background-color: #fff6e5;
       text-align: center;
+      background-color: #fff6e5;
       margin: 0;
       padding: 0;
     }
+    #title-screen, #quiz-screen, #result-screen, #end-screen {
+      display: none;
+      padding: 30px;
+    }
     h1 {
-      font-size: 2.2em;
-      margin-top: 30px;
-      color: #ff7f50;
+      font-size: 2.5em;
+      color: #ff6b6b;
+      margin-bottom: 30px;
     }
-    #quiz-container {
-      margin-top: 30px;
+    .btn {
+      background-color: #ffb347;
+      color: white;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    #question {
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      font-weight: bold;
+    .btn:hover {
+      background-color: #ff9234;
     }
-    .question-image img {
-      width: 280px;
-      height: 280px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: #fff;
-      margin-bottom: 20px;
+    .question-img {
+      max-width: 250px;
+      margin: 20px auto;
+      display: block;
     }
     .choices {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
-    }
-    .choice {
-      background-color: #fff;
-      border: 5px solid #ffa500;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      width: 160px;
-      padding: 10px;
-    }
-    .choice:hover {
-      transform: scale(1.05);
+      margin-top: 20px;
     }
     .choice img {
-      width: 140px;
-      height: 140px;
-      object-fit: contain;
-      border-radius: 10px;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 5px solid transparent;
+      border-radius: 20px;
+      transition: 0.3s;
     }
-    .result-screen {
-      display: none;
-      margin-top: 50px;
-    }
-    .result-text {
-      font-size: 2em;
-      margin-bottom: 20px;
+    .choice img:hover {
+      border: 5px solid #ffb347;
     }
     video {
-      width: 320px;
-      height: 320px;
-      border-radius: 10px;
-    }
-    button {
-      margin-top: 30px;
-      padding: 12px 30px;
-      font-size: 1.2em;
-      background-color: #ffb347;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #ffd27f;
+      width: 300px;
+      border-radius: 20px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>🍎 たべものクイズ 🍇</h1>
 
-  <div id="quiz-container">
-    <div id="question"></div>
-    <div class="question-image" id="question-image"></div>
-    <div class="choices" id="choices"></div>
+  <!-- 🏠 タイトル画面 -->
+  <div id="title-screen">
+    <h1>🍎 たべものクイズ 🍌</h1>
+    <button class="btn" onclick="startGame()">▶ はじめる</button>
   </div>
 
-  <div id="result" class="result-screen">
-    <div class="result-text" id="result-text"></div>
-    <div id="result-video"></div>
-    <button id="next-btn">つぎのもんだい ▶</button>
+  <!-- 🍎 クイズ画面 -->
+  <div id="quiz-screen">
+    <h2 id="question-text"></h2>
+    <img id="question-image" class="question-img" src="" alt="question" />
+    <div class="choices">
+      <div class="choice"><img id="choice1" onclick="checkAnswer(1)" /></div>
+      <div class="choice"><img id="choice2" onclick="checkAnswer(2)" /></div>
+      <div class="choice"><img id="choice3" onclick="checkAnswer(3)" /></div>
+    </div>
+  </div>
+
+  <!-- 🎉 結果画面 -->
+  <div id="result-screen">
+    <h2 id="result-text"></h2>
+    <video id="result-video" controls></video><br>
+    <button class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
+  </div>
+
+  <!-- 🌈 終了画面 -->
+  <div id="end-screen">
+    <h2>🎉 おつかれさま！</h2>
+    <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
   </div>
 
   <script>
-    const csvUrl = "data.csv"; // ローカルCSVを使用（GitHub内にあるdata.csv）
-
     let quizData = [];
     let currentQuestion = 0;
 
     async function loadCSV() {
-      const res = await fetch(csvUrl);
-      const text = await res.text();
-      const rows = text.split("\n").map(r => r.split(","));
-      const headers = rows[0].map(h => h.trim());
-      quizData = rows.slice(1).map(row => {
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = row[i]?.trim());
-        return obj;
+      const response = await fetch("data.csv"); // ← GitHub上のdata.csvを読み込み
+      const text = await response.text();
+      const rows = text.split("\n").slice(1); // 1行目（ヘッダー）を除外
+      quizData = rows.map(row => {
+        const cols = row.split(",");
+        return {
+          id: cols[0],
+          question: cols[1],
+          image: cols[2],
+          choice1_img: cols[4],
+          choice2_img: cols[6],
+          choice3_img: cols[8],
+          answer: parseInt(cols[9]),
+          answer_video: cols[10]?.trim()
+        };
       });
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
+        .forEach(el => el.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+
+    async function startGame() {
+      await loadCSV();
+      currentQuestion = 0;
       showQuestion();
+      showScreen("quiz-screen");
     }
 
     function showQuestion() {
       const q = quizData[currentQuestion];
-      if (!q) {
-        document.getElementById("quiz-container").innerHTML =
-          "<h2>🎉 クイズはこれでおしまい！よくできました！</h2>";
-        document.getElementById("result").style.display = "none";
-        return;
-      }
-
-      document.getElementById("quiz-container").style.display = "block";
-      document.getElementById("result").style.display = "none";
-
-      document.getElementById("question").textContent = q.question;
-      const questionImageDiv = document.getElementById("question-image");
-      questionImageDiv.innerHTML = `<img src="${q.image}" alt="question image">`;
-
-      const choicesDiv = document.getElementById("choices");
-      choicesDiv.innerHTML = "";
-      for (let i = 1; i <= 3; i++) {
-        const choiceDiv = document.createElement("div");
-        choiceDiv.className = "choice";
-        choiceDiv.innerHTML = `<img src="${q["choice" + i + "_img"]}" alt="choice">`;
-        choiceDiv.onclick = () => checkAnswer(i);
-        choicesDiv.appendChild(choiceDiv);
-      }
+      document.getElementById("question-text").textContent = q.question;
+      document.getElementById("question-image").src = q.image;
+      document.getElementById("choice1").src = q.choice1_img;
+      document.getElementById("choice2").src = q.choice2_img;
+      document.getElementById("choice3").src = q.choice3_img;
     }
 
-    function checkAnswer(choiceNum) {
+    function checkAnswer(choice) {
       const q = quizData[currentQuestion];
-      const isCorrect = Number(choiceNum) === Number(q.answer);
-
-      document.getElementById("quiz-container").style.display = "none";
-      const resultScreen = document.getElementById("result");
-      resultScreen.style.display = "block";
-
+      showScreen("result-screen");
       const resultText = document.getElementById("result-text");
-      const resultVideoDiv = document.getElementById("result-video");
-      resultVideoDiv.innerHTML = "";
+      const video = document.getElementById("result-video");
 
-      if (isCorrect) {
+      if (choice === q.answer) {
         resultText.textContent = "⭕ せいかい！";
-        const video = document.createElement("video");
+        resultText.style.color = "#ff6b6b";
         video.src = q.answer_video;
-        video.controls = true;
-        video.autoplay = true;
-        resultVideoDiv.appendChild(video);
+        video.style.display = "block";
+        video.play();
       } else {
-        resultText.textContent = "❌ ざんねん…";
+        resultText.textContent = "❌ ざんねん！";
+        resultText.style.color = "#555";
+        video.style.display = "none";
       }
     }
 
-    document.getElementById("next-btn").onclick = () => {
+    function nextQuestion() {
       currentQuestion++;
-      showQuestion();
-    };
+      if (currentQuestion < quizData.length) {
+        showScreen("quiz-screen");
+        showQuestion();
+      } else {
+        showScreen("end-screen");
+      }
+    }
 
-    loadCSV();
+    function restartGame() {
+      currentQuestion = 0;
+      showScreen("title-screen");
+    }
+
+    // 起動時：タイトル画面表示
+    showScreen("title-screen");
   </script>
 </body>
 </html>

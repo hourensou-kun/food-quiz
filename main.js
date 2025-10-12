@@ -1,99 +1,69 @@
-/* 全体のレイアウト：スマホ縦でも横長っぽく表示 */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Noto Sans JP", sans-serif;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
+let quizData = [];
+let currentIndex = 0;
+
+async function loadCSV() {
+  const response = await fetch("quiz.csv");
+  const text = await response.text();
+  const rows = text.trim().split("\n").map(row => row.split(","));
+  const headers = rows.shift();
+  quizData = rows.map(row => Object.fromEntries(row.map((v, i) => [headers[i], v])));
 }
 
-#quiz-container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2vh;
-  box-sizing: border-box;
+function showQuestion() {
+  const q = quizData[currentIndex];
+  const container = document.getElementById("quiz-container");
+  const title = document.getElementById("question-title");
+  const img = document.getElementById("question-image");
+  const options = document.getElementById("options");
+  const result = document.getElementById("result");
+  const nextBtn = document.getElementById("next-button");
+
+  title.textContent = q.question;
+  img.src = q.image;
+  options.innerHTML = "";
+  result.classList.add("hidden");
+
+  // 選択肢作成
+  ["option1", "option2", "option3", "option4"].forEach(key => {
+    if (q[key]) {
+      const btn = document.createElement("button");
+      btn.textContent = q[key];
+      btn.className = "option-btn";
+      btn.onclick = () => checkAnswer(q, q[key]);
+      options.appendChild(btn);
+    }
+  });
+
+  nextBtn.classList.add("hidden");
 }
 
-/* 縦画面スマホでも横向きに見えるように強制横長レイアウト */
-@media (max-aspect-ratio: 3/4) {
-  #quiz-container {
-    flex-direction: column;
-    transform: rotate(90deg);
-    transform-origin: center center;
-    width: 100vh;
-    height: 100vw;
+function checkAnswer(q, selected) {
+  const result = document.getElementById("result");
+  const yourAnswer = document.getElementById("your-answer");
+  const answerImage = document.getElementById("answer-image");
+  const answerText = document.getElementById("answer-text");
+  const answerVideo = document.getElementById("answer-video");
+  const nextBtn = document.getElementById("next-button");
+
+  // 表示更新
+  result.classList.remove("hidden");
+  yourAnswer.textContent = `あなたがえらんだのは ${selected}`;
+  answerImage.src = q.answerImage;
+  answerText.textContent = q.answerText;
+  answerVideo.src = q.answerVideo;
+  answerVideo.load();
+
+  // 次へボタン表示
+  nextBtn.classList.remove("hidden");
+}
+
+document.getElementById("next-button").addEventListener("click", () => {
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    showQuestion();
+  } else {
+    alert("全問終了しました！");
   }
-}
+});
 
-#question-title {
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-#question-image {
-  width: 40%;
-  max-height: 60vh;
-  object-fit: contain;
-}
-
-#options {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.option-btn {
-  font-size: 1.2rem;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  border: none;
-  background-color: #f2f2f2;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.option-btn:hover {
-  background-color: #ddd;
-}
-
-#result {
-  text-align: center;
-}
-
-#result img {
-  width: 40%;
-  margin: 1rem auto;
-}
-
-#result video {
-  width: 60%;
-  margin-top: 1rem;
-}
-
-/* 常に表示される「次の問題へ」ボタン */
-#next-button {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-.hidden {
-  display: none;
-}
+loadCSV().then(showQuestion);

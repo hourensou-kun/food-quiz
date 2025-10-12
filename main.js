@@ -4,30 +4,39 @@ const MAX = 3;
 const videoEl = document.getElementById("result-video");
 
 async function loadCSV() {
-  const res = await fetch("data.csv");
-  const text = await res.text();
-  const rows = text.split("\n").slice(1);
-  quizData = rows.filter(r => r.trim() !== "").map(r => {
-    const c = r.split(",");
-    return {
-      question: c[1],
-      image: c[2],
-      choice1: c[3],
-      choice1_img: c[4],
-      choice2: c[5],
-      choice2_img: c[6],
-      choice3: c[7],
-      choice3_img: c[8],
-      answer: parseInt(c[9]),
-      answer_video: c[10]?.trim()
-    };
-  });
-  quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
+  try {
+    const res = await fetch("data.csv");
+    if (!res.ok) throw new Error("CSVが見つかりませんでした");
+    const text = await res.text();
+    const rows = text.split("\n").slice(1);
+    quizData = rows
+      .filter(r => r.trim() !== "")
+      .map(r => {
+        const c = r.split(",");
+        return {
+          question: c[1],
+          image: c[2],
+          choice1: c[3],
+          choice1_img: c[4],
+          choice2: c[5],
+          choice2_img: c[6],
+          choice3: c[7],
+          choice3_img: c[8],
+          answer: parseInt(c[9]),
+          answer_video: c[10]?.trim()
+        };
+      });
+    quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
+  } catch (err) {
+    alert("クイズデータの読み込みに失敗しました。\n\n" + err.message);
+    console.error(err);
+  }
 }
 
 function showScreen(id) {
-  document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
-    .forEach(el => el.style.display = "none");
+  document
+    .querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
+    .forEach(el => (el.style.display = "none"));
   document.getElementById(id).style.display = "block";
 }
 
@@ -40,6 +49,7 @@ function stopVideo() {
 
 async function startGame() {
   await loadCSV();
+  if (quizData.length === 0) return;
   current = 0;
   showQuestion();
   showScreen("quiz-screen");
@@ -54,7 +64,7 @@ function showQuestion() {
   const choices = [
     { img: q.choice1_img, text: q.choice1, index: 1 },
     { img: q.choice2_img, text: q.choice2, index: 2 },
-    { img: q.choice3_img, text: q.choice3, index: 3 },
+    { img: q.choice3_img, text: q.choice3, index: 3 }
   ].sort(() => Math.random() - 0.5);
 
   const container = document.getElementById("choices-container");
@@ -128,3 +138,4 @@ function restartGame() {
   showScreen("title-screen");
 }
 
+showScreen("title-screen");

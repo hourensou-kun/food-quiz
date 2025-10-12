@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>たべものクイズ 🍎</title>
 
-  <!-- フォントと基本スタイル -->
   <style>
     body {
       font-family: "Kosugi Maru", sans-serif;
@@ -85,19 +84,50 @@
       border-radius: 15px;
     }
 
-    /* --- 縦画面のときに操作禁止メッセージを表示 --- */
-    @media screen and (orientation: portrait) {
-      body::before {
-        content: "📱 画面を横向きにしてね！";
-        position: fixed;
-        inset: 0;
+    /* ==============================
+       スマホ縦画面でも横向きに見せる
+       ============================== */
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      html, body {
         background: #fff7ec;
-        color: #ff6b6b;
-        font-size: 1.5em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100vh;
+        height: 100vw;
+      }
+
+      body {
+        transform: rotate(90deg);
+        transform-origin: left top;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 100vh;
+        height: 100vw;
+      }
+
+      #title-screen, #quiz-screen, #result-screen, #end-screen {
+        width: 100vh;
+        height: 100vw;
+        padding: 20px;
+      }
+
+      .question-img, video, .result-image {
+        max-width: 70vh;
+      }
+
+      .btn {
+        font-size: 2em;
+        padding: 25px 60px;
+      }
+
+      h1 {
+        font-size: 3em;
+      }
+
+      #question-text, #result-text, #answer-text {
+        font-size: 2em;
       }
     }
   </style>
@@ -180,7 +210,6 @@
     }
 
     async function startGame() {
-      // Androidでは横画面に自動ロック
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock("landscape").catch(() => {});
       }

@@ -225,50 +225,51 @@
       });
     }
 
-    function checkAnswer(choice) {
-      stopVideo();
-      const q = quizData[current];
-      showScreen("result-screen");
+  function checkAnswer(choice) {
+  stopVideo();
+  const q = quizData[current];
+  showScreen("result-screen");
 
-      const resultText = document.getElementById("result-text");
-      const answerText = document.getElementById("answer-text");
-      const correctImg = document.getElementById("correct-image");
-      const nextBtn = document.getElementById("next-btn");
-      const video = document.getElementById("result-video");
+  const resultText = document.getElementById("result-text");
+  const answerText = document.getElementById("answer-text");
+  const correctImg = document.getElementById("correct-image");
+  const nextBtn = document.getElementById("next-btn");
+  const video = document.getElementById("result-video");
 
-      nextBtn.style.display = "none";
-      correctImg.style.display = "none";
-      video.style.display = "none";
-      answerText.textContent = "";
+  // 一旦全部リセット
+  correctImg.style.display = "none";
+  video.style.display = "none";
+  answerText.textContent = "";
 
-      if (choice === q.answer) {
-        resultText.textContent = "⭕ せいかい！";
-        resultText.style.color = "#ff6b6b";
+  if (choice === q.answer) {
+    resultText.textContent = "⭕ せいかい！";
+    resultText.style.color = "#ff6b6b";
 
-        const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
-        const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
+    const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
+    const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
 
-        answerText.textContent = correctName;
-        correctImg.src = correctSrc;
-        correctImg.style.display = "block";
+    answerText.textContent = correctName;
+    correctImg.src = correctSrc;
+    correctImg.style.display = "block";
 
-        if (q.answer_video) {
-          video.src = q.answer_video;
-          video.style.display = "block";
-          video.play();
-          video.onended = () => {
-            stopVideo();
-            nextQuestion();
-          };
-        } else {
-          nextBtn.style.display = "inline-block";
-        }
-      } else {
-        resultText.textContent = "❌ ざんねん！";
-        resultText.style.color = "#555";
-        nextBtn.style.display = "inline-block";
-      }
+    if (q.answer_video) {
+      video.src = q.answer_video;
+      video.style.display = "block";
+      video.play();
+      // 動画が終わっても勝手に進まないように
+      video.onended = () => {
+        stopVideo();
+      };
     }
+  } else {
+    resultText.textContent = "❌ ざんねん！";
+    resultText.style.color = "#555";
+  }
+
+  // ✅ 「つぎのもんだい」ボタンは常に表示
+  nextBtn.style.display = "inline-block";
+}
+
 
     function nextQuestion() {
       stopVideo();

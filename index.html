@@ -75,7 +75,6 @@
       transform: scale(1.05);
     }
 
-    /* 🎬 結果画面レイアウト */
     .result-content {
       display: flex;
       flex-direction: column;
@@ -100,44 +99,31 @@
     }
 
     @media (orientation: landscape) {
-      .choices {
-        flex-wrap: nowrap;
-        gap: 10px;
-      }
-      .choice img {
-        width: 25vw;
-      }
+      .choices { flex-wrap: nowrap; gap: 10px; }
+      .choice img { width: 25vw; }
     }
 
     @media (max-width: 480px) {
       h1 { font-size: 1.8em; }
       h2 { font-size: 1.3em; }
-      .btn {
-        font-size: 1em;
-        padding: 12px 25px;
-      }
-      .choice img {
-        width: 40vw;
-      }
+      .btn { font-size: 1em; padding: 12px 25px; }
+      .choice img { width: 40vw; }
     }
   </style>
 </head>
 <body>
 
-  <!-- 🏠 タイトル画面 -->
   <div id="title-screen">
     <h1>🍎 たべものクイズ 🍌</h1>
     <button class="btn" onclick="startGame()">▶ はじめる</button>
   </div>
 
-  <!-- 🍎 クイズ画面 -->
   <div id="quiz-screen">
     <h2 id="question-text"></h2>
     <img id="question-image" class="question-img" src="" alt="question" />
     <div class="choices" id="choices-container"></div>
   </div>
 
-  <!-- 🎉 結果画面 -->
   <div id="result-screen">
     <h2 id="result-text"></h2>
     <div class="result-content">
@@ -147,7 +133,6 @@
     <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
   </div>
 
-  <!-- 🌈 終了画面 -->
   <div id="end-screen">
     <h2>🎉 おつかれさま！</h2>
     <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
@@ -157,6 +142,7 @@
     let quizData = [];
     let currentQuestion = 0;
     const MAX_QUESTIONS = 3;
+    const videoElement = document.getElementById("result-video");
 
     async function loadCSV() {
       const response = await fetch("data.csv");
@@ -194,7 +180,16 @@
       showScreen("quiz-screen");
     }
 
+    function stopVideo() {
+      videoElement.pause();
+      videoElement.currentTime = 0;
+      videoElement.removeAttribute("src");
+      videoElement.load();
+    }
+
     function showQuestion() {
+      stopVideo(); // 🎯 前の動画を完全停止
+
       const q = quizData[currentQuestion];
       document.getElementById("question-text").textContent = q.question;
       document.getElementById("question-image").src = q.image;
@@ -213,4 +208,70 @@
         const img = document.createElement("img");
         img.src = choice.img;
         img.onclick = () => checkAnswer(choice.index);
-        div.
+        div.appendChild(img);
+        container.appendChild(div);
+      });
+    }
+
+    function checkAnswer(choice) {
+      stopVideo(); // 🎯 動画をリセットしてから結果画面へ
+
+      const q = quizData[currentQuestion];
+      showScreen("result-screen");
+      const resultText = document.getElementById("result-text");
+      const video = document.getElementById("result-video");
+      const correctImg = document.getElementById("correct-image");
+      const nextBtn = document.getElementById("next-btn");
+
+      nextBtn.style.display = "none";
+      correctImg.style.display = "none";
+      video.style.display = "none";
+
+      if (choice === q.answer) {
+        resultText.textContent = "⭕ せいかい！";
+        resultText.style.color = "#ff6b6b";
+
+        const correctImageSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
+        correctImg.src = correctImageSrc;
+        correctImg.style.display = "block";
+
+        if (q.answer_video) {
+          video.src = q.answer_video;
+          video.style.display = "block";
+          video.play();
+
+          video.onended = () => {
+            stopVideo();
+            nextQuestion();
+          };
+        } else {
+          nextBtn.style.display = "inline-block";
+        }
+      } else {
+        resultText.textContent = "❌ ざんねん！";
+        resultText.style.color = "#555";
+        nextBtn.style.display = "inline-block";
+      }
+    }
+
+    function nextQuestion() {
+      stopVideo(); // 🎯 ページ切り替え前にも停止
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        showScreen("quiz-screen");
+        showQuestion();
+      } else {
+        showScreen("end-screen");
+      }
+    }
+
+    function restartGame() {
+      stopVideo(); // 🎯 再スタート時も停止
+      currentQuestion = 0;
+      showScreen("title-screen");
+    }
+
+    showScreen("title-screen");
+  </script>
+</body>
+</html>

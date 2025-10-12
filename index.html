@@ -12,19 +12,23 @@
       margin: 0;
       padding: 0;
     }
+
     #title-screen, #quiz-screen, #result-screen, #end-screen {
       display: none;
       padding: 20px;
     }
+
     h1 {
       font-size: 2.2em;
       color: #ff6b6b;
       margin-bottom: 20px;
     }
+
     h2 {
       font-size: 1.5em;
       color: #333;
     }
+
     .btn {
       background-color: #ffb347;
       color: white;
@@ -36,15 +40,18 @@
       transition: 0.3s;
       margin-top: 20px;
     }
+
     .btn:hover {
       background-color: #ff9234;
     }
+
     .question-img {
       max-width: 80%;
       height: auto;
       margin: 20px auto;
       display: block;
     }
+
     .choices {
       display: flex;
       justify-content: center;
@@ -52,6 +59,7 @@
       gap: 15px;
       margin-top: 20px;
     }
+
     .choice img {
       width: 30vw;
       max-width: 180px;
@@ -61,15 +69,34 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .choice img:hover {
       border: 5px solid #ffb347;
       transform: scale(1.05);
     }
+
+    /* 🎬 結果画面レイアウト */
+    .result-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-image {
+      width: 60%;
+      max-width: 280px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
     video {
+      display: block;
+      margin: 0 auto;
       width: 80%;
       max-width: 360px;
       border-radius: 20px;
-      margin-top: 20px;
     }
 
     @media (orientation: landscape) {
@@ -83,12 +110,8 @@
     }
 
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.8em;
-      }
-      h2 {
-        font-size: 1.3em;
-      }
+      h1 { font-size: 1.8em; }
+      h2 { font-size: 1.3em; }
       .btn {
         font-size: 1em;
         padding: 12px 25px;
@@ -117,8 +140,11 @@
   <!-- 🎉 結果画面 -->
   <div id="result-screen">
     <h2 id="result-text"></h2>
-    <video id="result-video" controls></video><br>
-    <button class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
+    <div class="result-content">
+      <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
+      <video id="result-video" controls></video>
+    </div>
+    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
   </div>
 
   <!-- 🌈 終了画面 -->
@@ -130,7 +156,7 @@
   <script>
     let quizData = [];
     let currentQuestion = 0;
-    const MAX_QUESTIONS = 3; // ✅ 出題数を3問に制限
+    const MAX_QUESTIONS = 3;
 
     async function loadCSV() {
       const response = await fetch("data.csv");
@@ -152,7 +178,6 @@
           };
         });
 
-      // ✅ ランダムに3問選ぶ
       quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX_QUESTIONS);
     }
 
@@ -174,7 +199,6 @@
       document.getElementById("question-text").textContent = q.question;
       document.getElementById("question-image").src = q.image;
 
-      // ✅ 選択肢をランダムな順番に
       const choices = [
         { img: q.choice1_img, index: 1 },
         { img: q.choice2_img, index: 2 },
@@ -189,46 +213,4 @@
         const img = document.createElement("img");
         img.src = choice.img;
         img.onclick = () => checkAnswer(choice.index);
-        div.appendChild(img);
-        container.appendChild(div);
-      });
-    }
-
-    function checkAnswer(choice) {
-      const q = quizData[currentQuestion];
-      showScreen("result-screen");
-      const resultText = document.getElementById("result-text");
-      const video = document.getElementById("result-video");
-
-      if (choice === q.answer) {
-        resultText.textContent = "⭕ せいかい！";
-        resultText.style.color = "#ff6b6b";
-        video.src = q.answer_video;
-        video.style.display = "block";
-        video.play();
-      } else {
-        resultText.textContent = "❌ ざんねん！";
-        resultText.style.color = "#555";
-        video.style.display = "none";
-      }
-    }
-
-    function nextQuestion() {
-      currentQuestion++;
-      if (currentQuestion < quizData.length) {
-        showScreen("quiz-screen");
-        showQuestion();
-      } else {
-        showScreen("end-screen");
-      }
-    }
-
-    function restartGame() {
-      currentQuestion = 0;
-      showScreen("title-screen");
-    }
-
-    showScreen("title-screen");
-  </script>
-</body>
-</html>
+        div.

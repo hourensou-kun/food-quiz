@@ -1,161 +1,106 @@
-/* ===============================
-   ベース設定
-=============================== */
+/* 全体設定 */
 body {
   font-family: "Kosugi Maru", sans-serif;
   background: #fff7ec;
   margin: 0;
   overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  font-size: 5vw; /* 全体文字サイズを5倍相当 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
-/* スマホ縦持ちでも横向き表示を維持する設定 */
-@media screen and (orientation: portrait) and (max-width: 1024px) {
-  body {
-    transform: rotate(90deg);
-    transform-origin: left top;
-    width: 100vh;
-    height: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-  }
+/* 横画面固定風（スマホ縦でも横に見せる） */
+#game-wrapper {
+  width: 100vh;
+  height: 100vw;
+  transform: rotate(90deg);
+  transform-origin: center center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 
-/* ===============================
-   コンテナ
-=============================== */
-#quiz-container {
-  width: 90vw;
-  height: 90vh;
-  background: #fffaf3;
-  border-radius: 2vw;
-  box-shadow: 0 0 1vw rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2vw;
-  text-align: center;
-}
-
-/* ===============================
-   問題テキスト
-=============================== */
-#question {
-  font-size: 6vw;
-  font-weight: bold;
-  margin-bottom: 3vw;
-}
-
-/* ===============================
-   動画・画像
-=============================== */
-#media-container {
-  width: 80%;
-  height: auto;
-  margin-bottom: 3vw;
-}
-
-#media-container video,
-#media-container img {
+/* 各画面共通 */
+.screen {
+  display: none;
   width: 100%;
-  height: auto;
-  border-radius: 1vw;
-  object-fit: contain;
-  max-height: 45vh;
-}
-
-/* ===============================
-   選択肢ボタン
-=============================== */
-.option-button {
-  display: block;
-  width: 70%;
-  margin: 1vw auto;
-  padding: 2vw;
-  font-size: 5vw;
-  background: #ffca7a;
-  border: none;
-  border-radius: 1.5vw;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.option-button:hover {
-  background: #ffd38f;
-  transform: scale(1.05);
-}
-
-/* ===============================
-   答え画面
-=============================== */
-#answer-screen {
+  height: 100%;
   text-align: center;
+  padding: 4vh 2vw;
+  box-sizing: border-box;
 }
 
-#answer-screen h2 {
-  font-size: 8vw;
-  margin-bottom: 2vw;
+.screen.active {
+  display: block;
 }
 
-#answer-text {
-  font-size: 6vw;
-  font-weight: bold;
-  margin-bottom: 3vw;
-}
-
-/* ===============================
-   ボタン共通スタイル
-=============================== */
-button {
-  background: #ffa94d;
-  color: #fff;
-  border: none;
-  padding: 2vw 4vw;
+/* 文字を大きく */
+h1, h2, p, button, div, .answer-name {
   font-size: 5vw;
-  border-radius: 1.5vw;
-  cursor: pointer;
-  transition: 0.2s;
 }
 
-button:hover {
-  background: #ffb866;
+/* ボタン */
+.btn {
+  background: #ffa94d;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 20px 50px;
+  font-size: 4vw;
+  cursor: pointer;
+  margin-top: 4vh;
+}
+.btn:hover {
+  background: #ff922b;
+}
+
+/* 問題画像 */
+.question-img {
+  width: 45vw;
+  max-width: 500px;
+  margin: 2vh auto;
+  border-radius: 20px;
+}
+
+/* 選択肢 */
+.choices {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3vw;
+  margin-top: 2vh;
+}
+
+.choice img {
+  width: 25vw;
+  max-width: 250px;
+  border-radius: 20px;
+  border: 4px solid transparent;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.choice img:hover {
+  border-color: #ffa94d;
   transform: scale(1.05);
 }
 
-/* ===============================
-   「次の問題へ」ボタン
-=============================== */
-#next-button {
-  display: inline-block;
-  margin-top: 3vw;
+/* 結果画面 */
+.result-image {
+  width: 30vw;
+  max-width: 300px;
+  margin: 2vh auto;
+  display: block;
+  border-radius: 15px;
 }
 
-/* ===============================
-   レスポンシブ調整（PC用）
-=============================== */
-@media screen and (min-width: 1025px) {
-  body {
-    font-size: 2vw;
-  }
-  #question {
-    font-size: 3vw;
-  }
-  #answer-screen h2 {
-    font-size: 4vw;
-  }
-  .option-button {
-    font-size: 2vw;
-  }
-  button {
-    font-size: 2vw;
-  }
+.answer-name {
+  font-size: 4vw;
+  margin-top: 1vh;
+}
+
+video {
+  display: block;
+  margin: 0 auto;
+  width: 40vw;
+  max-width: 400px;
+  border-radius: 20px;
 }

@@ -17,7 +17,7 @@
       text-align: center;
     }
 
-    /* ★ 縦持ちでも中身を横向きに表示する */
+    /* 📱 縦持ちでも横向きに固定して表示 */
     @media screen and (max-aspect-ratio: 1/1) {
       body {
         transform: rotate(90deg);
@@ -258,22 +258,24 @@
       video.style.display = "none";
       answerText.textContent = "";
 
+      // 正解・不正解共通で正解の情報を取得
+      const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
+      const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
+
+      answerText.textContent = correctName;
+      correctImg.src = correctSrc;
+      correctImg.style.display = "block";
+
+      if (q.answer_video) {
+        video.src = q.answer_video;
+        video.style.display = "block";
+        video.play();
+      }
+
+      // 見出しの表示だけ切り替える
       if (choice === q.answer) {
         resultText.textContent = "⭕ せいかい！";
         resultText.style.color = "#ff6b6b";
-
-        const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
-        const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
-
-        answerText.textContent = correctName;
-        correctImg.src = correctSrc;
-        correctImg.style.display = "block";
-
-        if (q.answer_video) {
-          video.src = q.answer_video;
-          video.style.display = "block";
-          video.play();
-        }
       } else {
         resultText.textContent = "❌ ざんねん！";
         resultText.style.color = "#555";

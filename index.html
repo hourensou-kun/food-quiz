@@ -6,17 +6,29 @@
   <title>たべものクイズ 🍎</title>
 
   <style>
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       font-family: "Kosugi Maru", sans-serif;
       background: #fff7ec;
-      margin: 0;
       text-align: center;
-      overflow: hidden;
     }
 
-    #title-screen, #quiz-screen, #result-screen, #end-screen {
-      display: none;
-      padding: 20px;
+    /* ★ 縦持ちでも中身を横向きに表示する */
+    @media screen and (max-aspect-ratio: 1/1) {
+      body {
+        transform: rotate(90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow-x: hidden;
+      }
     }
 
     h1 {
@@ -39,6 +51,13 @@
     .btn:hover {
       background: #ff922b;
       transform: scale(1.05);
+    }
+
+    #title-screen, #quiz-screen, #result-screen, #end-screen {
+      display: none;
+      padding: 20px;
+      width: 100%;
+      height: 100%;
     }
 
     .question-img {
@@ -86,10 +105,9 @@
       border-radius: 15px;
     }
 
-    /* === 結果画面のレイアウト === */
     #result-screen {
       position: relative;
-      height: 100vh;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -109,28 +127,11 @@
       font-size: 1.5em;
       cursor: pointer;
       transition: 0.3s;
-      display: none;
     }
 
     #next-btn:hover {
       background: #ff922b;
       transform: translateX(-50%) scale(1.05);
-    }
-
-    /* === 縦画面時に横向きを促すメッセージ === */
-    @media screen and (orientation: portrait) {
-      body::before {
-        content: "📱 画面を横向きにしてね！";
-        position: fixed;
-        inset: 0;
-        background: #fff7ec;
-        color: #ff6b6b;
-        font-size: 1.5em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-      }
     }
   </style>
 </head>
@@ -212,9 +213,6 @@
     }
 
     async function startGame() {
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(() => {});
-      }
       await loadCSV();
       current = 0;
       showQuestion();
@@ -254,10 +252,8 @@
       const resultText = document.getElementById("result-text");
       const answerText = document.getElementById("answer-text");
       const correctImg = document.getElementById("correct-image");
-      const nextBtn = document.getElementById("next-btn");
       const video = document.getElementById("result-video");
 
-      nextBtn.style.display = "none";
       correctImg.style.display = "none";
       video.style.display = "none";
       answerText.textContent = "";
@@ -277,17 +273,10 @@
           video.src = q.answer_video;
           video.style.display = "block";
           video.play();
-          video.onended = () => {
-            stopVideo();
-            nextBtn.style.display = "inline-block";
-          };
-        } else {
-          nextBtn.style.display = "inline-block";
         }
       } else {
         resultText.textContent = "❌ ざんねん！";
         resultText.style.color = "#555";
-        nextBtn.style.display = "inline-block";
       }
     }
 

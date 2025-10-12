@@ -2,14 +2,17 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>たべものクイズ 🍎</title>
+
+  <!-- フォントと基本スタイル -->
   <style>
     body {
       font-family: "Kosugi Maru", sans-serif;
       background: #fff7ec;
       margin: 0;
       text-align: center;
+      overflow: hidden;
     }
 
     #title-screen, #quiz-screen, #result-screen, #end-screen {
@@ -42,6 +45,7 @@
       max-width: 400px;
       margin: 20px auto;
       display: block;
+      border-radius: 15px;
     }
 
     .choices {
@@ -67,7 +71,7 @@
 
     video {
       display: block;
-      margin: 10px auto;
+      margin: 0 auto;
       width: 80%;
       max-width: 400px;
       border-radius: 20px;
@@ -81,33 +85,54 @@
       border-radius: 15px;
     }
 
-    #answer-name {
-      font-size: 1.8em;
-      color: #444;
-      margin-top: 10px;
+    /* --- 縦画面のときに操作禁止メッセージを表示 --- */
+    @media screen and (orientation: portrait) {
+      body::before {
+        content: "📱 画面を横向きにしてね！";
+        position: fixed;
+        inset: 0;
+        background: #fff7ec;
+        color: #ff6b6b;
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
     }
   </style>
 </head>
+
 <body>
+  <!-- タイトル画面 -->
   <div id="title-screen">
     <h1>🍎 たべものクイズ 🍌</h1>
     <button class="btn" onclick="startGame()">▶ はじめる</button>
   </div>
 
+  <!-- クイズ画面 -->
   <div id="quiz-screen">
     <h2 id="question-text"></h2>
     <img id="question-image" class="question-img" src="" alt="question" />
     <div class="choices" id="choices-container"></div>
   </div>
 
+  <!-- 結果画面 -->
   <div id="result-screen">
     <h2 id="result-text"></h2>
+    <p id="answer-text" style="font-size: 1.5em; color: #555;"></p>
     <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
-    <div id="answer-name"></div>
-    <video id="result-video" controls style="display:none;"></video>
+    <video 
+      id="result-video" 
+      playsinline 
+      webkit-playsinline 
+      controls 
+      style="display:none;">
+    </video>
     <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
   </div>
 
+  <!-- 最終画面 -->
   <div id="end-screen">
     <h2>🎉 おつかれさま！</h2>
     <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
@@ -128,11 +153,11 @@
         return {
           question: c[1],
           image: c[2],
-          choice1_text: c[3],
+          choice1: c[3],
           choice1_img: c[4],
-          choice2_text: c[5],
+          choice2: c[5],
           choice2_img: c[6],
-          choice3_text: c[7],
+          choice3: c[7],
           choice3_img: c[8],
           answer: parseInt(c[9]),
           answer_video: c[10]?.trim()
@@ -155,6 +180,11 @@
     }
 
     async function startGame() {
+      // Androidでは横画面に自動ロック
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(() => {});
+      }
+
       await loadCSV();
       current = 0;
       showQuestion();
@@ -168,9 +198,9 @@
       document.getElementById("question-image").src = q.image;
 
       const choices = [
-        { img: q.choice1_img, text: q.choice1_text, index: 1 },
-        { img: q.choice2_img, text: q.choice2_text, index: 2 },
-        { img: q.choice3_img, text: q.choice3_text, index: 3 },
+        { img: q.choice1_img, index: 1 },
+        { img: q.choice2_img, index: 2 },
+        { img: q.choice3_img, index: 3 },
       ].sort(() => Math.random() - 0.5);
 
       const container = document.getElementById("choices-container");
@@ -192,26 +222,26 @@
       showScreen("result-screen");
 
       const resultText = document.getElementById("result-text");
+      const answerText = document.getElementById("answer-text");
       const correctImg = document.getElementById("correct-image");
-      const answerName = document.getElementById("answer-name");
       const nextBtn = document.getElementById("next-btn");
       const video = document.getElementById("result-video");
 
-      nextBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
       correctImg.style.display = "none";
       video.style.display = "none";
-      answerName.textContent = "";
+      answerText.textContent = "";
 
       if (choice === q.answer) {
         resultText.textContent = "⭕ せいかい！";
         resultText.style.color = "#ff6b6b";
 
         const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
-        const correctName = [q.choice1_text, q.choice2_text, q.choice3_text][q.answer - 1];
+        const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
 
+        answerText.textContent = correctName;
         correctImg.src = correctSrc;
         correctImg.style.display = "block";
-        answerName.textContent = correctName;
 
         if (q.answer_video) {
           video.src = q.answer_video;
@@ -219,8 +249,10 @@
           video.play();
           video.onended = () => {
             stopVideo();
-            nextBtn.style.display = "inline-block";
+            nextQuestion();
           };
+        } else {
+          nextBtn.style.display = "inline-block";
         }
       } else {
         resultText.textContent = "❌ ざんねん！";

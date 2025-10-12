@@ -2,144 +2,26 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>たべものクイズ 🍎</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Quiz</title>
   <link rel="stylesheet" href="style.css" />
-
-  <style>
-    /* ✅ スマホを縦に持っても横に表示するCSS */
-    @media screen and (max-width: 1024px) {
-      html, body {
-        width: 100vh;
-        height: 100vw;
-        overflow-x: hidden;
-        overflow-y: hidden;
-        transform: rotate(90deg);
-        transform-origin: left top;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-    }
-
-    body {
-      font-family: "Kosugi Maru", sans-serif;
-      background: #fff7ec;
-      margin: 0;
-      text-align: center;
-      overscroll-behavior: none;
-    }
-
-    #title-screen, #quiz-screen, #result-screen, #end-screen {
-      display: none;
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 2.2em;
-      color: #ff6b6b;
-    }
-
-    .btn {
-      background: #ffa94d;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 15px 40px;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #ff922b;
-    }
-
-    .question-img {
-      width: 70%;
-      max-width: 400px;
-      margin: 20px auto;
-      display: block;
-      border-radius: 15px;
-    }
-
-    .choices {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .choice img {
-      width: 25vw;
-      max-width: 180px;
-      border-radius: 20px;
-      border: 4px solid transparent;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .choice img:hover {
-      border-color: #ffa94d;
-      transform: scale(1.05);
-    }
-
-    video {
-      display: block;
-      margin: 0 auto;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 20px;
-    }
-
-    .result-image {
-      width: 60%;
-      max-width: 250px;
-      margin: 15px auto;
-      display: block;
-      border-radius: 15px;
-    }
-
-    #selected-text {
-      color: #666;
-      font-size: 1.3em;
-      margin: 10px 0;
-    }
-
-  </style>
 </head>
-
 <body>
-  <!-- タイトル画面 -->
-  <div id="title-screen">
-    <h1>🍎 たべものクイズ 🍌</h1>
-    <button class="btn" onclick="startGame()">▶ はじめる</button>
+  <div id="quiz-container">
+    <h1 id="question-title"></h1>
+    <img id="question-image" alt="問題画像" />
+    <div id="options"></div>
+    <div id="result" class="hidden">
+      <p id="your-answer"></p>
+      <img id="answer-image" alt="答え画像" />
+      <p id="answer-text"></p>
+      <video id="answer-video" controls></video>
+    </div>
   </div>
 
-  <!-- クイズ画面 -->
-  <div id="quiz-screen">
-    <h2 id="question-text"></h2>
-    <img id="question-image" class="question-img" src="" alt="question" />
-    <div class="choices" id="choices-container"></div>
-  </div>
+  <!-- 常に表示されるボタン -->
+  <button id="next-button" class="hidden">次の問題へ ▶</button>
 
-  <!-- 結果画面 -->
-  <div id="result-screen">
-    <h2 id="result-text"></h2>
-    <p id="selected-text"></p>
-    <p id="answer-text" style="font-size: 1.5em; color: #555;"></p>
-    <img id="correct-image" class="result-image" src="" alt="答えの画像" style="display:none;">
-    <video id="result-video" playsinline webkit-playsinline controls style="display:none;"></video>
-    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
-  </div>
-
-  <!-- 最終画面 -->
-  <div id="end-screen">
-    <h2>🎉 おつかれさま！</h2>
-    <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
-  </div>
-
-  <script src="main.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

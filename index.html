@@ -67,10 +67,11 @@
 
     video {
       display: block;
-      margin: 0 auto;
+      margin: 20px auto;
       width: 80%;
       max-width: 400px;
       border-radius: 20px;
+      object-fit: contain;
     }
 
     .result-image {
@@ -97,7 +98,7 @@
   <div id="result-screen">
     <h2 id="result-text"></h2>
     <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
-    <video id="result-video" controls style="display:none;"></video>
+    <video id="result-video" controls muted playsinline style="display:none;"></video>
     <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
   </div>
 
@@ -115,19 +116,21 @@
     async function loadCSV() {
       const res = await fetch("data.csv");
       const text = await res.text();
-      const rows = text.split("\n").slice(1);
-      quizData = rows.filter(r => r.trim() !== "").map(r => {
-        const c = r.split(",");
-        return {
-          question: c[1],
-          image: c[2],
-          choice1_img: c[4],
-          choice2_img: c[6],
-          choice3_img: c[8],
-          answer: parseInt(c[9]),
-          answer_video: c[10]?.trim()
-        };
-      });
+      const rows = text.trim().split(/\r?\n/).slice(1);
+      quizData = rows
+        .filter(r => r.trim() !== "")
+        .map(r => {
+          const c = r.split(",");
+          return {
+            question: c[1],
+            image: c[2],
+            choice1_img: c[4],
+            choice2_img: c[6],
+            choice3_img: c[8],
+            answer: parseInt(c[9]),
+            answer_video: c[10]?.trim()
+          };
+        });
       quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
     }
 

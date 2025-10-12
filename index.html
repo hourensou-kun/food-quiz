@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>たべものクイズ</title>
   <style>
     body {
@@ -14,12 +14,16 @@
     }
     #title-screen, #quiz-screen, #result-screen, #end-screen {
       display: none;
-      padding: 30px;
+      padding: 20px;
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 2.2em;
       color: #ff6b6b;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 1.5em;
+      color: #333;
     }
     .btn {
       background-color: #ffb347;
@@ -30,12 +34,14 @@
       font-size: 1.2em;
       cursor: pointer;
       transition: 0.3s;
+      margin-top: 20px;
     }
     .btn:hover {
       background-color: #ff9234;
     }
     .question-img {
-      max-width: 250px;
+      max-width: 80%;
+      height: auto;
       margin: 20px auto;
       display: block;
     }
@@ -43,25 +49,53 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 15px;
       margin-top: 20px;
     }
     .choice img {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      cursor: pointer;
+      width: 30vw;
+      max-width: 180px;
+      height: auto;
       border: 5px solid transparent;
       border-radius: 20px;
+      cursor: pointer;
       transition: 0.3s;
     }
     .choice img:hover {
       border: 5px solid #ffb347;
+      transform: scale(1.05);
     }
     video {
-      width: 300px;
+      width: 80%;
+      max-width: 360px;
       border-radius: 20px;
       margin-top: 20px;
+    }
+
+    @media (orientation: landscape) {
+      .choices {
+        flex-wrap: nowrap;
+        gap: 10px;
+      }
+      .choice img {
+        width: 25vw;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      h2 {
+        font-size: 1.3em;
+      }
+      .btn {
+        font-size: 1em;
+        padding: 12px 25px;
+      }
+      .choice img {
+        width: 40vw;
+      }
     }
   </style>
 </head>
@@ -77,11 +111,7 @@
   <div id="quiz-screen">
     <h2 id="question-text"></h2>
     <img id="question-image" class="question-img" src="" alt="question" />
-    <div class="choices">
-      <div class="choice"><img id="choice1" onclick="checkAnswer(1)" /></div>
-      <div class="choice"><img id="choice2" onclick="checkAnswer(2)" /></div>
-      <div class="choice"><img id="choice3" onclick="checkAnswer(3)" /></div>
-    </div>
+    <div class="choices" id="choices-container"></div>
   </div>
 
   <!-- 🎉 結果画面 -->
@@ -100,24 +130,30 @@
   <script>
     let quizData = [];
     let currentQuestion = 0;
+    const MAX_QUESTIONS = 3; // ✅ 出題数を3問に制限
 
     async function loadCSV() {
-      const response = await fetch("data.csv"); // ← GitHub上のdata.csvを読み込み
+      const response = await fetch("data.csv");
       const text = await response.text();
-      const rows = text.split("\n").slice(1); // 1行目（ヘッダー）を除外
-      quizData = rows.map(row => {
-        const cols = row.split(",");
-        return {
-          id: cols[0],
-          question: cols[1],
-          image: cols[2],
-          choice1_img: cols[4],
-          choice2_img: cols[6],
-          choice3_img: cols[8],
-          answer: parseInt(cols[9]),
-          answer_video: cols[10]?.trim()
-        };
-      });
+      const rows = text.split("\n").slice(1);
+      quizData = rows
+        .filter(row => row.trim() !== "")
+        .map(row => {
+          const cols = row.split(",");
+          return {
+            id: cols[0],
+            question: cols[1],
+            image: cols[2],
+            choice1_img: cols[4],
+            choice2_img: cols[6],
+            choice3_img: cols[8],
+            answer: parseInt(cols[9]),
+            answer_video: cols[10]?.trim()
+          };
+        });
+
+      // ✅ ランダムに3問選ぶ
+      quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX_QUESTIONS);
     }
 
     function showScreen(id) {
@@ -137,9 +173,25 @@
       const q = quizData[currentQuestion];
       document.getElementById("question-text").textContent = q.question;
       document.getElementById("question-image").src = q.image;
-      document.getElementById("choice1").src = q.choice1_img;
-      document.getElementById("choice2").src = q.choice2_img;
-      document.getElementById("choice3").src = q.choice3_img;
+
+      // ✅ 選択肢をランダムな順番に
+      const choices = [
+        { img: q.choice1_img, index: 1 },
+        { img: q.choice2_img, index: 2 },
+        { img: q.choice3_img, index: 3 },
+      ].sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById("choices-container");
+      container.innerHTML = "";
+      choices.forEach(choice => {
+        const div = document.createElement("div");
+        div.className = "choice";
+        const img = document.createElement("img");
+        img.src = choice.img;
+        img.onclick = () => checkAnswer(choice.index);
+        div.appendChild(img);
+        container.appendChild(div);
+      });
     }
 
     function checkAnswer(choice) {
@@ -176,7 +228,6 @@
       showScreen("title-screen");
     }
 
-    // 起動時：タイトル画面表示
     showScreen("title-screen");
   </script>
 </body>

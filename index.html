@@ -8,93 +8,93 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="quiz-wrapper">
-    <div id="quiz-container">
-      <h1 id="question">読み込み中...</h1>
-      <div id="image-container"></div>
-      <div id="result-container" class="hidden">
-        <h2 id="result-message"></h2>
-        <img id="answer-image" alt="答えの画像">
-        <p id="answer-text"></p>
-        <video id="answer-video" controls></video>
-        <button id="next-button">次の問題へ</button>
-      </div>
+  <div id="quiz-container">
+    <h1 id="question">読み込み中...</h1>
+    <div id="image-container"></div>
+    <div id="options-container"></div>
+    <div id="result-container" class="hidden">
+      <h2 id="result-message"></h2>
+      <img id="answer-image" alt="答えの画像">
+      <p id="answer-text"></p>
+      <video id="answer-video" controls></video>
+      <button id="next-button">次の問題へ</button>
     </div>
   </div>
 
   <script>
-    const csvUrl = "quiz.csv"; // CSVファイルパス
-    let quizData = [];
-    let currentQuestion = 0;
+  const csvUrl = "quiz.csv"; // あなたのCSVファイルパス
 
-    async function loadQuiz() {
-      const response = await fetch(csvUrl);
-      const text = await response.text();
-      const lines = text.trim().split("\n");
-      quizData = lines.slice(1).map(line => {
-        const [question, img1, img2, img3, answer, desc, video] = line.split(",");
-        return { question, images: [img1, img2, img3], answer, desc, video };
-      });
-      showQuestion();
+  let quizData = [];
+  let currentQuestion = 0;
+
+  async function loadQuiz() {
+    const response = await fetch(csvUrl);
+    const text = await response.text();
+    const lines = text.trim().split("\n");
+    quizData = lines.slice(1).map(line => {
+      const [question, img1, img2, img3, answer, text, video] = line.split(",");
+      return { question, images: [img1, img2, img3], answer, text, video };
+    });
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const quiz = quizData[currentQuestion];
+    document.getElementById("question").textContent = quiz.question;
+
+    const container = document.getElementById("image-container");
+    container.innerHTML = "";
+    quiz.images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.classList.add("option-image");
+      img.onclick = () => checkAnswer(index);
+      container.appendChild(img);
+    });
+
+    document.getElementById("result-container").classList.add("hidden");
+  }
+
+  function checkAnswer(index) {
+    const quiz = quizData[currentQuestion];
+    const userChoice = quiz.images[index];
+    const correctIndex = quiz.images.indexOf(quiz.answer);
+
+    const resultContainer = document.getElementById("result-container");
+    const message = document.getElementById("result-message");
+    const img = document.getElementById("answer-image");
+    const text = document.getElementById("answer-text");
+    const video = document.getElementById("answer-video");
+
+    if (index === correctIndex) {
+      message.textContent = `正解！あなたがえらんだのは ${quiz.answer}`;
+    } else {
+      message.textContent = `残念！あなたがえらんだのは ${quiz.images[index]} でした。`;
     }
 
-    function showQuestion() {
-      const quiz = quizData[currentQuestion];
-      document.getElementById("question").textContent = quiz.question;
+    img.src = quiz.answer;
+    text.textContent = quiz.text;
+    video.src = quiz.video;
+    resultContainer.classList.remove("hidden");
+  }
 
-      const container = document.getElementById("image-container");
-      container.innerHTML = "";
-      quiz.images.forEach((src, index) => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.classList.add("option-image");
-        img.onclick = () => checkAnswer(index);
-        container.appendChild(img);
-      });
+  document.getElementById("next-button").onclick = () => {
+    currentQuestion = (currentQuestion + 1) % quizData.length;
+    showQuestion();
+  };
 
-      document.getElementById("result-container").classList.add("hidden");
+  // スマホで「縦持ちでも横向きに見せる」
+  function applyLandscapeMode() {
+    const isMobile = /iPhone|Android.+Mobile/.test(navigator.userAgent);
+    if (isMobile) {
+      document.body.classList.add("force-landscape");
     }
+  }
 
-    function checkAnswer(index) {
-      const quiz = quizData[currentQuestion];
-      const userChoice = quiz.images[index];
-      const correctIndex = quiz.images.indexOf(quiz.answer);
-
-      const resultContainer = document.getElementById("result-container");
-      const message = document.getElementById("result-message");
-      const img = document.getElementById("answer-image");
-      const text = document.getElementById("answer-text");
-      const video = document.getElementById("answer-video");
-
-      if (index === correctIndex) {
-        message.textContent = `正解！あなたがえらんだのは ${quiz.answer}`;
-      } else {
-        message.textContent = `残念！あなたがえらんだのは ${quiz.images[index]} でした。`;
-      }
-
-      img.src = quiz.answer;
-      text.textContent = quiz.desc;
-      video.src = quiz.video;
-      resultContainer.classList.remove("hidden");
-    }
-
-    document.getElementById("next-button").onclick = () => {
-      currentQuestion = (currentQuestion + 1) % quizData.length;
-      showQuestion();
-    };
-
-    // スマホで縦持ちでも横に表示
-    function applyLandscapeMode() {
-      const isMobile = /iPhone|Android.+Mobile/.test(navigator.userAgent);
-      if (isMobile) {
-        document.getElementById("quiz-wrapper").classList.add("force-landscape");
-      }
-    }
-
-    window.onload = () => {
-      applyLandscapeMode();
-      loadQuiz();
-    };
+  window.onload = () => {
+    applyLandscapeMode();
+    loadQuiz();
+  };
   </script>
 </body>
 </html>

@@ -1,274 +1,100 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>たべものクイズ 🍎</title>
-
-  <style>
-    body {
-      font-family: "Kosugi Maru", sans-serif;
-      background: #fff7ec;
-      margin: 0;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    #title-screen, #quiz-screen, #result-screen, #end-screen {
-      display: none;
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 2.2em;
-      color: #ff6b6b;
-    }
-
-    .btn {
-      background: #ffa94d;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 15px 40px;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    .btn:hover {
-      background: #ff922b;
-    }
-
-    .question-img {
-      width: 80%;
-      max-width: 400px;
-      margin: 20px auto;
-      display: block;
-      border-radius: 15px;
-    }
-
-    .choices {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .choice img {
-      width: 30vw;
-      max-width: 180px;
-      border-radius: 20px;
-      border: 4px solid transparent;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .choice img:hover {
-      border-color: #ffa94d;
-      transform: scale(1.05);
-    }
-
-    video {
-      display: block;
-      margin: 0 auto;
-      width: 80%;
-      max-width: 400px;
-      border-radius: 20px;
-    }
-
-    .result-image {
-      width: 40%;
-      max-width: 200px;
-      margin: 10px;
-      display: inline-block;
-      border-radius: 15px;
-    }
-
-    .result-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .result-label {
-      font-size: 1.2em;
-      color: #555;
-      margin-top: 10px;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Food Quiz</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- タイトル画面 -->
-  <div id="title-screen">
-    <h1>🍎 たべものクイズ 🍌</h1>
-    <button class="btn" onclick="startGame()">▶ はじめる</button>
-  </div>
-
-  <!-- クイズ画面 -->
-  <div id="quiz-screen">
-    <h2 id="question-text"></h2>
-    <img id="question-image" class="question-img" src="" alt="question" />
-    <div class="choices" id="choices-container"></div>
-  </div>
-
-  <!-- 結果画面 -->
-  <div id="result-screen">
-    <h2 id="result-text"></h2>
-    <div class="result-section">
-      <div>
-        <p class="result-label" id="your-answer-label"></p>
-        <img id="your-image" class="result-image" src="" alt="your choice">
-      </div>
-      <div>
-        <p class="result-label" id="correct-answer-label"></p>
-        <img id="correct-image" class="result-image" src="" alt="correct image">
-      </div>
+  <div id="quiz-container">
+    <h1 id="question">読み込み中...</h1>
+    <div id="image-container"></div>
+    <div id="options-container"></div>
+    <div id="result-container" class="hidden">
+      <h2 id="result-message"></h2>
+      <img id="answer-image" alt="答えの画像">
+      <p id="answer-text"></p>
+      <video id="answer-video" controls></video>
+      <button id="next-button">次の問題へ</button>
     </div>
-    <p id="answer-text" style="font-size: 1.5em; color: #555;"></p>
-    <video id="result-video" playsinline webkit-playsinline controls style="display:none;"></video>
-    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
-  </div>
-
-  <!-- 最終画面 -->
-  <div id="end-screen">
-    <h2>🎉 おつかれさま！</h2>
-    <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
   </div>
 
   <script>
-    let quizData = [];
-    let current = 0;
-    const MAX = 3;
-    const videoEl = document.getElementById("result-video");
+  const csvUrl = "quiz.csv"; // あなたのCSVファイルパス
 
-    async function loadCSV() {
-      const res = await fetch("data.csv");
-      const text = await res.text();
-      const rows = text.split("\n").slice(1);
-      quizData = rows.filter(r => r.trim() !== "").map(r => {
-        const c = r.split(",");
-        return {
-          question: c[1],
-          image: c[2],
-          choice1: c[3],
-          choice1_img: c[4],
-          choice2: c[5],
-          choice2_img: c[6],
-          choice3: c[7],
-          choice3_img: c[8],
-          answer: parseInt(c[9]),
-          answer_video: c[10]?.trim()
-        };
-      });
-      quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
+  let quizData = [];
+  let currentQuestion = 0;
+
+  async function loadQuiz() {
+    const response = await fetch(csvUrl);
+    const text = await response.text();
+    const lines = text.trim().split("\n");
+    quizData = lines.slice(1).map(line => {
+      const [question, img1, img2, img3, answer, text, video] = line.split(",");
+      return { question, images: [img1, img2, img3], answer, text, video };
+    });
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const quiz = quizData[currentQuestion];
+    document.getElementById("question").textContent = quiz.question;
+
+    const container = document.getElementById("image-container");
+    container.innerHTML = "";
+    quiz.images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.classList.add("option-image");
+      img.onclick = () => checkAnswer(index);
+      container.appendChild(img);
+    });
+
+    document.getElementById("result-container").classList.add("hidden");
+  }
+
+  function checkAnswer(index) {
+    const quiz = quizData[currentQuestion];
+    const userChoice = quiz.images[index];
+    const correctIndex = quiz.images.indexOf(quiz.answer);
+
+    const resultContainer = document.getElementById("result-container");
+    const message = document.getElementById("result-message");
+    const img = document.getElementById("answer-image");
+    const text = document.getElementById("answer-text");
+    const video = document.getElementById("answer-video");
+
+    if (index === correctIndex) {
+      message.textContent = `正解！あなたがえらんだのは ${quiz.answer}`;
+    } else {
+      message.textContent = `残念！あなたがえらんだのは ${quiz.images[index]} でした。`;
     }
 
-    function showScreen(id) {
-      document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
-        .forEach(el => el.style.display = "none");
-      document.getElementById(id).style.display = "block";
+    img.src = quiz.answer;
+    text.textContent = quiz.text;
+    video.src = quiz.video;
+    resultContainer.classList.remove("hidden");
+  }
+
+  document.getElementById("next-button").onclick = () => {
+    currentQuestion = (currentQuestion + 1) % quizData.length;
+    showQuestion();
+  };
+
+  // スマホで「縦持ちでも横向きに見せる」
+  function applyLandscapeMode() {
+    const isMobile = /iPhone|Android.+Mobile/.test(navigator.userAgent);
+    if (isMobile) {
+      document.body.classList.add("force-landscape");
     }
+  }
 
-    function stopVideo() {
-      videoEl.pause();
-      videoEl.currentTime = 0;
-      videoEl.removeAttribute("src");
-      videoEl.load();
-    }
-
-    async function startGame() {
-      await loadCSV();
-      current = 0;
-      showQuestion();
-      showScreen("quiz-screen");
-    }
-
-    function showQuestion() {
-      stopVideo();
-      const q = quizData[current];
-      document.getElementById("question-text").textContent = q.question;
-      document.getElementById("question-image").src = q.image;
-
-      const choices = [
-        { img: q.choice1_img, name: q.choice1, index: 1 },
-        { img: q.choice2_img, name: q.choice2, index: 2 },
-        { img: q.choice3_img, name: q.choice3, index: 3 },
-      ].sort(() => Math.random() - 0.5);
-
-      const container = document.getElementById("choices-container");
-      container.innerHTML = "";
-      choices.forEach(c => {
-        const div = document.createElement("div");
-        div.className = "choice";
-        const img = document.createElement("img");
-        img.src = c.img;
-        img.onclick = () => checkAnswer(c.index, c.name, c.img);
-        div.appendChild(img);
-        container.appendChild(div);
-      });
-    }
-
-    function checkAnswer(choice, userName, userImg) {
-      stopVideo();
-      const q = quizData[current];
-      showScreen("result-screen");
-
-      const resultText = document.getElementById("result-text");
-      const answerText = document.getElementById("answer-text");
-      const correctImg = document.getElementById("correct-image");
-      const yourImg = document.getElementById("your-image");
-      const video = document.getElementById("result-video");
-      const yourLabel = document.getElementById("your-answer-label");
-      const correctLabel = document.getElementById("correct-answer-label");
-
-      const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
-      const correctName = [q.choice1, q.choice2, q.choice3][q.answer - 1];
-
-      // 共通部分
-      correctImg.src = correctSrc;
-      yourImg.src = userImg;
-      answerText.textContent = `せいかい：${correctName}`;
-      yourLabel.textContent = `あなたがえらんだのは「${userName}」`;
-      correctLabel.textContent = "せいかいはこちら！";
-
-      if (choice === q.answer) {
-        resultText.textContent = "⭕ せいかい！";
-        resultText.style.color = "#ff6b6b";
-      } else {
-        resultText.textContent = "❌ ざんねん！";
-        resultText.style.color = "#555";
-      }
-
-      // 動画がある場合のみ再生
-      if (q.answer_video) {
-        video.src = q.answer_video;
-        video.style.display = "block";
-        video.play();
-      } else {
-        video.style.display = "none";
-      }
-    }
-
-    function nextQuestion() {
-      stopVideo();
-      current++;
-      if (current < quizData.length) {
-        showScreen("quiz-screen");
-        showQuestion();
-      } else {
-        showScreen("end-screen");
-      }
-    }
-
-    function restartGame() {
-      stopVideo();
-      current = 0;
-      showScreen("title-screen");
-    }
-
-    showScreen("title-screen");
+  window.onload = () => {
+    applyLandscapeMode();
+    loadQuiz();
+  };
   </script>
 </body>
 </html>

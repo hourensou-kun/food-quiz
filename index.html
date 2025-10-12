@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Quiz</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="quiz-container">
-    <h1 id="question-title"></h1>
-    <img id="question-image" alt="問題画像" />
-    <div id="options"></div>
+    <div id="question-section">
+      <h1 id="question-title"></h1>
+      <img id="question-image" alt="クイズ画像">
+      <div id="options"></div>
+    </div>
+
     <div id="result" class="hidden">
       <p id="your-answer"></p>
-      <img id="answer-image" alt="答え画像" />
-      <p id="answer-text"></p>
+      <img id="answer-image" alt="答え画像">
       <video id="answer-video" controls></video>
+      <p id="answer-text"></p>
     </div>
+
+    <button id="next-button" class="hidden">次へ</button>
   </div>
 
-  <!-- 常に表示されるボタン -->
-  <button id="next-button" class="hidden">次の問題へ ▶</button>
-
-<script src="main.js"></script>
+  <!-- ✅ JSは必ずこのように記述 -->
+  <script src="./main.js" defer></script>
 </body>
 </html>

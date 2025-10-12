@@ -2,7 +2,7 @@ let quizData = [];
 let currentIndex = 0;
 
 async function loadCSV() {
-  const response = await fetch("quiz.csv");
+  const response = await fetch("data.csv");
   const text = await response.text();
   const rows = text.trim().split("\n").map(row => row.split(","));
   const headers = rows.shift();

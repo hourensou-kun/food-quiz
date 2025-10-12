@@ -33,10 +33,12 @@
       font-size: 1.2em;
       cursor: pointer;
       margin-top: 20px;
+      transition: 0.3s;
     }
 
     .btn:hover {
       background: #ff922b;
+      transform: scale(1.05);
     }
 
     .question-img {
@@ -84,50 +86,50 @@
       border-radius: 15px;
     }
 
-    /* ==============================
-       スマホ縦画面でも横向きに見せる
-       ============================== */
-    @media screen and (max-width: 768px) and (orientation: portrait) {
-      html, body {
+    /* === 結果画面のレイアウト === */
+    #result-screen {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #next-btn {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffa94d;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 20px 60px;
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: 0.3s;
+      display: none;
+    }
+
+    #next-btn:hover {
+      background: #ff922b;
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    /* === 縦画面時に横向きを促すメッセージ === */
+    @media screen and (orientation: portrait) {
+      body::before {
+        content: "📱 画面を横向きにしてね！";
+        position: fixed;
+        inset: 0;
         background: #fff7ec;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        width: 100vh;
-        height: 100vw;
-      }
-
-      body {
-        transform: rotate(90deg);
-        transform-origin: left top;
-        position: absolute;
-        top: 0;
-        left: 100%;
-        width: 100vh;
-        height: 100vw;
-      }
-
-      #title-screen, #quiz-screen, #result-screen, #end-screen {
-        width: 100vh;
-        height: 100vw;
-        padding: 20px;
-      }
-
-      .question-img, video, .result-image {
-        max-width: 70vh;
-      }
-
-      .btn {
-        font-size: 2em;
-        padding: 25px 60px;
-      }
-
-      h1 {
-        font-size: 3em;
-      }
-
-      #question-text, #result-text, #answer-text {
-        font-size: 2em;
+        color: #ff6b6b;
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
       }
     }
   </style>
@@ -159,7 +161,7 @@
       controls 
       style="display:none;">
     </video>
-    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
+    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだいへ</button>
   </div>
 
   <!-- 最終画面 -->
@@ -213,7 +215,6 @@
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock("landscape").catch(() => {});
       }
-
       await loadCSV();
       current = 0;
       showQuestion();
@@ -278,7 +279,7 @@
           video.play();
           video.onended = () => {
             stopVideo();
-            nextQuestion();
+            nextBtn.style.display = "inline-block";
           };
         } else {
           nextBtn.style.display = "inline-block";

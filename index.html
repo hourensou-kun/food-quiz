@@ -7,10 +7,10 @@
 
   <style>
     html, body {
-      width: 100%;
-      height: 100%;
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       background: #fff7ec;
       font-family: "Kosugi Maru", sans-serif;
@@ -18,16 +18,17 @@
       touch-action: manipulation;
     }
 
-    /* ====== 横画面固定サイズレイアウト（16:9比率） ====== */
+    /* ====== 常に横長(16:9)表示に固定 ====== */
     #app-container {
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform-origin: center center;
+      transform: translate(-50%, -50%) rotate(0deg);
       width: 100vw;
-      height: 56.25vw; /* 9/16 = 0.5625 */
+      height: 56.25vw; /* 9/16 */
       max-height: 100vh;
-      max-width: 177.78vh; /* 16/9 = 1.7778 */
+      max-width: 177.78vh; /* 16/9 */
       background: #fff7ec;
       display: flex;
       flex-direction: column;
@@ -35,6 +36,15 @@
       justify-content: center;
       box-sizing: border-box;
       padding: 1rem;
+    }
+
+    /* スマホが縦の場合に中身を横に回転 */
+    @media screen and (orientation: portrait) {
+      #app-container {
+        transform: translate(-50%, -50%) rotate(90deg);
+        width: 100vh;
+        height: 56.25vh;
+      }
     }
 
     h1 {
@@ -111,46 +121,22 @@
       color: #444;
       margin: 0.5vw 0;
     }
-
-    /* ---- 縦画面時にロック表示 ---- */
-    @media screen and (orientation: portrait) {
-      #app-container {
-        display: none;
-      }
-
-      body::before {
-        content: "📱 スマホを横向きにしてね！";
-        position: fixed;
-        inset: 0;
-        background: #fff7ec;
-        color: #ff6b6b;
-        font-size: 5vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        z-index: 9999;
-      }
-    }
   </style>
 </head>
 
 <body>
   <div id="app-container">
-    <!-- タイトル -->
     <div id="title-screen">
       <h1>🍎 たべものクイズ 🍌</h1>
       <button class="btn" onclick="startGame()">▶ はじめる</button>
     </div>
 
-    <!-- クイズ -->
     <div id="quiz-screen" style="display:none;">
       <h2 id="question-text"></h2>
       <img id="question-image" class="question-img" src="" alt="question" />
       <div class="choices" id="choices-container"></div>
     </div>
 
-    <!-- 結果 -->
     <div id="result-screen" style="display:none;">
       <h2 id="result-text"></h2>
       <p id="answer-text"></p>
@@ -159,7 +145,6 @@
       <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
     </div>
 
-    <!-- 終了 -->
     <div id="end-screen" style="display:none;">
       <h2>🎉 おつかれさま！</h2>
       <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
@@ -209,9 +194,6 @@
     }
 
     async function startGame() {
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(() => {});
-      }
       await loadCSV();
       current = 0;
       showQuestion();

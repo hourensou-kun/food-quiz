@@ -1,139 +1,112 @@
-// main.js
-// あなたの data.csv に完全対応
-// 画像・動画パスはCSV通り（image/ と video/）
-
 let quizData = [];
-let currentQuestion = 0;
-let score = 0;
+let selectedQuestions = [];
+let currentIndex = 0;
 
-// --- CSV読み込み ---
+// CSV読み込み
 async function loadCSV() {
-  try {
-    const response = await fetch("data.csv");
-    if (!response.ok) throw new Error("CSVが見つかりません");
-    const text = await response.text();
-
-    const rows = text.trim().split("\n").map(r => r.split(","));
-    const header = rows.shift();
-
-    quizData = rows.map(cols => {
-      const obj = {};
-      header.forEach((key, i) => (obj[key] = cols[i]));
-      return obj;
-    });
-
-    showQuestion();
-  } catch (e) {
-    document.getElementById("quiz").innerHTML = `<p style="color:red;">CSVの読み込みに失敗しました。(${e.message})</p>`;
-  }
+  const response = await fetch("data.csv");
+  const text = await response.text();
+  const rows = text.trim().split("\n").map(r => r.split(","));
+  const headers = rows.shift();
+  quizData = rows.map(r => Object.fromEntries(r.map((v, i) => [headers[i], v])));
 }
 
-// --- クイズを表示 ---
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+// スタートボタン
+document.getElementById("start-button").addEventListener("click", () => {
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("quiz-screen").classList.remove("hidden");
+
+  selectedQuestions = shuffle([...quizData]).slice(0, 3);
+  currentIndex = 0;
+  showQuestion();
+});
+
+// 問題表示
 function showQuestion() {
-  const q = quizData[currentQuestion];
-  const container = document.getElementById("quiz");
-  container.innerHTML = "";
+  const q = selectedQuestions[currentIndex];
+  const questionText = document.getElementById("question-text");
+  const questionImage = document.getElementById("question-image");
+  const choices = document.getElementById("choices");
+  const answerArea = document.getElementById("answer-area");
 
-  const title = document.createElement("h2");
-  title.textContent = `Q${currentQuestion + 1}. ${q.question}`;
-  container.appendChild(title);
+  questionText.textContent = q.question;
+  questionImage.src = q.image;
+  answerArea.classList.add("hidden");
+  choices.innerHTML = "";
 
-  // 問題画像
-  const img = document.createElement("img");
-  img.src = q.image;
-  img.alt = "question";
-  img.className = "question-image";
-  container.appendChild(img);
-
-  // 選択肢エリア
-  const choices = [
+  const choiceList = [
     { id: 1, text: q.choice1, img: q.choice1_img },
     { id: 2, text: q.choice2, img: q.choice2_img },
-    { id: 3, text: q.choice3, img: q.choice3_img },
+    { id: 3, text: q.choice3, img: q.choice3_img }
   ];
 
-  const choiceContainer = document.createElement("div");
-  choiceContainer.className = "choices";
-
-  choices.forEach(choice => {
+  shuffle(choiceList).forEach(choice => {
     const btn = document.createElement("button");
     btn.className = "choice-btn";
-
-    const cImg = document.createElement("img");
-    cImg.src = choice.img;
-    cImg.alt = choice.text;
-    cImg.className = "choice-image";
-
-    const label = document.createElement("p");
-    label.textContent = choice.text;
-
-    btn.appendChild(cImg);
-    btn.appendChild(label);
-    btn.addEventListener("click", () => checkAnswer(choice.id));
-    choiceContainer.appendChild(btn);
+    btn.innerHTML = `<img src="${choice.img}" alt="${choice.text}" />`;
+    btn.onclick = () => checkAnswer(q, choice);
+    choices.appendChild(btn);
   });
-
-  container.appendChild(choiceContainer);
 }
 
-// --- 答え合わせ ---
-function checkAnswer(selected) {
-  const q = quizData[currentQuestion];
+// 回答チェック
+function checkAnswer(q, selected) {
+  const answerArea = document.getElementById("answer-area");
+  const yourAnswer = document.getElementById("your-answer");
+  const correctAnswer = document.getElementById("correct-answer");
+  const answerImage = document.getElementById("answer-image");
+  const answerVideo = document.getElementById("answer-video");
+
   const correct = Number(q.answer);
-  const container = document.getElementById("quiz");
-  container.innerHTML = "";
+  const correctChoice = {
+    text: q[`choice${correct}`],
+    img: q[`choice${correct}_img`]
+  };
 
-  const result = document.createElement("h2");
-  if (selected === correct) {
-    result.textContent = "せいかい！🎉";
-    score++;
+  if (selected.id === correct) {
+    yourAnswer.textContent = `こたえは ${correctChoice.text}！`;
   } else {
-    result.textContent = "ざんねん...";
+    yourAnswer.textContent = `あなたが えらんだのは ${selected.text}`;
+    correctAnswer.textContent = `こたえは ${correctChoice.text}！`;
   }
-  container.appendChild(result);
 
-  // 正解動画を表示
-  const video = document.createElement("video");
-  video.src = q.answer_video;
-  video.controls = true;
-  video.autoplay = true;
-  video.className = "answer-video";
-  container.appendChild(video);
+  answerImage.src = correctChoice.img;
+  answerVideo.src = q.answer_video;
+  answerVideo.load();
 
-  // 次へボタン
-  const next = document.createElement("button");
-  next.textContent = "つぎへ ▶";
-  next.className = "next-btn";
-  next.addEventListener("click", nextQuestion);
-  container.appendChild(next);
+  answerArea.classList.remove("hidden");
 }
 
-// --- 次の問題へ ---
-function nextQuestion() {
-  currentQuestion++;
-  if (currentQuestion < quizData.length) {
+// 次の問題へ
+document.getElementById("next-button").addEventListener("click", () => {
+  currentIndex++;
+  if (currentIndex < selectedQuestions.length) {
+    document.getElementById("your-answer").textContent = "";
+    document.getElementById("correct-answer").textContent = "";
     showQuestion();
   } else {
-    showResult();
+    document.getElementById("quiz-screen").classList.add("hidden");
+    document.getElementById("end-screen").classList.remove("hidden");
   }
-}
+});
 
-// --- 結果表示 ---
-function showResult() {
-  const container = document.getElementById("quiz");
-  container.innerHTML = `
-    <h2>けっかはっぴょう 🎉</h2>
-    <p>${score} もん せいかい！</p>
-    <button id="restart" class="restart-btn">さいしょから ▶</button>
-  `;
-  document.getElementById("restart").addEventListener("click", restartQuiz);
-}
-
-function restartQuiz() {
-  currentQuestion = 0;
-  score = 0;
+// もう一度あそぶ
+document.getElementById("restart-button").addEventListener("click", () => {
+  document.getElementById("end-screen").classList.add("hidden");
+  document.getElementById("quiz-screen").classList.remove("hidden");
+  selectedQuestions = shuffle([...quizData]).slice(0, 3);
+  currentIndex = 0;
   showQuestion();
-}
+});
 
-// --- ページロード時 ---
-window.addEventListener("DOMContentLoaded", loadCSV);
+// はじめにもどる
+document.getElementById("home-button").addEventListener("click", () => {
+  document.getElementById("end-screen").classList.add("hidden");
+  document.getElementById("start-screen").classList.remove("hidden");
+});
+
+loadCSV();

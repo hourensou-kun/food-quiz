@@ -1,152 +1,104 @@
-/* --- 全体レイアウト --- */
 body {
   margin: 0;
-  padding: 0;
   font-family: "Noto Sans JP", sans-serif;
-  background-color: #fff;
+  background-color: #fffef8;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-#quiz-container {
+.hidden {
+  display: none;
+}
+
+#app {
   width: 100%;
-  max-width: 700px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  max-width: 800px;
   padding: 16px;
-  box-sizing: border-box;
   text-align: center;
 }
 
-/* --- 問題文 --- */
-h2 {
-  font-size: 1.6rem;
-  color: #333;
-  margin: 0.5em 0;
+.screen h1 {
+  font-size: 2rem;
+  color: #ff9800;
 }
 
-/* --- 問題画像 --- */
-.question-image {
-  width: 80%;
-  max-width: 300px;
-  border-radius: 16px;
-  margin: 12px auto;
-}
-
-/* --- 選択肢ボタン --- */
-.choices {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.choice-btn {
-  background: #fff;
-  border: 3px solid #fbc02d;
-  border-radius: 16px;
-  width: 45%;
-  max-width: 160px;
-  padding: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.choice-btn:hover {
-  background-color: #fff9c4;
-}
-
-.choice-image {
-  width: 100%;
-  border-radius: 12px;
-}
-
-.choice-btn p {
-  font-size: 1rem;
-  margin: 6px 0 0;
-}
-
-/* --- 動画 --- */
-.answer-video {
-  width: 90%;
-  max-width: 360px;
-  margin-top: 20px;
-  border-radius: 12px;
-}
-
-/* --- ボタン --- */
-.next-btn,
-.restart-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
+button {
   background: #ffca28;
   border: none;
   border-radius: 12px;
-  font-size: 1rem;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1.2rem;
   cursor: pointer;
+  transition: 0.2s;
+}
+button:hover {
+  background: #ffe082;
 }
 
-.next-btn:hover,
-.restart-btn:hover {
-  background: #ffd54f;
+/* クイズ部分 */
+#question-text {
+  font-size: 1.4rem;
+  margin-bottom: 0.5em;
+}
+.question-image {
+  width: 80%;
+  max-width: 280px;
+  border-radius: 12px;
+}
+.choices {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.choice-btn {
+  width: 30%;
+  background: #fff;
+  border: 3px solid #fbc02d;
+  border-radius: 12px;
+  padding: 6px;
+}
+.choice-btn img {
+  width: 100%;
+  border-radius: 10px;
 }
 
-/* --- スマホ（縦）用 --- */
+/* 答え表示 */
+#answer-area {
+  margin-top: 16px;
+}
+#your-answer,
+#correct-answer {
+  font-size: 1.2rem;
+  margin: 6px 0;
+  color: #444;
+}
+#correct-answer {
+  color: #d84315;
+}
+.answer-image {
+  width: 60%;
+  max-width: 220px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+.answer-video {
+  width: 80%;
+  max-width: 360px;
+  margin-top: 10px;
+  border-radius: 12px;
+}
+
+/* スマホ向け */
 @media (max-width: 600px) {
-  h2 {
-    font-size: 1.2rem;
+  #question-text {
+    font-size: 1.1rem;
   }
-
   .choice-btn {
-    width: 45%;
-    max-width: none;
-  }
-
-  .choice-btn p {
-    font-size: 0.9rem;
-  }
-
-  .question-image {
-    max-width: 240px;
-  }
-}
-
-/* --- PC用（幅900px以上） --- */
-@media (min-width: 900px) {
-  #quiz-container {
-    max-width: 800px;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  .question-image {
-    max-width: 220px;
-  }
-
-  .choice-btn {
-    width: 28%;
-    max-width: 160px;
-    padding: 6px;
-  }
-
-  .choice-btn p {
-    font-size: 0.9rem;
-  }
-
-  .answer-video {
-    max-width: 300px;
-  }
-
-  .next-btn,
-  .restart-btn {
-    font-size: 0.9rem;
-    padding: 8px 16px;
+    width: 40%;
   }
 }

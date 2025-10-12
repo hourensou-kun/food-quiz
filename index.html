@@ -22,8 +22,13 @@
       padding: 20px;
     }
 
-    h1, h2, p, button {
-      font-size: 5vw;
+    /* 👇 文字サイズを3倍相当に調整 */
+    h1 {
+      font-size: 3.5vw;
+    }
+
+    h2, p, button {
+      font-size: 2.8vw;
     }
 
     .btn {
@@ -31,10 +36,10 @@
       color: white;
       border: none;
       border-radius: 30px;
-      padding: 30px 80px;
-      font-size: 4vw;
+      padding: 20px 60px;
+      font-size: 2.8vw;
       cursor: pointer;
-      margin-top: 40px;
+      margin-top: 30px;
     }
 
     .btn:hover {
@@ -43,7 +48,7 @@
 
     .question-img {
       width: 40vw;
-      margin: 3vw auto;
+      margin: 2vw auto;
       display: block;
       border-radius: 2vw;
     }
@@ -52,13 +57,13 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 3vw;
+      gap: 2.5vw;
     }
 
     .choice img {
-      width: 25vw;
+      width: 23vw;
       border-radius: 2vw;
-      border: 0.8vw solid transparent;
+      border: 0.6vw solid transparent;
       cursor: pointer;
       transition: 0.3s;
     }
@@ -77,7 +82,7 @@
 
     .result-image {
       width: 30vw;
-      margin: 3vw auto;
+      margin: 2vw auto;
       display: block;
       border-radius: 2vw;
     }
@@ -97,7 +102,7 @@
 
   <div id="result-screen">
     <h2 id="result-text"></h2>
-    <p id="answer-name" style="font-size: 4vw; color: #444; margin: 10px 0;"></p>
+    <p id="answer-name" style="font-size: 2.8vw; color: #444; margin: 10px 0;"></p>
     <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
     <video id="result-video" playsinline webkit-playsinline controls style="display:none;"></video>
     <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>クイズアプリ</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      text-align: center;
+      background-color: #fff7e6;
+      padding: 20px;
+    }
+    .question {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .choice {
+      border: 3px solid #f5c542;
+      border-radius: 16px;
+      padding: 10px;
+      margin: 10px;
+      display: inline-block;
+      background-color: white;
+      cursor: pointer;
+      font-size: 22px;
+      transition: all 0.2s;
+    }
+    .choice:hover {
+      background-color: #fff3d4;
+      transform: scale(1.05);
+    }
+    .choice img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 5px;
+    }
+    .main-image {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 20px;
+    }
+    video {
+      width: 80%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="question-area">
+    <div class="question" id="question"></div>
+    <img id="mainImage" class="main-image" referrerPolicy="no-referrer" />
+    <div id="choices"></div>
+    <video id="answerVideo" controls style="display:none;" referrerPolicy="no-referrer"></video>
+  </div>
+
+  <script>
+    async function loadQuiz() {
+      const response = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTZ2NLCHXWBQurGroid1cG2eOVFiZu4NoUHfbMsFJS717dcg0OBZ26PUnn6kn77dNBA7ykwU_Fzireq/pub?output=csv");
+      const data = await response.text();
+      const rows = data.split("\n").map(r => r.split(","));
+      const headers = rows[0];
+      const quizData = rows.slice(1).map(row => {
+        let obj = {};
+        headers.forEach((h, i) => (obj[h] = row[i]));
+        return obj;
+      });
+
+      const quiz = quizData[0]; // 最初の問題を使用
+      document.getElementById("question").textContent = quiz.question;
+      document.getElementById("mainImage").src = quiz.image;
+
+      const choicesDiv = document.getElementById("choices");
+      [1, 2, 3].forEach(num => {
+        const div = document.createElement("div");
+        div.className = "choice";
+        div.innerHTML = `
+          <img src="${quiz[`choice${num}_img`]}" referrerPolicy="no-referrer">
+          ${quiz[`choice${num}`]}
+        `;
+        div.onclick = () => showAnswer(quiz, num);
+        choicesDiv.appendChild(div);
+      });
+    }
+
+    function showAnswer(quiz, num) {
+      const video = document.getElementById("answerVideo");
+      video.src = quiz.answer_video;
+      video.style.display = "block";
+      video.play();
+    }
+
+    loadQuiz();
+  </script>
+</body>
+</html>

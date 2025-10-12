@@ -1,31 +1,35 @@
 body {
   margin: 0;
-  overflow: hidden;
-  background-color: #f0f8ff;
+  background: #fffaf0;
   font-family: "Arial", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  transform-origin: center center;
+  overflow: hidden;
 }
 
-/* スマホ縦持ちでも横画面化 */
+#quiz-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* 横画面化 */
 .force-landscape {
   transform: rotate(90deg);
+  transform-origin: center center;
   width: 100vh;
   height: 100vw;
-  transform-origin: center center;
-  overflow-x: hidden;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
+  overflow: hidden;
 }
 
 #quiz-container {
-  text-align: center;
   width: 100%;
-  max-width: 1080px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 h1 {
@@ -37,6 +41,7 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .option-image {
@@ -44,7 +49,7 @@ h1 {
   max-width: 300px;
   cursor: pointer;
   border-radius: 12px;
-  border: 3px solid #ddd;
+  border: 3px solid #ccc;
   transition: transform 0.2s;
 }
 
@@ -62,13 +67,8 @@ h1 {
 }
 
 #answer-image {
-  max-width: 60%;
+  max-width: 50%;
   border-radius: 10px;
-}
-
-#answer-text {
-  font-size: 1.2rem;
-  margin: 10px 0;
 }
 
 #answer-video {
@@ -77,7 +77,7 @@ h1 {
 }
 
 #next-button {
-  background-color: #4caf50;
+  background-color: #ffb347;
   color: white;
   padding: 15px 25px;
   font-size: 1.2rem;
@@ -88,10 +88,6 @@ h1 {
   position: fixed;
   right: 20px;
   bottom: 20px;
-}
-
-#next-button:hover {
-  background-color: #45a049;
 }
 
 .hidden {

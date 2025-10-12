@@ -67,11 +67,10 @@
 
     video {
       display: block;
-      margin: 20px auto;
+      margin: 10px auto;
       width: 80%;
       max-width: 400px;
       border-radius: 20px;
-      object-fit: contain;
     }
 
     .result-image {
@@ -80,6 +79,12 @@
       margin: 15px auto;
       display: block;
       border-radius: 15px;
+    }
+
+    #answer-name {
+      font-size: 1.8em;
+      color: #444;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -98,7 +103,8 @@
   <div id="result-screen">
     <h2 id="result-text"></h2>
     <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
-    <video id="result-video" controls muted playsinline style="display:none;"></video>
+    <div id="answer-name"></div>
+    <video id="result-video" controls style="display:none;"></video>
     <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
   </div>
 
@@ -116,21 +122,22 @@
     async function loadCSV() {
       const res = await fetch("data.csv");
       const text = await res.text();
-      const rows = text.trim().split(/\r?\n/).slice(1);
-      quizData = rows
-        .filter(r => r.trim() !== "")
-        .map(r => {
-          const c = r.split(",");
-          return {
-            question: c[1],
-            image: c[2],
-            choice1_img: c[4],
-            choice2_img: c[6],
-            choice3_img: c[8],
-            answer: parseInt(c[9]),
-            answer_video: c[10]?.trim()
-          };
-        });
+      const rows = text.split("\n").slice(1);
+      quizData = rows.filter(r => r.trim() !== "").map(r => {
+        const c = r.split(",");
+        return {
+          question: c[1],
+          image: c[2],
+          choice1_text: c[3],
+          choice1_img: c[4],
+          choice2_text: c[5],
+          choice2_img: c[6],
+          choice3_text: c[7],
+          choice3_img: c[8],
+          answer: parseInt(c[9]),
+          answer_video: c[10]?.trim()
+        };
+      });
       quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
     }
 
@@ -161,9 +168,9 @@
       document.getElementById("question-image").src = q.image;
 
       const choices = [
-        { img: q.choice1_img, index: 1 },
-        { img: q.choice2_img, index: 2 },
-        { img: q.choice3_img, index: 3 },
+        { img: q.choice1_img, text: q.choice1_text, index: 1 },
+        { img: q.choice2_img, text: q.choice2_text, index: 2 },
+        { img: q.choice3_img, text: q.choice3_text, index: 3 },
       ].sort(() => Math.random() - 0.5);
 
       const container = document.getElementById("choices-container");
@@ -186,19 +193,25 @@
 
       const resultText = document.getElementById("result-text");
       const correctImg = document.getElementById("correct-image");
+      const answerName = document.getElementById("answer-name");
       const nextBtn = document.getElementById("next-btn");
       const video = document.getElementById("result-video");
 
-      nextBtn.style.display = "none";
+      nextBtn.style.display = "inline-block";
       correctImg.style.display = "none";
       video.style.display = "none";
+      answerName.textContent = "";
 
       if (choice === q.answer) {
         resultText.textContent = "⭕ せいかい！";
         resultText.style.color = "#ff6b6b";
+
         const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
+        const correctName = [q.choice1_text, q.choice2_text, q.choice3_text][q.answer - 1];
+
         correctImg.src = correctSrc;
         correctImg.style.display = "block";
+        answerName.textContent = correctName;
 
         if (q.answer_video) {
           video.src = q.answer_video;
@@ -206,10 +219,8 @@
           video.play();
           video.onended = () => {
             stopVideo();
-            nextQuestion();
+            nextBtn.style.display = "inline-block";
           };
-        } else {
-          nextBtn.style.display = "inline-block";
         }
       } else {
         resultText.textContent = "❌ ざんねん！";

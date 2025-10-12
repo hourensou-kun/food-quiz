@@ -128,4 +128,3 @@ function restartGame() {
   showScreen("title-screen");
 }
 
-showScreen("title-screen");

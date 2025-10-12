@@ -4,37 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>たべものクイズ 🍎</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: "Kosugi Maru", sans-serif;
+      background: #fff7ec;
+      margin: 0;
+      text-align: center;
+      transform: rotate(90deg);
+      transform-origin: center center;
+      width: 100vh;
+      height: 100vw;
+      overflow: hidden;
+    }
+
+    #title-screen, #quiz-screen, #result-screen, #end-screen {
+      display: none;
+      padding: 20px;
+    }
+
+    h1, h2, p, button {
+      font-size: 5vw;
+    }
+
+    .btn {
+      background: #ffa94d;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 30px 80px;
+      font-size: 4vw;
+      cursor: pointer;
+      margin-top: 40px;
+    }
+
+    .btn:hover {
+      background: #ff922b;
+    }
+
+    .question-img {
+      width: 40vw;
+      margin: 3vw auto;
+      display: block;
+      border-radius: 2vw;
+    }
+
+    .choices {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 3vw;
+    }
+
+    .choice img {
+      width: 25vw;
+      border-radius: 2vw;
+      border: 0.8vw solid transparent;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .choice img:hover {
+      border-color: #ffa94d;
+      transform: scale(1.05);
+    }
+
+    video {
+      display: block;
+      margin: 0 auto;
+      width: 50vw;
+      border-radius: 2vw;
+    }
+
+    .result-image {
+      width: 30vw;
+      margin: 3vw auto;
+      display: block;
+      border-radius: 2vw;
+    }
+  </style>
 </head>
 <body>
-  <div id="game-wrapper">
-    <!-- タイトル画面 -->
-    <section id="title-screen" class="screen active">
-      <h1>🍎 たべものクイズ 🍌</h1>
-      <button class="btn" onclick="startGame()">▶ はじめる</button>
-    </section>
+  <div id="title-screen">
+    <h1>🍎 たべものクイズ 🍌</h1>
+    <button class="btn" onclick="startGame()">▶ はじめる</button>
+  </div>
 
-    <!-- 問題画面 -->
-    <section id="quiz-screen" class="screen">
-      <h2 id="question-text"></h2>
-      <img id="question-image" class="question-img" src="" alt="question" />
-      <div class="choices" id="choices-container"></div>
-    </section>
+  <div id="quiz-screen">
+    <h2 id="question-text"></h2>
+    <img id="question-image" class="question-img" src="" alt="question" />
+    <div class="choices" id="choices-container"></div>
+  </div>
 
-    <!-- 結果画面 -->
-    <section id="result-screen" class="screen">
-      <h2 id="result-text"></h2>
-      <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
-      <div id="answer-name" class="answer-name"></div>
-      <video id="result-video" playsinline controls style="display:none;"></video>
-      <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
-    </section>
+  <div id="result-screen">
+    <h2 id="result-text"></h2>
+    <p id="answer-name" style="font-size: 4vw; color: #444; margin: 10px 0;"></p>
+    <img id="correct-image" class="result-image" src="" alt="correct image" style="display:none;">
+    <video id="result-video" playsinline webkit-playsinline controls style="display:none;"></video>
+    <button id="next-btn" class="btn" onclick="nextQuestion()">▶ つぎのもんだい</button>
+  </div>
 
-    <!-- 最終画面 -->
-    <section id="end-screen" class="screen">
-      <h2>🎉 おつかれさま！</h2>
-      <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
-    </section>
+  <div id="end-screen">
+    <h2>🎉 おつかれさま！</h2>
+    <button class="btn" onclick="restartGame()">もういちどあそぶ</button>
   </div>
 
   <script>
@@ -57,15 +128,16 @@
           choice3_img: c[8],
           answer: parseInt(c[9]),
           answer_video: c[10]?.trim(),
-          answer_text: c[3]?.trim() // ← 「りんご」などの名前
+          answer_name: c[3]
         };
       });
       quizData = quizData.sort(() => Math.random() - 0.5).slice(0, MAX);
     }
 
     function showScreen(id) {
-      document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
+      document.querySelectorAll("#title-screen, #quiz-screen, #result-screen, #end-screen")
+        .forEach(el => el.style.display = "none");
+      document.getElementById(id).style.display = "block";
     }
 
     function stopVideo() {
@@ -114,9 +186,9 @@
 
       const resultText = document.getElementById("result-text");
       const correctImg = document.getElementById("correct-image");
-      const answerName = document.getElementById("answer-name");
       const nextBtn = document.getElementById("next-btn");
       const video = document.getElementById("result-video");
+      const answerName = document.getElementById("answer-name");
 
       nextBtn.style.display = "none";
       correctImg.style.display = "none";
@@ -126,10 +198,11 @@
       if (choice === q.answer) {
         resultText.textContent = "⭕ せいかい！";
         resultText.style.color = "#ff6b6b";
+        answerName.textContent = q.answer_name;
+
         const correctSrc = [q.choice1_img, q.choice2_img, q.choice3_img][q.answer - 1];
         correctImg.src = correctSrc;
         correctImg.style.display = "block";
-        answerName.textContent = q.answer_text || "";
 
         if (q.answer_video) {
           video.src = q.answer_video;
@@ -165,6 +238,8 @@
       current = 0;
       showScreen("title-screen");
     }
+
+    showScreen("title-screen");
   </script>
 </body>
 </html>

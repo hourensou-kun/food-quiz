@@ -24,8 +24,9 @@ body {
 
 /* --- 問題文 --- */
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #333;
+  margin: 0.5em 0;
 }
 
 /* --- 問題画像 --- */
@@ -49,7 +50,8 @@ h2 {
   background: #fff;
   border: 3px solid #fbc02d;
   border-radius: 16px;
-  width: 160px;
+  width: 45%;
+  max-width: 160px;
   padding: 8px;
   cursor: pointer;
   transition: 0.3s;
@@ -62,6 +64,11 @@ h2 {
 .choice-image {
   width: 100%;
   border-radius: 12px;
+}
+
+.choice-btn p {
+  font-size: 1rem;
+  margin: 6px 0 0;
 }
 
 /* --- 動画 --- */
@@ -89,9 +96,57 @@ h2 {
   background: #ffd54f;
 }
 
-/* --- スマホ対応 --- */
+/* --- スマホ（縦）用 --- */
 @media (max-width: 600px) {
+  h2 {
+    font-size: 1.2rem;
+  }
+
   .choice-btn {
     width: 45%;
+    max-width: none;
+  }
+
+  .choice-btn p {
+    font-size: 0.9rem;
+  }
+
+  .question-image {
+    max-width: 240px;
+  }
+}
+
+/* --- PC用（幅900px以上） --- */
+@media (min-width: 900px) {
+  #quiz-container {
+    max-width: 800px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .question-image {
+    max-width: 220px;
+  }
+
+  .choice-btn {
+    width: 28%;
+    max-width: 160px;
+    padding: 6px;
+  }
+
+  .choice-btn p {
+    font-size: 0.9rem;
+  }
+
+  .answer-video {
+    max-width: 300px;
+  }
+
+  .next-btn,
+  .restart-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
 }

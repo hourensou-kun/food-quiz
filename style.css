@@ -1,144 +1,161 @@
+/* ===============================
+   ベース設定
+=============================== */
 body {
   font-family: "Kosugi Maru", sans-serif;
   background: #fff7ec;
   margin: 0;
   overflow: hidden;
-  height: 100vh;
   width: 100vw;
-  font-size: 5vw; /* 🌟 全体の文字を超拡大 */
-}
-
-/* 🌐 横向きレイアウト（スマホ縦でも横表示） */
-#quiz-screen {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   height: 100vh;
-  width: 100vw;
-  box-sizing: border-box;
-  padding: 3vw;
-}
-
-/* 左側：問題と画像 */
-#quiz-left {
-  flex: 1.2;
+  font-size: 5vw; /* 全体文字サイズを5倍相当 */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-#question-text {
-  font-size: 4vw; /* ← さらに大きくして見やすく */
-  color: #ff6b6b;
-  margin-bottom: 2vw;
-  text-align: center;
-  line-height: 1.4;
-}
-
-#question-image {
-  width: 70%;
-  max-width: 45vh;
-  height: auto;
-  border-radius: 3vw;
-}
-
-/* 右側：選択肢 */
-#quiz-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 3vw;
 }
 
-.choice img {
-  width: 28vw;
-  height: 28vw;
-  object-fit: contain;
-  border-radius: 3vw;
-  border: 0.8vw solid transparent;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.choice img:hover {
-  border-color: #ffa94d;
-  transform: scale(1.05);
-}
-
-/* ====== 共通画面（タイトル・結果・終了） ====== */
-#title-screen,
-#result-screen,
-#end-screen {
-  display: none;
-  height: 100vh;
-  width: 100vw;
-  padding: 3vw;
-  box-sizing: border-box;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-h1, h2, p {
-  font-size: 4vw;
-  line-height: 1.4;
-}
-
-#result-text {
-  font-size: 6vw;
-  margin-bottom: 2vw;
-}
-
-/* 正解画像 */
-.result-image {
-  width: 30vw;
-  max-width: 40vh;
-  margin: 1vw auto;
-  display: block;
-  border-radius: 2vw;
-}
-
-/* 動画中央配置 */
-#result-video {
-  width: 60%;
-  max-width: 60vh;
-  border-radius: 2vw;
-  display: block;
-  margin: 2vw auto;
-}
-
-/* ボタン */
-.btn {
-  background: #ffa94d;
-  color: white;
-  border: none;
-  border-radius: 5vw;
-  padding: 2vw 5vw;
-  font-size: 4vw;
-  cursor: pointer;
-  margin-top: 3vw;
-}
-
-.btn:hover {
-  background: #ff922b;
-}
-
-/* 🌟スマホ縦持ちでも横に固定 */
-@media screen and (orientation: portrait) {
+/* スマホ縦持ちでも横向き表示を維持する設定 */
+@media screen and (orientation: portrait) and (max-width: 1024px) {
   body {
     transform: rotate(90deg);
     transform-origin: left top;
     width: 100vh;
     height: 100vw;
-    overflow-x: hidden;
     position: absolute;
     top: 0;
     left: 0;
+    overflow: hidden;
+  }
+}
+
+/* ===============================
+   コンテナ
+=============================== */
+#quiz-container {
+  width: 90vw;
+  height: 90vh;
+  background: #fffaf3;
+  border-radius: 2vw;
+  box-shadow: 0 0 1vw rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2vw;
+  text-align: center;
+}
+
+/* ===============================
+   問題テキスト
+=============================== */
+#question {
+  font-size: 6vw;
+  font-weight: bold;
+  margin-bottom: 3vw;
+}
+
+/* ===============================
+   動画・画像
+=============================== */
+#media-container {
+  width: 80%;
+  height: auto;
+  margin-bottom: 3vw;
+}
+
+#media-container video,
+#media-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 1vw;
+  object-fit: contain;
+  max-height: 45vh;
+}
+
+/* ===============================
+   選択肢ボタン
+=============================== */
+.option-button {
+  display: block;
+  width: 70%;
+  margin: 1vw auto;
+  padding: 2vw;
+  font-size: 5vw;
+  background: #ffca7a;
+  border: none;
+  border-radius: 1.5vw;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option-button:hover {
+  background: #ffd38f;
+  transform: scale(1.05);
+}
+
+/* ===============================
+   答え画面
+=============================== */
+#answer-screen {
+  text-align: center;
+}
+
+#answer-screen h2 {
+  font-size: 8vw;
+  margin-bottom: 2vw;
+}
+
+#answer-text {
+  font-size: 6vw;
+  font-weight: bold;
+  margin-bottom: 3vw;
+}
+
+/* ===============================
+   ボタン共通スタイル
+=============================== */
+button {
+  background: #ffa94d;
+  color: #fff;
+  border: none;
+  padding: 2vw 4vw;
+  font-size: 5vw;
+  border-radius: 1.5vw;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #ffb866;
+  transform: scale(1.05);
+}
+
+/* ===============================
+   「次の問題へ」ボタン
+=============================== */
+#next-button {
+  display: inline-block;
+  margin-top: 3vw;
+}
+
+/* ===============================
+   レスポンシブ調整（PC用）
+=============================== */
+@media screen and (min-width: 1025px) {
+  body {
+    font-size: 2vw;
+  }
+  #question {
+    font-size: 3vw;
+  }
+  #answer-screen h2 {
+    font-size: 4vw;
+  }
+  .option-button {
+    font-size: 2vw;
+  }
+  button {
+    font-size: 2vw;
   }
 }

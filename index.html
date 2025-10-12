@@ -27,7 +27,7 @@
     let currentQuestion = 0;
     let answered = false;
 
-    fetch('quiz.csv')
+    fetch('data.csv')
       .then(res => res.text())
       .then(text => {
         quizData = text.trim().split('\n').slice(1).map(line => {

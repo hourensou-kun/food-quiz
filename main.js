@@ -68,9 +68,9 @@ function checkAnswer(q, selected) {
   };
 
   if (selected.id === correct) {
-    yourAnswer.textContent = ` ${correctChoice.text}はこれ！`;
+    yourAnswer.textContent = ` せいかい！${correctChoice.text}はこれ！`;
   } else {
-    yourAnswer.textContent = `あなたが えらんだのは ${selected.text}`;
+    yourAnswer.textContent = `おしい！あなたが えらんだのは ${selected.text}`;
     correctAnswer.textContent = ` ${correctChoice.text}　はこれ！`;
   }
 

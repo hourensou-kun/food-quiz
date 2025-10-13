@@ -68,10 +68,10 @@ function checkAnswer(q, selected) {
   };
 
   if (selected.id === correct) {
-    yourAnswer.textContent = ` せいかい！${correctChoice.text}はこんなかたち！`;
+    yourAnswer.textContent = ` せいかい！${correctChoice.text}をきるとこんなかたち！`;
   } else {
-    yourAnswer.textContent = `おしい！あなたが えらんだのは ${selected.text}`;
-    correctAnswer.textContent = ` ${correctChoice.text}　はこんなかたちだよ！`;
+    yourAnswer.textContent = `おしい！きみが えらんだのは ${selected.text}`;
+    correctAnswer.textContent = ` ${correctChoice.text}　をきるとこんなかたち！`;
   }
 
   answerImage.src = correctChoice.img;

@@ -49,11 +49,12 @@ function showQuestion() {
   answerArea.classList.add("hidden");
   choices.innerHTML = "";
 
-  const choiceList = [
-    { id: 1, text: q.choice1, img: q.choice1_img },
-    { id: 2, text: q.choice2, img: q.choice2_img },
-    { id: 3, text: q.choice3, img: q.choice3_img }
-  ];
+ const choices = [
+  { text: q.choice1, img: q.choice1_img, index: 1 },
+  { text: q.choice2, img: q.choice2_img, index: 2 },
+  { text: q.choice3, img: q.choice3_img, index: 3 },
+].sort(() => 0.5 - Math.random());
+
 
   shuffle(choiceList).forEach(choice => {
     const btn = document.createElement("button");
@@ -87,7 +88,16 @@ function checkAnswer(q, selected) {
 
   answerImage.src = correctChoice.img;
   answerVideo.src = q.answer_video;
-  answerVideo.load();
+answerVideo.autoplay = true;
+answerVideo.loop = false;
+answerVideo.muted = false;
+answerVideo.load();
+
+answerVideo.oncanplay = () => {
+  answerVideo.play().catch(err => {
+    console.warn("自動再生がブロックされました:", err);
+  });
+};
 
   answerArea.classList.remove("hidden");
 }

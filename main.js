@@ -2,17 +2,6 @@ let quizData = [];
 let selectedQuestions = [];
 let currentIndex = 0;
 
-// --- 動画読み込みテスト ---
-const testVideo = document.createElement("video");
-testVideo.src = "video/apple.mp4";
-testVideo.oncanplaythrough = () => {
-  console.log("✅ 動画ファイルが正常に読み込めました:", testVideo.src);
-};
-testVideo.onerror = (e) => {
-  console.error("❌ 動画ファイルが読み込めません:", testVideo.src, e);
-};
-
-
 // CSV読み込み
 async function loadCSV() {
   const response = await fetch("data.csv");
@@ -24,6 +13,13 @@ async function loadCSV() {
 
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
+}
+
+// 3問ランダム抽出
+function startGame() {
+  selectedQuestions = quizData.sort(() => 0.5 - Math.random()).slice(0, 3);
+  currentIndex = 0;
+  showTitleScreen();
 }
 
 // スタートボタン

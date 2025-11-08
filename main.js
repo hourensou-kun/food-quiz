@@ -1,67 +1,90 @@
-let quizData = [];
+let allQuestions = [];
 let selectedQuestions = [];
 let currentIndex = 0;
 
-// CSV読み込み
-async function loadCSV() {
-  const response = await fetch("data.csv");
-  const text = await response.text();
-  const rows = text.trim().split("\n").map(r => r.split(","));
-  const headers = rows.shift();
-  quizData = rows.map(r => Object.fromEntries(r.map((v, i) => [headers[i], v])));
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const endScreen = document.getElementById("end-screen");
+const startButton = document.getElementById("start-button");
+const nextButton = document.getElementById("next-button");
+const restartButton = document.getElementById("restart-button");
+const homeButton = document.getElementById("home-button");
+
+startButton.onclick = startGame;
+nextButton.onclick = nextQuestion;
+restartButton.onclick = startGame;
+homeButton.onclick = goHome;
+
+function showScreen(screen) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  screen.classList.remove("hidden");
 }
 
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+// ✅ CSVを読み込む
+fetch("data.csv")
+  .then(res => res.text())
+  .then(text => {
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    const headers = rows.shift();
+    allQuestions = rows.map(row => {
+      const q = {};
+      headers.forEach((h, i) => q[h.trim()] = row[i]?.trim());
+      return q;
+    });
+  });
 
-// 3問ランダム抽出
+// ✅ ゲームスタート
 function startGame() {
-  selectedQuestions = quizData.sort(() => 0.5 - Math.random()).slice(0, 3);
+  selectedQuestions = shuffle(allQuestions).slice(0, 3);
   currentIndex = 0;
-  showTitleScreen();
+  showScreen(quizScreen);
+  showQuestion();
 }
 
-// スタートボタン
-document.getElementById("start-button").addEventListener("click", () => {
-  document.getElementById("start-screen").classList.add("hidden");
-  document.getElementById("quiz-screen").classList.remove("hidden");
+// ✅ 次の問題へ
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < selectedQuestions.length) {
+    showQuestion();
+  } else {
+    showScreen(endScreen);
+  }
+}
 
-  selectedQuestions = shuffle([...quizData]).slice(0, 3);
-  currentIndex = 0;
-  showQuestion();
-});
+// ✅ タイトルに戻る
+function goHome() {
+  showScreen(startScreen);
+}
 
-// 問題表示
+// ✅ 問題を表示
 function showQuestion() {
   const q = selectedQuestions[currentIndex];
   const questionText = document.getElementById("question-text");
   const questionImage = document.getElementById("question-image");
-  const choices = document.getElementById("choices");
+  const choicesContainer = document.getElementById("choices");
   const answerArea = document.getElementById("answer-area");
 
   questionText.textContent = q.question;
   questionImage.src = q.image;
   answerArea.classList.add("hidden");
-  choices.innerHTML = "";
+  choicesContainer.innerHTML = "";
 
- const choices = [
-  { text: q.choice1, img: q.choice1_img, index: 1 },
-  { text: q.choice2, img: q.choice2_img, index: 2 },
-  { text: q.choice3, img: q.choice3_img, index: 3 },
-].sort(() => 0.5 - Math.random());
+  const choiceList = [
+    { text: q.choice1, img: q.choice1_img, index: 1 },
+    { text: q.choice2, img: q.choice2_img, index: 2 },
+    { text: q.choice3, img: q.choice3_img, index: 3 },
+  ].sort(() => 0.5 - Math.random());
 
-
-  shuffle(choiceList).forEach(choice => {
+  choiceList.forEach(choice => {
     const btn = document.createElement("button");
     btn.className = "choice-btn";
     btn.innerHTML = `<img src="${choice.img}" alt="${choice.text}" />`;
     btn.onclick = () => checkAnswer(q, choice);
-    choices.appendChild(btn);
+    choicesContainer.appendChild(btn);
   });
 }
 
-// 回答チェック
+// ✅ 答え合わせ
 function checkAnswer(q, selected) {
   const answerArea = document.getElementById("answer-area");
   const yourAnswer = document.getElementById("your-answer");
@@ -69,61 +92,37 @@ function checkAnswer(q, selected) {
   const answerImage = document.getElementById("answer-image");
   const answerVideo = document.getElementById("answer-video");
 
-  const correct = Number(q.answer);
+  const correctIndex = Number(q.answer);
   const correctChoice = {
-    text: q[`choice${correct}`],
-    img: q[`choice${correct}_img`]
+    text: q[`choice${correctIndex}`],
+    img: q[`choice${correctIndex}_img`]
   };
 
-  if (selected.id === correct) {
-    yourAnswer.textContent = ` せいかい！${correctChoice.text}をきるとこんなかたち！`;
+  if (selected.index === correctIndex) {
+    yourAnswer.textContent = `せいかい！${correctChoice.text}をきるとこんなかたち！`;
+    correctAnswer.textContent = "";
   } else {
     yourAnswer.textContent = `おしい！きみが えらんだのは ${selected.text}`;
-    correctAnswer.textContent = ` ${correctChoice.text}　をきるとこんなかたち！`;
+    correctAnswer.textContent = `こたえは ${correctChoice.text}！`;
   }
 
   answerImage.src = correctChoice.img;
   answerVideo.src = q.answer_video;
-answerVideo.autoplay = true;
-answerVideo.loop = false;
-answerVideo.muted = false;
-answerVideo.load();
+  answerVideo.autoplay = true;
+  answerVideo.loop = false;
+  answerVideo.muted = false;
+  answerVideo.load();
 
-answerVideo.oncanplay = () => {
-  answerVideo.play().catch(err => {
-    console.warn("自動再生がブロックされました:", err);
-  });
-};
+  answerVideo.oncanplay = () => {
+    answerVideo.play().catch(err => {
+      console.warn("自動再生がブロックされました:", err);
+    });
+  };
 
   answerArea.classList.remove("hidden");
 }
 
-// 次の問題へ
-document.getElementById("next-button").addEventListener("click", () => {
-  currentIndex++;
-  if (currentIndex < selectedQuestions.length) {
-    document.getElementById("your-answer").textContent = "";
-    document.getElementById("correct-answer").textContent = "";
-    showQuestion();
-  } else {
-    document.getElementById("quiz-screen").classList.add("hidden");
-    document.getElementById("end-screen").classList.remove("hidden");
-  }
-});
-
-// もう一度あそぶ
-document.getElementById("restart-button").addEventListener("click", () => {
-  document.getElementById("end-screen").classList.add("hidden");
-  document.getElementById("quiz-screen").classList.remove("hidden");
-  selectedQuestions = shuffle([...quizData]).slice(0, 3);
-  currentIndex = 0;
-  showQuestion();
-});
-
-// はじめにもどる
-document.getElementById("home-button").addEventListener("click", () => {
-  document.getElementById("end-screen").classList.add("hidden");
-  document.getElementById("start-screen").classList.remove("hidden");
-});
-
-loadCSV();
+// ✅ 配列シャッフル
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}

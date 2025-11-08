@@ -1,104 +1,99 @@
 body {
-  margin: 0;
   font-family: "Noto Sans JP", sans-serif;
-  background-color: #fffef8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  text-align: center;
+  background-color: #fffef5;
+  margin: 0;
+  padding: 0;
+}
+
+.screen {
+  display: none;
+  padding: 20px;
+}
+
+.screen.active {
+  display: block;
 }
 
 .hidden {
   display: none;
 }
 
-#app {
-  width: 100%;
-  max-width: 800px;
-  padding: 16px;
-  text-align: center;
+h1 {
+  font-size: 2rem;
+  color: #2c7a7b;
+  margin-bottom: 10px;
 }
 
-.screen h1 {
-  font-size: 2rem;
-  color: #ff9800;
+h2 {
+  color: #333;
 }
 
 button {
-  background: #ffca28;
+  background-color: #4fd1c5;
+  color: white;
   border: none;
-  border-radius: 12px;
   padding: 12px 24px;
-  margin: 10px;
+  margin-top: 20px;
+  border-radius: 12px;
   font-size: 1.2rem;
   cursor: pointer;
   transition: 0.2s;
 }
+
 button:hover {
-  background: #ffe082;
+  background-color: #38b2ac;
 }
 
-/* クイズ部分 */
-#question-text {
-  font-size: 1.4rem;
-  margin-bottom: 0.5em;
-}
-.question-image {
+.question-image,
+.answer-image {
   width: 80%;
-  max-width: 280px;
+  max-width: 300px;
   border-radius: 12px;
+  margin: 10px 0;
 }
+
+.answer-video {
+  width: 80%;
+  max-width: 320px;
+  border-radius: 12px;
+  margin: 10px auto;
+  display: block;
+}
+
 .choices {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
+  gap: 15px;
+  margin: 20px 0;
 }
-.choice-btn {
-  width: 30%;
-  background: #fff;
-  border: 3px solid #fbc02d;
-  border-radius: 12px;
-  padding: 6px;
-}
+
 .choice-btn img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-/* 答え表示 */
-#answer-area {
-  margin-top: 16px;
-}
-#your-answer,
-#correct-answer {
-  font-size: 1.2rem;
-  margin: 6px 0;
-  color: #444;
-}
-#correct-answer {
-  color: #d84315;
-}
-.answer-image {
-  width: 60%;
-  max-width: 220px;
-  border-radius: 10px;
-  margin-top: 8px;
-}
-.answer-video {
-  width: 80%;
-  max-width: 360px;
-  margin-top: 10px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
   border-radius: 12px;
+  border: 3px solid transparent;
+  transition: 0.2s;
 }
 
-/* スマホ向け */
-@media (max-width: 600px) {
-  #question-text {
-    font-size: 1.1rem;
+.choice-btn:hover img {
+  border-color: #4fd1c5;
+}
+
+/* ✅ PCサイズでは全体を少し小さく */
+@media (min-width: 768px) {
+  body {
+    font-size: 1.2rem;
   }
-  .choice-btn {
+
+  .question-image,
+  .answer-image {
     width: 40%;
+  }
+
+  .choice-btn img {
+    width: 120px;
   }
 }

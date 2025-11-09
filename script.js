@@ -25,7 +25,7 @@ function getRandomQuestions(data, num = 3) {
 // クイズ表示
 // 問題を表示する関数
 function showQuestion() {
-  const quiz = quizzes[currentQuestion];
+  const q = quizData[currentQuestion];
   const questionImage = document.getElementById("question-image");
   const choicesContainer = document.getElementById("choices");
   const questionText = document.getElementById("question-text");

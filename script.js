@@ -57,25 +57,46 @@ function showQuestion() {
   });
 }
 
-// 答え合わせ処理
-function checkAnswer(selected, correct, videoPath) {
-  const resultText = document.getElementById("result-text");
-  const video = document.getElementById("answer-video");
+// 答えを処理（正解・不正解を1秒表示してから動画）
+function handleAnswer(selected) {
+  const quiz = selectedQuiz;
+  const isCorrect = selected === quiz.answer;
+  if (isCorrect) score++;
 
-  if (selected.toString() === correct.toString()) {
-    score++;
-    resultText.textContent = "せいかい！🎉";
-  } else {
-    resultText.textContent = "ざんねん💦";
-  }
+  const container = document.getElementById("game-container");
+  container.innerHTML = `
+    <div class="feedback-screen">
+      <h2>${isCorrect ? "⭕せいかい！" : "❌ざんねん！"}</h2>
+    </div>`;
 
-  // 答え合わせ動画を再生
-  video.src = videoPath;
-  video.currentTime = 0;
-  video.play();
-
-  showScreen("result-screen");
+  // 1秒後に動画再生画面へ
+  setTimeout(() => {
+    showAnswerVideo(quiz);
+  }, 1000);
 }
+
+
+// 答え合わせ動画を表示（終了後は「つぎへ」ボタン）
+function showAnswerVideo(quiz) {
+  const container = document.getElementById("game-container");
+  container.innerHTML = `
+    <div class="answer-video-screen">
+      <h2>こたえあわせ！</h2>
+      <video src="${quiz.answer_video}" autoplay controls playsinline></video>
+      <button id="next-btn">つぎのもんだいへ ▶️</button>
+    </div>
+  `;
+
+  document.getElementById("next-btn").addEventListener("click", () => {
+    currentQuizIndex++;
+    if (currentQuizIndex < quizData.length) {
+      showQuiz();
+    } else {
+      showResult();
+    }
+  });
+}
+
 
 // 次の問題へ
 document.getElementById("next-btn").addEventListener("click", () => {

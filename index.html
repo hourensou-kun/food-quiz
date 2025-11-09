@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>やさいクイズ！</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- タイトル画面 -->
+    <section id="title-screen" class="screen active">
+      <h1>やさいクイズ！</h1>
+      <button id="start-btn">スタート</button>
+    </section>
+
+    <!-- ゲーム選択画面 -->
+    <section id="select-screen" class="screen">
+      <h2>どのクイズであそぶ？</h2>
+      <button id="quiz-shape-btn">① やさいをきったらどんなかたち？</button>
+      <button id="quiz-sound-btn" disabled>② やさいをきったらどんなおと？（準備中）</button>
+    </section>
+
+    <!-- 問題画面 -->
+    <section id="quiz-screen" class="screen">
+      <h2 id="question-text"></h2>
+      <img id="question-image" src="" alt="クイズ画像" />
+      <div id="choices"></div>
+    </section>
+
+    <!-- 結果画面 -->
+    <section id="result-screen" class="screen">
+      <h2 id="result-text"></h2>
+      <button id="next-btn">つぎのもんだい</button>
+      <button id="finish-btn">けっかをみる</button>
+    </section>
+
+    <!-- リザルト画面 -->
+    <section id="end-screen" class="screen">
+      <h2>おつかれさま！</h2>
+      <p id="score-text"></p>
+      <button id="restart-btn">もういちどあそぶ</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -10,12 +10,13 @@ function showScreen(id) {
 
 // CSV読み込み関数
 async function loadCSV(path) {
-  const response = await fetch(path);
+  const response = await fetch('./data.csv'); // ← ここを修正！
   const text = await response.text();
   const rows = text.trim().split("\n").map(row => row.split(","));
   const [header, ...data] = rows;
   return data.map(row => Object.fromEntries(header.map((h, i) => [h, row[i]])));
 }
+
 
 // ランダムに3問取得
 function getRandomQuestions(data, num = 3) {

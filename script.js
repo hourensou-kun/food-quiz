@@ -23,38 +23,37 @@ function getRandomQuestions(data, num = 3) {
 }
 
 // クイズ表示
+// 問題を表示する関数
 function showQuestion() {
-  const q = quizData[currentQuestion];
+  const quiz = quizzes[currentQuestion];
+  const questionImage = document.getElementById("question-image");
+  const choicesContainer = document.getElementById("choices");
+  const questionText = document.getElementById("question-text");
 
-  document.getElementById("question-text").textContent = q.question;
-  document.getElementById("question-image").src = q.image;
+  // 画像と問題文を設定
+  questionImage.src = quiz.image;
+  questionText.textContent = quiz.question;
 
-  const choicesDiv = document.getElementById("choices");
-  choicesDiv.innerHTML = "";
-
+  // 正解・不正解を含む選択肢を取得し、ランダムに並べ替え
   const choices = [
-    { img: q.choice1_img },
-    {img: q.choice2_img },
-    {img: q.choice3_img }
-  ];
+    { text: quiz.choice1, isCorrect: true },
+    { text: quiz.choice2, isCorrect: false },
+    { text: quiz.choice3, isCorrect: false }
+  ].sort(() => Math.random() - 0.5);
 
-  choices.forEach((choice, index) => {
-    const div = document.createElement("div");
-    div.classList.add("choice-item");
+  // 選択肢の表示を初期化
+  choicesContainer.innerHTML = "";
 
+  // ランダム順で選択肢を生成
+  choices.forEach(choice => {
     const img = document.createElement("img");
-    img.src = choice.img;
-    img.alt = choice.text;
-    img.addEventListener("click", () => checkAnswer(index + 1, q));
-
-    const label = document.createElement("p");
-    label.textContent = choice.text;
-
-    div.appendChild(img);
-    div.appendChild(label);
-    choicesDiv.appendChild(div);
+    img.src = `image/${choice.text}.png`; // choice名と同じファイル名の画像を想定
+    img.classList.add("choice");
+    img.addEventListener("click", () => checkAnswer(choice.isCorrect));
+    choicesContainer.appendChild(img);
   });
 }
+
 
 // 答えを処理（1秒だけ正解・不正解表示 → 動画）
 function checkAnswer(selected, quiz) {

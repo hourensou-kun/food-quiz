@@ -82,10 +82,18 @@ function showAnswerVideo(quiz) {
   container.innerHTML = `
     <div class="answer-video-screen">
       <h2>こたえあわせ！</h2>
-      <video src="${quiz.answer_video}" autoplay controls playsinline></video>
+      <video id="answer-video" src="${quiz.answer_video}" muted autoplay playsinline controls></video>
       <button id="next-btn">つぎのもんだいへ ▶️</button>
     </div>
   `;
+
+  const video = document.getElementById("answer-video");
+
+  // 動画がロードされない場合のエラー処理
+  video.addEventListener("error", (e) => {
+    console.error("動画を読み込めませんでした:", quiz.answer_video, e);
+    alert("動画を再生できませんでした。パスを確認してください。");
+  });
 
   document.getElementById("next-btn").addEventListener("click", () => {
     currentQuizIndex++;

@@ -60,7 +60,7 @@ function checkAnswer(selected, quiz) {
   const isCorrect = selected == quiz.answer;
   if (isCorrect) score++;
 
-  const container = document.getElementById("game-container");
+  const container = document.getElementById("quiz-screen");
   container.innerHTML = `
     <div class="feedback-screen">
       <h2>${isCorrect ? "⭕せいかい！" : "❌ざんねん！"}</h2>
@@ -74,7 +74,7 @@ function checkAnswer(selected, quiz) {
 
 // 答え合わせ動画を表示（終了後は「つぎへ」ボタン）
 function showAnswerVideo(quiz) {
-  const container = document.getElementById("game-container");
+  const container = document.getElementById("quiz-screen");
   container.innerHTML = `
     <div class="answer-video-screen">
       <h2>こたえあわせ！</h2>

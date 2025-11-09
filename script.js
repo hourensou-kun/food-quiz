@@ -25,17 +25,18 @@ function getRandomQuestions(data, num = 3) {
 // クイズ表示
 function showQuestion() {
   const q = quizData[currentQuestion];
+
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
 
   const choicesDiv = document.getElementById("choices");
   choicesDiv.innerHTML = "";
 
-  // 正解(choice1_img)を含む3択をランダムに並び替え
+  // choice1（正解）＋その他2つをランダムに並び替え
   const choices = [
-    { img: q.choice1_img, correct: true },
-    { img: q.choice2_img, correct: false },
-    { img: q.choice3_img, correct: false }
+    { text: q.choice1, img: q.choice1_img, correct: true },
+    { text: q.choice2, img: q.choice2_img, correct: false },
+    { text: q.choice3, img: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
   choices.forEach(choice => {
@@ -44,24 +45,28 @@ function showQuestion() {
 
     const img = document.createElement("img");
     img.src = choice.img;
+    img.alt = choice.text;
     img.addEventListener("click", () => checkAnswer(choice.correct, q));
 
+    const label = document.createElement("p");
+    label.textContent = choice.text;
+
     div.appendChild(img);
+    div.appendChild(label);
     choicesDiv.appendChild(div);
   });
 }
 
-// 答えを処理（1秒だけ正解・不正解表示 → 動画）
+// 答えを処理（正解・不正解を1秒表示 → 動画）
 function checkAnswer(isCorrect, quiz) {
   if (isCorrect) score++;
 
-  const container = document.getElementById("quiz-screen");
-  container.innerHTML = `
+  const quizScreen = document.getElementById("quiz-screen");
+  quizScreen.innerHTML = `
     <div class="feedback-screen">
       <h2>${isCorrect ? "⭕せいかい！" : "❌ざんねん！"}</h2>
     </div>`;
 
-  // 1秒後に動画再生画面へ
   setTimeout(() => {
     showAnswerVideo(quiz);
   }, 1000);
@@ -69,40 +74,38 @@ function checkAnswer(isCorrect, quiz) {
 
 // 答え合わせ動画を表示
 function showAnswerVideo(quiz) {
-  const container = document.getElementById("quiz-screen");
-  container.innerHTML = `
+  const quizScreen = document.getElementById("quiz-screen");
+  const videoSrc = quiz.answer_video || "video/default.mp4"; // 空欄でも動くように
+  quizScreen.innerHTML = `
     <div class="answer-video-screen">
       <h2>こたえあわせ！</h2>
-      <video id="answer-video" src="${quiz.answer_video}" muted autoplay playsinline controls></video>
+      <video id="answer-video" src="${videoSrc}" muted autoplay playsinline controls></video>
       <button id="next-btn">つぎのもんだいへ ▶️</button>
     </div>
   `;
 
   const video = document.getElementById("answer-video");
-
-  // 動画エラー時
   video.addEventListener("error", (e) => {
     console.error("動画を読み込めませんでした:", quiz.answer_video, e);
-    alert("動画を再生できませんでした。ファイルパスを確認してください。");
+    alert("動画を再生できませんでした。パスを確認してください。");
   });
 
-  // 「つぎへ」ボタン
   document.getElementById("next-btn").addEventListener("click", () => {
     currentQuestion++;
     if (currentQuestion < quizData.length) {
       showQuestion();
-      showScreen("quiz-screen");
     } else {
-      showScreen("end-screen");
-      document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
+      showResult();
     }
   });
 }
 
-// もういちどボタン
-document.getElementById("restart-btn").addEventListener("click", () => {
-  location.reload();
-});
+// 結果画面表示
+function showResult() {
+  showScreen("end-screen");
+  document.getElementById("score-text").textContent =
+    `せいかい：${score} / ${quizData.length}`;
+}
 
 // スタート→選択画面
 document.getElementById("start-btn").addEventListener("click", () => {
@@ -111,10 +114,15 @@ document.getElementById("start-btn").addEventListener("click", () => {
 
 // 「①かたちクイズ」を選択
 document.getElementById("quiz-shape-btn").addEventListener("click", async () => {
-  const data = await loadCSV("./data.csv");
+  const data = await loadCSV("data.csv");
   quizData = getRandomQuestions(data);
   currentQuestion = 0;
   score = 0;
   showQuestion();
   showScreen("quiz-screen");
+});
+
+// もういちどボタン
+document.getElementById("restart-btn").addEventListener("click", () => {
+  location.reload();
 });

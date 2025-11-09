@@ -34,9 +34,9 @@ function showQuestion() {
 
   // choice1（正解）＋その他2つをランダムに並び替え
   const choices = [
-    { text: q.choice1, img: q.choice1_img, correct: true },
-    { text: q.choice2, img: q.choice2_img, correct: false },
-    { text: q.choice3, img: q.choice3_img, correct: false }
+    { img: q.choice1_img, correct: true },
+    { img: q.choice2_img, correct: false },
+    { img: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
   choices.forEach(choice => {

@@ -34,9 +34,9 @@ function showQuestion() {
   choicesDiv.innerHTML = "";
 
   const choices = [
-    { text: q.choice1, img: q.choice1_img },
-    { text: q.choice2, img: q.choice2_img },
-    { text: q.choice3, img: q.choice3_img }
+    { img: q.choice1_img },
+    { img: q.choice2_img },
+    { img: q.choice3_img }
   ];
 
   choices.forEach((choice, index) => {

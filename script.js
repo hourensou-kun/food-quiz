@@ -58,7 +58,7 @@ function showQuestion() {
 }
 
 // 答えを処理（正解・不正解を1秒表示してから動画）
-function handleAnswer(selected) {
+function checkAnswer(selected) {
   const quiz = selectedQuiz;
   const isCorrect = selected === quiz.answer;
   if (isCorrect) score++;

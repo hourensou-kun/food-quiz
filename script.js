@@ -85,26 +85,32 @@ function handleAnswer(isCorrect, quiz) {
 
 // 答えあわせ動画画面
 function showAnswerVideo(quiz) {
-  showScreen("answer-screen");
+  showScreen("quiz-screen"); // ← 元の画面構成に合わせてquiz-screenを再利用
+
+  const quizScreen = document.getElementById("quiz-screen");
+  const videoSrc = quiz.answer_video?.trim() || "video/default.mp4";
+
+  quizScreen.innerHTML = `
+    <div class="answer-video-screen">
+      <h2>こたえあわせ！</h2>
+      <video id="answer-video" src="${videoSrc}" muted autoplay playsinline controls></video>
+      <button id="next-btn" class="next-btn">つぎのもんだいへ ▶️</button>
+    </div>
+  `;
 
   const video = document.getElementById("answer-video");
-  const src = quiz.answer_video?.trim() || "video/default.mp4";
-  video.src = src;
-  video.load();
-  video.play().catch(() => console.warn("自動再生がブロックされました"));
-
   video.onerror = () => alert("動画を再生できませんでした。パスを確認してください。");
 
-  // ✅ 「つぎのもんだいへ」クリックで次へ
+  // ✅ 修正：イベントを確実に登録
   const nextBtn = document.getElementById("next-btn");
-  nextBtn.onclick = () => {
+  nextBtn.addEventListener("click", () => {
     currentQuestion++;
     if (currentQuestion < quizData.length) {
       showQuestion();
     } else {
       showResult();
     }
-  };
+  });
 }
 
 // 結果画面

@@ -1,4 +1,3 @@
-// script.js - 3問ランダム出題 + 1問ごとの⭕❌表示 + 答え合わせ動画再生
 let quizData = [];
 let currentQuestion = 0;
 let score = 0;
@@ -24,7 +23,7 @@ async function loadCSV(path = "./data.csv") {
   });
 }
 
-// ランダムでn問を選ぶ
+// ランダムでn問選ぶ
 function getRandomQuestions(data, n = 3) {
   return [...data].sort(() => Math.random() - 0.5).slice(0, n);
 }
@@ -42,21 +41,23 @@ function showQuestion() {
   questionImage.src = q.image;
   choicesDiv.innerHTML = "";
 
-  // choice1 が正解
   const choices = [
-    { text: q.choice1, img: q.choice1_img, correct: true },
-    { text: q.choice2, img: q.choice2_img, correct: false },
-    { text: q.choice3, img: q.choice3_img, correct: false }
+    {  img: q.choice1_img, correct: true },
+    {  img: q.choice2_img, correct: false },
+    {  img: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
   choices.forEach(c => {
     const div = document.createElement("div");
     div.classList.add("choice-item");
+
     const img = document.createElement("img");
     img.src = c.img;
     img.alt = c.text;
+
     const label = document.createElement("p");
     label.textContent = c.text;
+
     div.appendChild(img);
     div.appendChild(label);
     div.addEventListener("click", () => handleAnswer(c.correct, q));
@@ -70,7 +71,6 @@ function showQuestion() {
 function handleAnswer(isCorrect, quiz) {
   if (isCorrect) score++;
 
-  // 一時的に⭕❌表示
   const quizScreen = document.getElementById("quiz-screen");
   quizScreen.innerHTML = `
     <div class="feedback-screen">
@@ -86,28 +86,25 @@ function handleAnswer(isCorrect, quiz) {
 // 答えあわせ動画画面
 function showAnswerVideo(quiz) {
   showScreen("answer-screen");
-  const feedback = document.getElementById("feedback-area");
-  feedback.textContent = ""; // ○×はすでに表示済み
+
   const video = document.getElementById("answer-video");
   const src = quiz.answer_video?.trim() || "video/default.mp4";
   video.src = src;
   video.load();
-  video.play().catch(e => console.warn("再生ブロック:", e));
+  video.play().catch(() => console.warn("自動再生がブロックされました"));
 
-  video.onerror = () => alert("動画を再生できませんでした。ファイルを確認してください。");
+  video.onerror = () => alert("動画を再生できませんでした。パスを確認してください。");
 
-  // 「次へ」ボタンをリセットして再設定
+  // ✅ 「つぎのもんだいへ」クリックで次へ
   const nextBtn = document.getElementById("next-btn");
-  const newBtn = nextBtn.cloneNode(true);
-  nextBtn.parentNode.replaceChild(newBtn, nextBtn);
-  newBtn.addEventListener("click", () => {
+  nextBtn.onclick = () => {
     currentQuestion++;
     if (currentQuestion < quizData.length) {
       showQuestion();
     } else {
       showResult();
     }
-  });
+  };
 }
 
 // 結果画面
@@ -117,16 +114,16 @@ function showResult() {
     `せいかい：${score} / ${quizData.length}`;
 }
 
-// スタートボタン
+// スタート
 document.getElementById("start-btn").addEventListener("click", () => {
   showScreen("select-screen");
 });
 
-// クイズ選択（3問ランダム）
+// クイズ開始（3問ランダム）
 document.getElementById("quiz-shape-btn").addEventListener("click", async () => {
   try {
     const data = await loadCSV("./data.csv");
-    quizData = getRandomQuestions(data, 3); // ✅ 3問だけランダム
+    quizData = getRandomQuestions(data, 3);
     currentQuestion = 0;
     score = 0;
     showQuestion();
@@ -136,7 +133,7 @@ document.getElementById("quiz-shape-btn").addEventListener("click", async () => 
   }
 });
 
-// リスタート
+// はじめにもどる
 document.getElementById("restart-btn").addEventListener("click", () => {
   location.reload();
 });

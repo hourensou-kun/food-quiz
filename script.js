@@ -3,7 +3,7 @@ let currentQuestion = 0;
 let score = 0;
 
 // CSVを読み込む
-fetch("quiz.csv")
+fetch("data.csv")
   .then(response => response.text())
   .then(text => {
     const rows = text.trim().split("\n").map(r => r.split(","));
@@ -49,9 +49,9 @@ function showQuestion() {
   choicesDiv.innerHTML = "";
 
   const choices = [
-    { image: q.choice1_image, correct: true },
-    { image: q.choice2_image, correct: false },
-    { image: q.choice3_image, correct: false }
+    { image: q.choice1_img, correct: true },
+    { image: q.choice2_img, correct: false },
+    { image: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
   choices.forEach(choice => {

@@ -35,3 +35,55 @@ button {
 #choices img:hover {
   border-color: #ff9800;
 }
+
+/* 問題・動画を中央にきれいに配置 */
+#quiz-screen, .answer-video-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  min-height: 100vh;
+}
+
+#question-image, #answer-video {
+  max-width: 80%;
+  max-height: 50vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.choice-item {
+  display: inline-block;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.choice-item img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.choice-item img:hover {
+  transform: scale(1.05);
+}
+
+.next-btn {
+  padding: 12px 24px;
+  font-size: 1.2em;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.next-btn:hover {
+  background-color: #45a049;
+}
+

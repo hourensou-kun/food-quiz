@@ -1,9 +1,9 @@
-/* ====== 背景（方眼紙） ====== */
+/* ===== 背景（方眼紙） ===== */
 body {
   margin: 0;
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
-  background: url("背景.png") repeat;
-  background-size: 1440px 2520px;
+  background: url("./背景.png") repeat;
+  background-size: 200px 200px;
   background-attachment: fixed;
   color: #333;
   text-align: center;
@@ -11,29 +11,30 @@ body {
   -webkit-user-select: none;
 }
 
-/* ====== アプリ全体コンテナ ====== */
+/* ===== アプリ全体コンテナ ===== */
 #app {
   max-width: 480px;
   margin: 40px auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.9); /* 半透明の白いカード */
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px); /* 背景を少しぼかす効果（対応ブラウザのみ） */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ====== タイトルなど ====== */
-h1, h2, h3, p {
-  margin: 0.6em 0;
-}
-
-/* ====== 画面切り替え ====== */
+/* ===== 共通：カード枠（16:9） ===== */
 .screen {
   display: none;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 70vh;
   animation: fadein 0.4s ease;
 }
 
@@ -41,12 +42,28 @@ h1, h2, h3, p {
   display: flex;
 }
 
+/* ===== 画面フェード ===== */
 @keyframes fadein {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
 }
 
-/* ====== ボタン ====== */
+/* ===== タイトル ===== */
+#title-screen h1 {
+  font-size: 2.4em;
+  color: #ff9800;
+  text-shadow: 2px 2px 0 #fff, 3px 3px 4px rgba(0,0,0,0.3);
+}
+#title-screen h2 {
+  font-size: 1.1em;
+  color: #555;
+}
+#title-screen h3 {
+  font-size: 0.9em;
+  color: #777;
+}
+
+/* ===== ボタン ===== */
 button {
   background: linear-gradient(180deg, #ffd54f, #ffb300);
   border: none;
@@ -71,34 +88,63 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ====== 画像・選択肢 ====== */
-#question-image {
-  width: 80%;
-  max-width: 300px;
-  border-radius: 12px;
-  margin: 12px 0;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+/* ===== 問題文 ===== */
+#question-text {
+  background-color: #ffe9e3;
+  border: 2px solid #f7b2a2;
+  border-radius: 10px;
+  padding: 6px 10px;
+  width: 90%;
+  font-size: 1.1em;
+  text-align: center;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
+/* ===== 問題画像 ===== */
+#question-image {
+  width: 70%;
+  max-width: 260px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  margin-bottom: 10px;
+}
+
+/* ===== 選択肢：3つ（1＋2レイアウト） ===== */
 #choices {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
   gap: 12px;
+  justify-items: center;
+  width: 90%;
+  margin-top: 8px;
+  position: relative;
+}
+
+.choice-item:nth-child(1) {
+  grid-column: 1 / 3;
+  justify-self: center;
 }
 
 .choice-item {
-  background: #fff;
-  border-radius: 12px;
+  background-color: #e0f7fa;
+  border: 2px solid #f8b6a8;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 150px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  padding: 8px;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .choice-item img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
   border-radius: 10px;
 }
 
@@ -107,7 +153,7 @@ button:disabled {
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* ====== 判定画面 ====== */
+/* ===== 判定画面 ===== */
 #judge-text {
   font-size: 4em;
   font-weight: bold;
@@ -120,7 +166,7 @@ button:disabled {
   100% { transform: scale(1); }
 }
 
-/* ====== 答えあわせ動画 ====== */
+/* ===== 答えあわせ動画 ===== */
 #answer-video {
   width: 90%;
   max-width: 400px;
@@ -129,23 +175,18 @@ button:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-/* ====== リザルト ====== */
+/* ===== リザルト画面 ===== */
 #score-text {
   font-size: 1.4em;
   margin: 20px 0;
 }
 
-/* ====== タイトル見出し ====== */
-#title-screen h1 {
-  font-size: 2.6em;
-  color: #ff9800;
-  text-shadow: 2px 2px 0 #fff, 3px 3px 4px rgba(0,0,0,0.3);
-}
-
-/* ====== 横向き対応 ====== */
+/* ===== 横向き対応 ===== */
 @media (orientation: landscape) {
   #app {
-    padding: 10px;
     margin: 20px auto;
+  }
+  .screen {
+    max-width: 640px;
   }
 }

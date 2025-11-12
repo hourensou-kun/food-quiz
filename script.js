@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（完全分離画面タイプ）
+// やさいクイズ ver1
 // ==============================
 
 let quizData = [];
@@ -28,13 +28,14 @@ async function loadCSV(path = "./data.csv") {
 // ---- ランダム抽出 ----
 const pickRandom = (arr, n = 3) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
-// ---- 問題表示 ----
+/// ---- 問題表示 ----
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
+
   const choices = document.getElementById("choices");
   choices.innerHTML = "";
 
@@ -44,7 +45,14 @@ function renderQuestion() {
     { img: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
-  opts.forEach(o => {
+  // --- 上段（1つ） ---
+  const topRow = document.createElement("div");
+  topRow.className = "choice-row-top";
+  // --- 下段（2つ） ---
+  const bottomRow = document.createElement("div");
+  bottomRow.className = "choice-row-bottom";
+
+  opts.forEach((o, i) => {
     const div = document.createElement("div");
     div.className = "choice-item";
     const img = document.createElement("img");
@@ -52,11 +60,17 @@ function renderQuestion() {
     img.alt = "せんたくし";
     div.appendChild(img);
     div.onclick = () => handleAnswer(o.correct, q);
-    choices.appendChild(div);
+
+    if (i === 0) topRow.appendChild(div);
+    else bottomRow.appendChild(div);
   });
+
+  choices.appendChild(topRow);
+  choices.appendChild(bottomRow);
 
   show("quiz-screen");
 }
+
 
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {

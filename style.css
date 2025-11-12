@@ -1,38 +1,39 @@
-/* ==============================
-   やさいクイズ！ 
-   子ども向けスマホ縦画面デザイン ver2
-   ============================== */
-
+/* ====== 背景（方眼紙） ====== */
 body {
   margin: 0;
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
-  background: url("./背景.png") repeat;
-  background-size: 1440px 2520px; /* 格子のサイズ。画像の大きさに合わせて調整OK */
+  background: url("背景.png") repeat;
+  background-size: 1440px 2520px;
+  background-attachment: fixed;
   color: #333;
   text-align: center;
   user-select: none;
   -webkit-user-select: none;
-  background-attachment: fixed; /* スクロールしても背景固定 */
 }
 
-
+/* ====== アプリ全体コンテナ ====== */
 #app {
   max-width: 480px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 20px;
+  background: rgba(255, 255, 255, 0.9); /* 半透明の白いカード */
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px); /* 背景を少しぼかす効果（対応ブラウザのみ） */
 }
 
+/* ====== タイトルなど ====== */
 h1, h2, h3, p {
   margin: 0.6em 0;
 }
 
-/* 画面切り替え */
+/* ====== 画面切り替え ====== */
 .screen {
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 90vh;
+  min-height: 70vh;
   animation: fadein 0.4s ease;
 }
 
@@ -40,13 +41,12 @@ h1, h2, h3, p {
   display: flex;
 }
 
-/* フェードアニメ */
 @keyframes fadein {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
 }
 
-/* ボタンスタイル */
+/* ====== ボタン ====== */
 button {
   background: linear-gradient(180deg, #ffd54f, #ffb300);
   border: none;
@@ -71,7 +71,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* 問題画像 */
+/* ====== 画像・選択肢 ====== */
 #question-image {
   width: 80%;
   max-width: 300px;
@@ -80,7 +80,6 @@ button:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-/* 選択肢 */
 #choices {
   display: flex;
   flex-wrap: wrap;
@@ -108,7 +107,7 @@ button:disabled {
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* 判定画面（⭕❌を大きく） */
+/* ====== 判定画面 ====== */
 #judge-text {
   font-size: 4em;
   font-weight: bold;
@@ -121,7 +120,7 @@ button:disabled {
   100% { transform: scale(1); }
 }
 
-/* 答えあわせ画面 */
+/* ====== 答えあわせ動画 ====== */
 #answer-video {
   width: 90%;
   max-width: 400px;
@@ -130,30 +129,23 @@ button:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-/* リザルト画面 */
+/* ====== リザルト ====== */
 #score-text {
   font-size: 1.4em;
   margin: 20px 0;
 }
 
-/* タイトル */
+/* ====== タイトル見出し ====== */
 #title-screen h1 {
   font-size: 2.6em;
   color: #ff9800;
   text-shadow: 2px 2px 0 #fff, 3px 3px 4px rgba(0,0,0,0.3);
 }
 
-/* レスポンシブ：横向き時も見やすく */
+/* ====== 横向き対応 ====== */
 @media (orientation: landscape) {
   #app {
     padding: 10px;
-  }
-  #choices {
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
-  .choice-item img {
-    width: 80px;
-    height: 80px;
+    margin: 20px auto;
   }
 }

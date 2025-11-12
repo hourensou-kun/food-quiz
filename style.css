@@ -21,14 +21,14 @@ body {
   align-items: center;
 }
 
-/* ===== 共通：カード枠（16:9固定・全画面対応） ===== */
+/* ===== 共通：カード枠（中央に少し小さめ16:9） ===== */
 .screen {
   display: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.93);
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
@@ -43,39 +43,26 @@ body {
   opacity: 0;
   pointer-events: none;
 
-  /* デフォルト（PCや横長向け） */
-  width: 100vw;
-  height: 56.25vw; /* 16:9 */
-  max-height: 100vh;
+  /* 💡 PC・横向き画面用（やや小さめ） */
+  width: 90vw;
+  height: calc(90vw * 9 / 16); /* 16:9比率を維持しつつ少し縮小 */
+  max-height: 80vh;            /* 画面高さの80%まで */
 }
 
-/* スマホ縦向き時：高さを基準に16:9を計算 */
+/* 💡 スマホ縦画面用（高さ基準・少し小さめ） */
 @media (orientation: portrait) {
   .screen {
-    height: 100vh;
-    width: 177.78vh; /* (16 / 9) × 100 */
-    max-width: 100vw;
+    height: 80vh;                    /* 画面の80%の高さまで */
+    width: calc(80vh * 16 / 9);      /* 高さ基準で16:9を維持 */
+    max-width: 90vw;                 /* はみ出さないよう制限 */
   }
 }
 
-/* アクティブ画面だけ表示 */
+/* アクティブ画面のみ表示 */
 .screen.active {
   display: flex;
   opacity: 1;
   pointer-events: auto;
-}
-
-
-
-/* アクティブ画面だけ表示 */
-.screen.active {
-  display: flex;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.screen.active {
-  display: flex;
 }
 
 

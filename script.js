@@ -99,22 +99,22 @@ function handleAnswer(isCorrect, q) {
   video.play();
   showScreen("answer-screen");
 
-  // 🔸ここを修正：最後の問題なら「つぎのもんだいへ」ではなくリザルトへ
-  if (currentQuestion >= selectedQuestions.length - 1) {
+   // 🔸ここを修正：最後の問題なら「つぎのもんだいへ」ではなくリザルトへ
+  if (currentQuestion >= quizData.length - 1) {
     nextBtn.textContent = "けっかをみる";
   } else {
     nextBtn.textContent = "つぎのもんだいへ";
   }
 
   nextBtn.onclick = () => {
-    if (currentQuestion >= selectedQuestions.length - 1) {
+    if (currentQuestion >= quizData.length - 1) {
       showResult(); // 🔸最後の問題ならリザルト画面へ
     } else {
       currentQuestion++;
       showQuestion(); // 🔸次の問題へ
     }
   };
-}
+
 
 
 // 答えあわせ動画画面

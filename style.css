@@ -1,111 +1,153 @@
+/* =============================
+   共通設定（縦長レイアウト基準）
+============================= */
 body {
-  font-family: "Rounded Mplus 1c", sans-serif;
-  text-align: center;
-  background-color: #fff8e1;
   margin: 0;
+  padding: 0;
+  font-family: "Kosugi Maru", "Noto Sans JP", sans-serif;
+  background: #fffaf0;
+  color: #333;
+  text-align: center;
+  height: 100vh;
+  overflow: hidden;
 }
 
+/* 画面切り替え管理 */
 .screen {
   display: none;
-  padding: 2rem;
-}
-
-.screen.active {
-  display: block;
-}
-
-button {
-  background-color: #ffb74d;
-  border: none;
-  border-radius: 10px;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  margin: 1rem;
-}
-
-#choices img {
-  width: 120px;
-  height: 120px;
-  margin: 10px;
-  border: 3px solid transparent;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-#choices img:hover {
-  border-color: #ff9800;
-}
-
-/* 問題・動画を中央にきれいに配置 */
-#quiz-screen, .answer-video-screen {
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  text-align: center;
   min-height: 100vh;
-}
-
-#question-image, #answer-video {
-  max-width: 80%;
-  max-height: 50vh;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
-.choice-item {
-  display: inline-block;
-  margin: 10px;
-  cursor: pointer;
-}
-
-.choice-item img {
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
-  border-radius: 10px;
-  transition: transform 0.2s ease;
-}
-
-.choice-item img:hover {
-  transform: scale(1.05);
-}
-
-.next-btn {
-  padding: 12px 24px;
-  font-size: 1.2em;
-  border-radius: 8px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.next-btn:hover {
-  background-color: #45a049;
-}
-
-/* 画面は常に1つだけ表示 */
-.screen {
-  display: none;                /* 非アクティブは絶対に表示しない */
-  min-height: 100vh;            /* 全画面っぽく */
+  padding: 20px;
   box-sizing: border-box;
 }
 
 .screen.active {
-  display: flex;                /* アクティブだけ表示 */
-  flex-direction: column;
-  align-items: center;
+  display: flex;
+}
+
+/* タイトル */
+#title-screen h1 {
+  font-size: 2.4rem;
+  color: #3b6c3b;
+  margin-bottom: 40px;
+}
+
+/* ボタン全般 */
+button {
+  background: #ffb84c;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 32px;
+  font-size: 1.4rem;
+  color: #fff;
+  cursor: pointer;
+  margin: 12px;
+  box-shadow: 0 4px 0 #e0902b;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background: #ddd;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* クイズ問題部分 */
+#question-text {
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+#question-image {
+  width: 80%;
+  max-width: 360px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 選択肢（3つ並びを縦スマホで見やすく） */
+#choices {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 12px;
+  width: 100%;
 }
 
-/* 画像・動画がはみ出さないように */
-#question-image,
-#answer-video {
-  max-width: 90vw;
-  max-height: 60vh;
+.choice-item {
+  background: #fff;
+  border-radius: 20px;
+  padding: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.choice-item:hover {
+  transform: scale(1.05);
+  background: #f0ffe0;
+}
+
+.choice-item img {
+  width: 100px;
+  height: 100px;
   object-fit: contain;
+  border-radius: 16px;
 }
 
+/* ○×表示画面 */
+#judge-text {
+  font-size: 3rem;
+  color: #ff4040;
+  animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 答えあわせ動画 */
+#answer-video {
+  width: 80%;
+  max-width: 400px;
+  border-radius: 16px;
+  margin: 20px 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* リザルト画面 */
+#score-text {
+  font-size: 1.8rem;
+  margin: 20px 0;
+}
+
+/* 背景カラーを画面ごとに変えると楽しい */
+#title-screen { background: linear-gradient(#fef5d4, #fff); }
+#select-screen { background: linear-gradient(#f5ffe3, #fff); }
+#quiz-screen { background: linear-gradient(#fff6e1, #fff); }
+#judge-screen { background: linear-gradient(#fff0f0, #fff); }
+#answer-screen { background: linear-gradient(#e9faff, #fff); }
+#end-screen { background: linear-gradient(#e8fbe8, #fff); }
+
+/* スマホ縦画面に最適化 */
+@media (max-width: 480px) {
+  h1, h2 {
+    font-size: 1.6rem;
+  }
+  button {
+    width: 80%;
+    font-size: 1.2rem;
+  }
+  .choice-item img {
+    width: 80px;
+    height: 80px;
+  }
+}

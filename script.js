@@ -114,6 +114,7 @@ function handleAnswer(isCorrect, q) {
       showQuestion(); // 🔸次の問題へ
     }
   };
+}
 
 
 

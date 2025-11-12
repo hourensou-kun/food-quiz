@@ -104,8 +104,8 @@ function handleAnswer(isCorrect, q) {
 
   // 最後の問題なら「けっかをみる」
   nextBtn.textContent = currentQuestion >= quizData.length - 1
-    ? "けっかをみる ▶️"
-    : "つぎのもんだいへ ▶️";
+    ? "けっかをみる "
+    : "つぎのもんだいへ ";
 
   nextBtn.onclick = () => {
     if (currentQuestion >= quizData.length - 1) {

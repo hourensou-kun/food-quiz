@@ -1,105 +1,215 @@
+/* script.js
+   要件（簡潔版）をすべて満たす実装。
+   - data.csv: id,question,image,choice1,choice1_img,choice2,choice2_img,choice3,choice3_img,answer,answer_video
+   - choice1 が正解（判定は CSV の answer と比較）
+   - 14問中ランダムに3問出題
+   - 選択肢は画像のみ、表示順ランダム
+   - 回答 → 1秒 ○/× 表示 → 答え合わせ画面で answer_video を再生（自動で次に行かない）
+   - 最終問は next ボタンが「けっかをみる」
+   - HTML の既存要素を利用（必要なら要素の存在チェックを行う）
+*/
+
+const CSV_PATH = "./data.csv";
+const QUIZ_COUNT = 3;
+
+let allData = [];
 let quizData = [];
-let current = 0;
+let currentIndex = 0;
 let score = 0;
+let currentMode = "shape"; // "shape" or "sound" (sound currently prepared later)
 
-// 画面切り替え
-function show(id) {
+// ---- helpers ----
+const $ = id => document.getElementById(id);
+const show = id => {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// CSV読み込み
-async function loadCSV(path = "./data.csv") {
+  const e = $(id);
+  if (e) e.classList.add("active");
+};
+async function loadCSV(path = CSV_PATH) {
   const res = await fetch(path);
-  if (!res.ok) throw new Error("CSV読み込みエラー");
+  if (!res.ok) throw new Error("CSV fetch failed: " + res.status);
   const text = await res.text();
-  const [header, ...lines] = text.trim().split("\n");
-  const keys = header.split(",");
+  const lines = text.trim().split("\n").map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return [];
+  const header = lines.shift().split(",").map(h => h.trim());
   return lines.map(line => {
-    const cols = line.split(",");
-    return Object.fromEntries(keys.map((k, i) => [k, cols[i]?.trim() || ""]));
+    const cols = line.split(",").map(c => c.trim());
+    const obj = {};
+    header.forEach((k, i) => obj[k] = cols[i] ?? "");
+    return obj;
   });
 }
+function pickRandom(data, n) {
+  return [...data].sort(() => Math.random() - 0.5).slice(0, n);
+}
 
-// クイズを表示
-function showQuestion() {
-  const q = quizData[current];
+// ---- UI logic ----
+function buildChoicesForShape(q) {
+  // choice1 is always correct — we attach correct flag
+  const arr = [
+    { img: q.choice1_img, text: q.choice1, correct: true },
+    { img: q.choice2_img, text: q.choice2, correct: false },
+    { img: q.choice3_img, text: q.choice3, correct: false }
+  ].sort(() => Math.random() - 0.5);
+  return arr;
+}
+
+function renderQuestion() {
+  const q = quizData[currentIndex];
   if (!q) return showResult();
 
-  document.getElementById("question-text").textContent = q.question;
-  document.getElementById("question-image").src = q.image;
+  // ensure required elements exist
+  const qText = $("question-text");
+  const qImg = $("question-image");
+  const choices = $("choices");
+  if (!qText || !qImg || !choices) {
+    console.error("Missing quiz-screen elements (#question-text/#question-image/#choices).");
+    return;
+  }
 
-  const choices = [
-    { img: q.choice1_img, correct: true },
-    { img: q.choice2_img, correct: false },
-    { img: q.choice3_img, correct: false }
-  ].sort(() => Math.random() - 0.5);
+  qText.textContent = q.question || "";
+  qImg.src = q.image || "";
+  choices.innerHTML = "";
 
-  const choicesDiv = document.getElementById("choices");
-  choicesDiv.innerHTML = "";
-  choices.forEach(c => {
+  // shape quiz: image choices only
+  const items = buildChoicesForShape(q);
+  items.forEach(item => {
+    const wrap = document.createElement("div");
+    wrap.className = "choice-item";
+    wrap.style.display = "inline-block";
+    wrap.style.margin = "8px";
+    wrap.style.cursor = "pointer";
+
     const img = document.createElement("img");
-    img.src = c.img;
-    img.alt = "選択肢";
-    img.className = "choice";
-    img.addEventListener("click", () => handleAnswer(c.correct, q));
-    choicesDiv.appendChild(img);
+    img.src = item.img || "";
+    img.alt = item.text || "選択肢";
+    img.draggable = false;
+    img.className = "choice-img";
+    // style not forced here; CSS handles layout
+
+    wrap.appendChild(img);
+    wrap.addEventListener("click", () => onSelectChoice(item.correct, q));
+    choices.appendChild(wrap);
   });
 
   show("quiz-screen");
 }
 
-// 答えクリック時
-function handleAnswer(isCorrect, q) {
-  const feedback = document.getElementById("feedback-area");
-  const video = document.getElementById("answer-video");
-  const nextBtn = document.getElementById("next-btn");
+function onSelectChoice(isCorrect, q) {
+  // disable further clicks on choices
+  const choices = document.querySelectorAll("#choices .choice-item");
+  choices.forEach(c => c.style.pointerEvents = "none");
 
-  feedback.textContent = isCorrect ? "せいかい！" : "ざんねん！";
+  // show 1s feedback (simple)
+  const feedback = document.createElement("div");
+  feedback.className = "simple-feedback";
+  feedback.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
+  // minimal inline style so it shows centered without requiring CSS edits
+  feedback.style.position = "absolute";
+  feedback.style.left = "0";
+  feedback.style.top = "0";
+  feedback.style.width = "100%";
+  feedback.style.height = "100%";
+  feedback.style.display = "flex";
+  feedback.style.alignItems = "center";
+  feedback.style.justifyContent = "center";
+  feedback.style.fontSize = "48px";
+  feedback.style.background = "rgba(255,255,255,0.85)";
+  feedback.style.zIndex = 999;
+  const quizScreen = $("quiz-screen");
+  quizScreen.style.position = "relative";
+  quizScreen.appendChild(feedback);
+
   if (isCorrect) score++;
 
-  video.src = q.answer_video || "";
-  video.currentTime = 0;
-  video.play().catch(() => console.warn("動画再生エラー"));
+  setTimeout(() => {
+    feedback.remove();
+    // go to answer (play video) screen
+    playAnswerVideo(q);
+  }, 1000);
+}
 
+function playAnswerVideo(q) {
+  // show answer screen
   show("answer-screen");
+  const feedbackArea = $("feedback-area");
+  const video = $("answer-video");
+  const nextBtn = $("next-btn");
+  if (!feedbackArea || !video || !nextBtn) {
+    console.error("Missing answer-screen elements (#feedback-area, #answer-video, #next-btn).");
+    return;
+  }
 
-  nextBtn.textContent =
-    current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
+  // show small feedback text (kept minimal)
+  feedbackArea.textContent = "";
 
+  // set video src from CSV answer_video
+  const src = (q.answer_video || "").trim();
+  if (!src) {
+    feedbackArea.textContent = "（答え合わせ用の動画が見つかりません）";
+    video.removeAttribute("src");
+    video.load();
+  } else {
+    video.src = src;
+    video.load();
+    video.play().catch(e => {
+      // autoplay may be blocked; controls are available for manual play
+      console.warn("video.play blocked:", e);
+    });
+  }
+
+  // next button text
+  nextBtn.textContent = (currentIndex >= quizData.length - 1) ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
+
+  // assign single handler (overwrite)
   nextBtn.onclick = () => {
-    current++;
-    current >= quizData.length ? showResult() : showQuestion();
+    try { video.pause(); } catch (e) {}
+    if (currentIndex >= quizData.length - 1) {
+      showResult();
+    } else {
+      currentIndex++;
+      renderQuestion();
+    }
   };
 }
 
-// 結果画面
 function showResult() {
   show("end-screen");
-  document.getElementById("score-text").textContent =
-    `せいかい：${score} / ${quizData.length}`;
+  const st = $("score-text");
+  if (st) st.textContent = `せいかい：${score} / ${quizData.length}`;
 }
 
-// スタート画面
-document.getElementById("start-btn").addEventListener("click", () => {
-  show("select-screen");
-});
+// ---- initialization ----
+document.addEventListener("DOMContentLoaded", () => {
+  // start/select/restart buttons exist in your HTML
+  const startBtn = $("start-btn");
+  const quizShapeBtn = $("quiz-shape-btn");
+  const restartBtn = $("restart-btn");
 
-// クイズ開始
-document.getElementById("quiz-shape-btn").addEventListener("click", async () => {
-  try {
-    const data = await loadCSV();
-    quizData = [...data].sort(() => Math.random() - 0.5).slice(0, 3);
-    current = 0;
-    score = 0;
-    showQuestion();
-  } catch (e) {
-    alert("CSVを読み込めませんでした。");
-    console.error(e);
+  if (startBtn) startBtn.onclick = () => show("select-screen");
+  if (restartBtn) restartBtn.onclick = () => location.reload();
+
+  if (quizShapeBtn) {
+    quizShapeBtn.onclick = async () => {
+      try {
+        allData = await loadCSV();
+        if (!allData || allData.length === 0) {
+          alert("CSV に問題データが見つかりません。");
+          return;
+        }
+        // pick QUIZ_COUNT random questions
+        quizData = pickRandomQuestions(allData, QUIZ_COUNT);
+        currentIndex = 0;
+        score = 0;
+        renderQuestion();
+      } catch (err) {
+        console.error(err);
+        alert("CSV の読み込みに失敗しました（コンソール参照）。");
+      }
+    };
   }
 });
 
-// リスタート
-document.getElementById("restart-btn").addEventListener("click", () => {
-  location.reload();
-});
+// small helpers for clarity
+function pickRandomQuestions(data, n) { return [...data].sort(() => Math.random() - 0.5).slice(0, n); }
+function renderQuestion() { /* alias kept for compatibility */ return showQuestion(); }

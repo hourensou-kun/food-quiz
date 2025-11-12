@@ -1,6 +1,5 @@
-
 // ==============================
-// やさいクイズ script.js（最終安定版・自動遷移タイプ）
+// やさいクイズ script.js（完全分離画面タイプ）
 // ==============================
 
 let quizData = [];
@@ -29,7 +28,7 @@ async function loadCSV(path = "./data.csv") {
 // ---- ランダム抽出 ----
 const pickRandom = (arr, n = 3) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
-// ---- 問題を表示 ----
+// ---- 問題表示 ----
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
@@ -59,26 +58,23 @@ function renderQuestion() {
   show("quiz-screen");
 }
 
-// ---- ○×表示 → 自動で答えあわせへ ----
+// ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
   const judgeText = document.getElementById("judge-text");
   judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
   if (isCorrect) score++;
-
   show("judge-screen");
 
-  // 1秒後に自動で答えあわせ画面へ
-  setTimeout(() => {
-    showAnswer(q);
-  }, 1000);
+  // 1秒後に答えあわせへ
+  setTimeout(() => showAnswer(q), 1000);
 }
 
-// ---- 答えあわせ動画 ----
+// ---- 答えあわせ画面 ----
 function showAnswer(q) {
   const video = document.getElementById("answer-video");
   video.src = q.answer_video;
   video.currentTime = 0;
-  video.play().catch(e => console.warn("再生ブロック:", e));
+  video.play().catch(e => console.warn("再生エラー:", e));
 
   const next = document.getElementById("next-btn");
   next.textContent = current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
@@ -95,7 +91,7 @@ function showAnswer(q) {
   show("answer-screen");
 }
 
-// ---- 結果画面 ----
+// ---- 結果表示 ----
 function renderResult() {
   document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
   show("end-screen");

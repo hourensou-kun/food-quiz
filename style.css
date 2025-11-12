@@ -21,29 +21,50 @@ body {
   align-items: center;
 }
 
-/* ===== 共通：カード枠（16:9） ===== */
+/* ===== 共通：カード枠（全画面16:9） ===== */
 .screen {
-  display: none;                      /* ← 非表示が基本！ */
-  width: 100%;
-  max-width: 560px;
-  aspect-ratio: 16 / 9;
-  background: rgba(255, 255, 255, 0.9);
+  display: none;
+  position: absolute;              /* ← 各画面を重ねる */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 中央表示 */
+  
+  width: 100vw;                   /* 画面の幅いっぱい */
+  height: 56.25vw;                /* 16:9比率（9 ÷ 16 = 0.5625） */
+  max-height: 100vh;              /* 縦が画面を超えないように制限 */
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 20px;
   box-sizing: border-box;
+  padding: 20px;
 
-  /* 配置（中央寄せ） */
-  margin: 0 auto;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  /* フェードアニメ */
+  overflow: hidden;
+  animation: fadein 0.4s ease;
+  transition: opacity 0.3s ease;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
+
+/* アクティブ画面だけ表示 */
+.screen.active {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 横向き（ワイド画面）では高さを優先して幅を合わせる */
+@media (orientation: landscape) {
+  .screen {
+    width: 177.78vh;   /* 16:9比率にするため (16/9)*100 = 177.78 */
+    height: 100vh;
+  }
+}
+
 
 /* アクティブ画面だけ表示 */
 .screen.active {

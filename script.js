@@ -6,6 +6,7 @@ let quizData = [];
 let current = 0;
 let score = 0;
 
+
 // 画面切り替え
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => {

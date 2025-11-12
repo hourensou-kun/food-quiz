@@ -87,3 +87,25 @@ button {
   background-color: #45a049;
 }
 
+/* 画面は常に1つだけ表示 */
+.screen {
+  display: none;                /* 非アクティブは絶対に表示しない */
+  min-height: 100vh;            /* 全画面っぽく */
+  box-sizing: border-box;
+}
+
+.screen.active {
+  display: flex;                /* アクティブだけ表示 */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 画像・動画がはみ出さないように */
+#question-image,
+#answer-video {
+  max-width: 90vw;
+  max-height: 60vh;
+  object-fit: contain;
+}
+

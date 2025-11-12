@@ -1,45 +1,25 @@
 // ==============================
-// やさいクイズ script.js　　1
+// やさいクイズ script.js（安定版）
 // ==============================
 
 let quizData = [];
 let current = 0;
 let score = 0;
 
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-
-  // 🔸 フォーカス解除（アクセシビリティ警告防止）
-  if (document.activeElement) document.activeElement.blur();
-}
-
-// ---- 画面切り替え ----
+// 画面切り替え
 function show(id) {
-  // まず全画面を完全に隠す（保険で style.display も使う）
   document.querySelectorAll(".screen").forEach(s => {
     s.classList.remove("active");
-    s.setAttribute("aria-hidden", "true");
     s.style.display = "none";
   });
-
-  // すべての video は一旦停止（画面またぎの音漏れ防止）
-  document.querySelectorAll("video").forEach(v => {
-    try { v.pause(); v.currentTime = 0; } catch (_) {}
-  });
-
-  // 対象だけ表示
   const el = document.getElementById(id);
   if (el) {
     el.classList.add("active");
-    el.setAttribute("aria-hidden", "false");
-    el.style.display = ""; // CSSの .screen.active に任せる
-    // 画面を確実にトップへ
-    window.scrollTo({ top: 0, behavior: "instant" });
+    el.style.display = "block";
   }
 }
 
-// ---- CSV読み込み ----
+// CSV読み込み
 async function loadCSV(path = "./data.csv") {
   const res = await fetch(path);
   if (!res.ok) throw new Error("CSV読み込み失敗");
@@ -52,16 +32,17 @@ async function loadCSV(path = "./data.csv") {
   });
 }
 
-// ---- ランダム抽出 ----
+// ランダム抽出（3問）
 const pickRandom = (arr, n = 3) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
-// ---- 問題表示 ----
+// 問題を表示
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
+
   const choices = document.getElementById("choices");
   choices.innerHTML = "";
 
@@ -85,58 +66,26 @@ function renderQuestion() {
   show("quiz-screen");
 }
 
-// ---- ○×判定画面（1秒後に自動遷移）----
 // 答えクリック時
 function handleAnswer(isCorrect, q) {
+  const feedback = document.getElementById("feedback-area");
   const video = document.getElementById("answer-video");
   const nextBtn = document.getElementById("next-btn");
-  const feedbackArea = document.getElementById("feedback-area");
 
-  // ○×メッセージ
-  feedbackArea.textContent = isCorrect ? "せいかい！🎉" : "ざんねん！💦";
+  feedback.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
 
-  // スコア加算
   if (isCorrect) score++;
 
-  // 動画を設定して音付きで再生
+  // 動画をセット（自動再生しない）
   video.src = q.answer_video;
-  video.muted = false;          // 🔈 音を出す
-  video.volume = 1.0;           // 🔊 最大音量
-  video.currentTime = 0;
-  video.play().catch(err => {
-    console.warn("自動再生できませんでした:", err);
-    feedbackArea.textContent += "（再生ボタンを押してね）";
-  });
+  video.muted = false;
+  video.controls = true; // 手動再生
+  video.load();
 
-  showScreen("answer-screen");
-
-  // 最後の問題なら「けっかをみる」
-  nextBtn.textContent = current >= quizData.length - 1
-    ? "けっかをみる "
-    : "つぎのもんだいへ ";
+  // 最後の問題ならボタン文言変更
+  nextBtn.textContent = current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
 
   nextBtn.onclick = () => {
-    if (current >= quizData.length - 1) {
-      showResult();
-    } else {
-      current++;
-      showQuestion();
-    }
-  };
-}
-
-
-// ---- 答えあわせ画面 ----
-function showAnswer(q) {
-  const video = document.getElementById("answer-video");
-  video.src = q.answer_video;
-  video.currentTime = 0;
-  video.play().catch(e => console.warn("再生エラー:", e));
-
-  const next = document.getElementById("next-btn");
-  next.textContent = current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
-
-  next.onclick = () => {
     if (current >= quizData.length - 1) {
       renderResult();
     } else {
@@ -148,13 +97,13 @@ function showAnswer(q) {
   show("answer-screen");
 }
 
-// ---- 結果表示 ----
+// 結果画面
 function renderResult() {
   document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
   show("end-screen");
 }
 
-// ---- イベント登録 ----
+// イベント登録
 document.getElementById("start-btn").onclick = () => show("select-screen");
 
 document.getElementById("quiz-shape-btn").onclick = async () => {

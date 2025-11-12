@@ -79,20 +79,43 @@ function showQuestion() {
 
 
 // 答えクリック時
-function handleAnswer(isCorrect, quiz) {
-  if (isCorrect) score++;
+function handleAnswer(isCorrect, q) {
+  const resultScreen = document.getElementById("answer-screen");
+  const video = document.getElementById("answer-video");
+  const nextBtn = document.getElementById("next-btn");
+  const resultText = document.getElementById("answer-text");
 
-  const quizScreen = document.getElementById("quiz-screen");
-  quizScreen.innerHTML = `
-    <div class="feedback-screen">
-      <h2 style="font-size:48px;">${isCorrect ? "⭕せいかい！" : "❌ざんねん！"}</h2>
-    </div>
-  `;
+  // 正誤判定
+  if (isCorrect) {
+    resultText.textContent = "せいかい！";
+    video.src = q.correct_video; // 正解の動画を再生
+    score++;
+  } else {
+    resultText.textContent = "ざんねん！";
+    video.src = q.wrong_video; // 不正解時の動画
+  }
 
-  setTimeout(() => {
-    showAnswerVideo(quiz);
-  }, 1000);
+  video.currentTime = 0;
+  video.play();
+  showScreen("answer-screen");
+
+  // 🔸ここを修正：最後の問題なら「つぎのもんだいへ」ではなくリザルトへ
+  if (currentQuestion >= selectedQuestions.length - 1) {
+    nextBtn.textContent = "けっかをみる";
+  } else {
+    nextBtn.textContent = "つぎのもんだいへ";
+  }
+
+  nextBtn.onclick = () => {
+    if (currentQuestion >= selectedQuestions.length - 1) {
+      showResult(); // 🔸最後の問題ならリザルト画面へ
+    } else {
+      currentQuestion++;
+      showQuestion(); // 🔸次の問題へ
+    }
+  };
 }
+
 
 // 答えあわせ動画画面
 function showAnswerVideo(quiz) {

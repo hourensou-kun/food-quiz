@@ -1,12 +1,12 @@
 // ==============================
-// やさいクイズ script.js（最終安定版）
+// やさいクイズ script.js（最終安定版・自動遷移タイプ）
 // ==============================
 
 let quizData = [];
 let current = 0;
 let score = 0;
 
-// ---- 汎用：画面切り替え ----
+// ---- 画面切り替え ----
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -33,15 +33,11 @@ function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
-  const qText = document.getElementById("question-text");
-  const qImg = document.getElementById("question-image");
+  document.getElementById("question-text").textContent = q.question;
+  document.getElementById("question-image").src = q.image;
   const choices = document.getElementById("choices");
-
-  qText.textContent = q.question;
-  qImg.src = q.image;
   choices.innerHTML = "";
 
-  // 正解choice1・ランダム順
   const opts = [
     { img: q.choice1_img, correct: true },
     { img: q.choice2_img, correct: false },
@@ -62,20 +58,28 @@ function renderQuestion() {
   show("quiz-screen");
 }
 
-// ---- 答えクリック ----
+// ---- ○×表示 → 自動で答えあわせへ ----
 function handleAnswer(isCorrect, q) {
-  const video = document.getElementById("answer-video");
-  const feedback = document.getElementById("feedback-area");
-  const next = document.getElementById("next-btn");
-
-  feedback.textContent = isCorrect ? "せいかい！🎉" : "ざんねん！💦";
+  const judgeText = document.getElementById("judge-text");
+  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
   if (isCorrect) score++;
 
+  show("judge-screen");
+
+  // 1秒後に自動で答えあわせ画面へ
+  setTimeout(() => {
+    showAnswer(q);
+  }, 1000);
+}
+
+// ---- 答えあわせ動画 ----
+function showAnswer(q) {
+  const video = document.getElementById("answer-video");
   video.src = q.answer_video;
   video.currentTime = 0;
-  video.play();
+  video.play().catch(e => console.warn("再生ブロック:", e));
 
-  // 最後の問題判定
+  const next = document.getElementById("next-btn");
   next.textContent = current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
 
   next.onclick = () => {
@@ -90,11 +94,9 @@ function handleAnswer(isCorrect, q) {
   show("answer-screen");
 }
 
-
-// ---- 結果表示 ----
+// ---- 結果画面 ----
 function renderResult() {
-  const scoreText = document.getElementById("score-text");
-  scoreText.textContent = `せいかい：${score} / ${quizData.length}`;
+  document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
   show("end-screen");
 }
 

@@ -65,9 +65,11 @@ function showQuestion() {
   showScreen("quiz-screen");
 }
 
-
 // 答えクリック時
 function handleAnswer(isCorrect, q) {
+  // ✅ まず答え画面を表示してから要素を取得
+  showScreen("answer-screen");
+
   const video = document.getElementById("answer-video");
   const nextBtn = document.getElementById("next-btn");
   const feedbackArea = document.getElementById("feedback-area");
@@ -83,8 +85,6 @@ function handleAnswer(isCorrect, q) {
 
   video.currentTime = 0;
   video.play();
-
-  showScreen("answer-screen");
 
   // 最後の問題なら「けっかをみる」
   if (currentQuestion >= quizData.length - 1) {

@@ -111,15 +111,15 @@ function handleAnswer(isCorrect, q) {
   showScreen("answer-screen");
 
   // 最後の問題なら「けっかをみる」
-  nextBtn.textContent = currentQuestion >= quizData.length - 1
+  nextBtn.textContent = current >= quizData.length - 1
     ? "けっかをみる "
     : "つぎのもんだいへ ";
 
   nextBtn.onclick = () => {
-    if (currentQuestion >= quizData.length - 1) {
+    if (current >= quizData.length - 1) {
       showResult();
     } else {
-      currentQuestion++;
+      current++;
       showQuestion();
     }
   };

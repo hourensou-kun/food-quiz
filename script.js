@@ -8,8 +8,27 @@ let score = 0;
 
 // ---- 画面切り替え ----
 function show(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+  // まず全画面を完全に隠す（保険で style.display も使う）
+  document.querySelectorAll(".screen").forEach(s => {
+    s.classList.remove("active");
+    s.setAttribute("aria-hidden", "true");
+    s.style.display = "none";
+  });
+
+  // すべての video は一旦停止（画面またぎの音漏れ防止）
+  document.querySelectorAll("video").forEach(v => {
+    try { v.pause(); v.currentTime = 0; } catch (_) {}
+  });
+
+  // 対象だけ表示
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add("active");
+    el.setAttribute("aria-hidden", "false");
+    el.style.display = ""; // CSSの .screen.active に任せる
+    // 画面を確実にトップへ
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
 }
 
 // ---- CSV読み込み ----

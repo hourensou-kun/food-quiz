@@ -6,6 +6,14 @@ let quizData = [];
 let current = 0;
 let score = 0;
 
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  // 🔸 フォーカス解除（アクセシビリティ警告防止）
+  if (document.activeElement) document.activeElement.blur();
+}
+
 // ---- 画面切り替え ----
 function show(id) {
   // まず全画面を完全に隠す（保険で style.display も使う）

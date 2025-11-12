@@ -1,111 +1,105 @@
-// --- 設定 ---
-const CSV_PATH = "./data.csv";
-const QUIZ_COUNT = 3;
-
 let quizData = [];
 let current = 0;
 let score = 0;
 
-// --- 画面切り替え ---
+// 画面切り替え
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// --- CSV読み込み ---
-async function loadCSV() {
-  const res = await fetch(CSV_PATH);
+// CSV読み込み
+async function loadCSV(path = "./data.csv") {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error("CSV読み込みエラー");
   const text = await res.text();
   const [header, ...lines] = text.trim().split("\n");
   const keys = header.split(",");
   return lines.map(line => {
     const cols = line.split(",");
-    return Object.fromEntries(keys.map((k, i) => [k, cols[i] || ""]));
+    return Object.fromEntries(keys.map((k, i) => [k, cols[i]?.trim() || ""]));
   });
 }
 
-// --- 問題表示 ---
+// クイズを表示
 function showQuestion() {
   const q = quizData[current];
   if (!q) return showResult();
 
-  const questionText = document.getElementById("question-text");
-  const questionImage = document.getElementById("question-image");
-  const choicesDiv = document.getElementById("choices");
+  document.getElementById("question-text").textContent = q.question;
+  document.getElementById("question-image").src = q.image;
 
-  questionText.textContent = q.question;
-  questionImage.src = q.image;
-  choicesDiv.innerHTML = "";
-
-  // choice1が正解、並び順はランダム
   const choices = [
     { img: q.choice1_img, correct: true },
     { img: q.choice2_img, correct: false },
-    { img: q.choice3_img, correct: false },
+    { img: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
+  const choicesDiv = document.getElementById("choices");
+  choicesDiv.innerHTML = "";
   choices.forEach(c => {
     const img = document.createElement("img");
     img.src = c.img;
-    img.className = "choice-img";
-    img.onclick = () => handleAnswer(c.correct, q);
+    img.alt = "選択肢";
+    img.className = "choice";
+    img.addEventListener("click", () => handleAnswer(c.correct, q));
     choicesDiv.appendChild(img);
   });
 
   show("quiz-screen");
 }
 
-// --- 回答処理 ---
+// 答えクリック時
 function handleAnswer(isCorrect, q) {
+  const feedback = document.getElementById("feedback-area");
+  const video = document.getElementById("answer-video");
+  const nextBtn = document.getElementById("next-btn");
+
+  feedback.textContent = isCorrect ? "せいかい！" : "ざんねん！";
   if (isCorrect) score++;
 
-  const feedback = document.createElement("div");
-  feedback.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
-  feedback.className = "feedback-overlay";
-  document.getElementById("quiz-screen").appendChild(feedback);
+  video.src = q.answer_video || "";
+  video.currentTime = 0;
+  video.play().catch(() => console.warn("動画再生エラー"));
 
-  setTimeout(() => {
-    feedback.remove();
-    showAnswer(q);
-  }, 1000);
-}
-
-// --- 答え合わせ動画 ---
-function showAnswer(q) {
   show("answer-screen");
-  const video = document.getElementById("answer-video");
-  video.src = q.answer_video;
-  video.load();
-  video.play().catch(() => {});
-  const next = document.getElementById("next-btn");
-  next.textContent = current === quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
-  next.onclick = () => {
+
+  nextBtn.textContent =
+    current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
+
+  nextBtn.onclick = () => {
     current++;
     current >= quizData.length ? showResult() : showQuestion();
   };
 }
 
-// --- 結果画面 ---
+// 結果画面
 function showResult() {
   show("end-screen");
-  document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
+  document.getElementById("score-text").textContent =
+    `せいかい：${score} / ${quizData.length}`;
 }
 
-// --- スタート時の処理 ---
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("start-btn").onclick = () => show("select-screen");
-  document.getElementById("restart-btn").onclick = () => location.reload();
+// スタート画面
+document.getElementById("start-btn").addEventListener("click", () => {
+  show("select-screen");
+});
 
-  document.getElementById("quiz-shape-btn").onclick = async () => {
-    try {
-      const data = await loadCSV();
-      quizData = data.sort(() => Math.random() - 0.5).slice(0, QUIZ_COUNT);
-      current = 0;
-      score = 0;
-      showQuestion();
-    } catch (e) {
-      alert("CSVの読み込みに失敗しました");
-      console.error(e);
-    }
-  };
+// クイズ開始
+document.getElementById("quiz-shape-btn").addEventListener("click", async () => {
+  try {
+    const data = await loadCSV();
+    quizData = [...data].sort(() => Math.random() - 0.5).slice(0, 3);
+    current = 0;
+    score = 0;
+    showQuestion();
+  } catch (e) {
+    alert("CSVを読み込めませんでした。");
+    console.error(e);
+  }
+});
+
+// リスタート
+document.getElementById("restart-btn").addEventListener("click", () => {
+  location.reload();
 });

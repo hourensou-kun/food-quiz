@@ -8,51 +8,40 @@
 </head>
 <body>
   <div id="app">
-
-    <!-- ① タイトル画面 -->
+    <!-- タイトル -->
     <section id="title-screen" class="screen active">
       <h1>やさいクイズ！</h1>
       <button id="start-btn">スタート</button>
-      <h2>保護者の方へ</h2>
-      <h3>このゲームでは動画を使用しています。音量にお気をつけてプレイしてください。</h3>
     </section>
 
-    <!-- ② ゲーム選択画面 -->
+    <!-- クイズ選択 -->
     <section id="select-screen" class="screen">
       <h2>どのクイズであそぶ？</h2>
-      <button id="quiz-shape-btn">やさいをきったらどんなかたち？</button>
-      <button id="quiz-sound-btn" disabled>やさいをきったらどんなおと？（準備中）</button>
+      <button id="quiz-shape-btn">① やさいをきったらどんなかたち？</button>
+      <button id="quiz-sound-btn" disabled>② やさいをきったらどんなおと？（準備中）</button>
     </section>
 
-    <!-- ③ 問題画面 -->
+    <!-- 問題画面 -->
     <section id="quiz-screen" class="screen">
       <h2 id="question-text"></h2>
       <img id="question-image" src="" alt="クイズ画像" />
       <div id="choices"></div>
     </section>
 
-    <!-- ④ 正誤判定画面 -->
-    <section id="judge-screen" class="screen">
-      <h2 id="judge-text"></h2>
+    <!-- ✅ 答えあわせ画面（白画面の原因ここ） -->
+    <section id="answer-screen" class="screen">
+      <h2>こたえあわせ！</h2>
+      <div id="feedback-area"></div>
+      <video id="answer-video" autoplay playsinline controls></video>
+      <button id="next-btn">つぎのもんだいへ ▶️</button>
     </section>
 
-<!-- ✅ 答えあわせ画面 -->
-<section id="answer-screen" class="screen">
-  <h2>こたえあわせ！</h2>
-  <div id="feedback-area"></div>  <!-- ← これが必要 -->
-  <video id="answer-video" autoplay playsinline controls></video>
-  <button id="next-btn">つぎのもんだいへ ▶️</button>
-</section>
-
-
-
-    <!-- ⑥ リザルト画面 -->
+    <!-- リザルト画面 -->
     <section id="end-screen" class="screen">
       <h2>がんばったね！</h2>
       <p id="score-text"></p>
       <button id="restart-btn">はじめにもどる</button>
     </section>
-
   </div>
 
   <script src="script.js"></script>

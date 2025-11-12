@@ -1,150 +1,153 @@
-/* =============================
-   共通設定（縦長レイアウト基準）
-============================= */
+/* ==============================
+   やさいクイズ！ style.css
+   子ども向けスマホ縦画面デザイン
+   ============================== */
+
 body {
   margin: 0;
-  padding: 0;
-  font-family: "Kosugi Maru", "Noto Sans JP", sans-serif;
-  background: #fffaf0;
+  font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  background-color: #fff8e1;
   color: #333;
   text-align: center;
-  height: 100vh;
-  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-/* 画面切り替え管理 */
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1, h2, h3, p {
+  margin: 0.6em 0;
+}
+
+/* 画面切り替え */
 .screen {
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
+  min-height: 90vh;
+  animation: fadein 0.4s ease;
 }
 
 .screen.active {
   display: flex;
 }
 
-/* タイトル */
-#title-screen h1 {
-  font-size: 2.4rem;
-  color: #3b6c3b;
-  margin-bottom: 40px;
+/* フェードアニメ */
+@keyframes fadein {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* ボタン全般 */
+/* ボタンスタイル */
 button {
-  background: #ffb84c;
+  background: linear-gradient(180deg, #ffd54f, #ffb300);
   border: none;
-  border-radius: 16px;
-  padding: 16px 32px;
-  font-size: 1.4rem;
-  color: #fff;
+  border-radius: 12px;
+  padding: 14px 28px;
+  margin: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
   cursor: pointer;
-  margin: 12px;
-  box-shadow: 0 4px 0 #e0902b;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 0 #e1a100;
+  transition: transform 0.1s ease;
 }
 
-button:hover {
-  transform: scale(1.05);
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #e1a100;
 }
 
 button:disabled {
-  background: #ddd;
-  box-shadow: none;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* クイズ問題部分 */
-#question-text {
-  font-size: 1.6rem;
-  margin-bottom: 16px;
-  line-height: 1.6;
-}
-
+/* 問題画像 */
 #question-image {
   width: 80%;
-  max-width: 360px;
-  border-radius: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  border-radius: 12px;
+  margin: 12px 0;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-/* 選択肢（3つ並びを縦スマホで見やすく） */
+/* 選択肢 */
 #choices {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  width: 100%;
 }
 
 .choice-item {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
   padding: 8px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, background 0.2s;
-}
-
-.choice-item:hover {
-  transform: scale(1.05);
-  background: #f0ffe0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .choice-item img {
   width: 100px;
   height: 100px;
-  object-fit: contain;
-  border-radius: 16px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
-/* ○×表示画面 */
+.choice-item:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* 判定画面（⭕❌を大きく） */
 #judge-text {
-  font-size: 3rem;
-  color: #ff4040;
-  animation: pop 0.4s ease;
+  font-size: 4em;
+  font-weight: bold;
+  animation: pop 0.5s ease;
 }
 
 @keyframes pop {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
 }
 
-/* 答えあわせ動画 */
+/* 答えあわせ画面 */
 #answer-video {
-  width: 80%;
+  width: 90%;
   max-width: 400px;
-  border-radius: 16px;
-  margin: 20px 0;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  margin: 12px 0;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
 /* リザルト画面 */
 #score-text {
-  font-size: 1.8rem;
+  font-size: 1.4em;
   margin: 20px 0;
 }
 
-/* 背景カラーを画面ごとに変えると楽しい */
-#title-screen { background: linear-gradient(#fef5d4, #fff); }
-#select-screen { background: linear-gradient(#f5ffe3, #fff); }
-#quiz-screen { background: linear-gradient(#fff6e1, #fff); }
-#judge-screen { background: linear-gradient(#fff0f0, #fff); }
-#answer-screen { background: linear-gradient(#e9faff, #fff); }
-#end-screen { background: linear-gradient(#e8fbe8, #fff); }
+/* タイトル */
+#title-screen h1 {
+  font-size: 2.6em;
+  color: #ff9800;
+  text-shadow: 2px 2px 0 #fff, 3px 3px 4px rgba(0,0,0,0.3);
+}
 
-/* スマホ縦画面に最適化 */
-@media (max-width: 480px) {
-  h1, h2 {
-    font-size: 1.6rem;
+/* レスポンシブ：横向き時も見やすく */
+@media (orientation: landscape) {
+  #app {
+    padding: 10px;
   }
-  button {
-    width: 80%;
-    font-size: 1.2rem;
+  #choices {
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
   .choice-item img {
     width: 80px;

@@ -1,26 +1,18 @@
 // ==============================
-// やさいクイズ script.js（安定版）
+// やさいクイズ script.js（完全分離画面タイプ）
 // ==============================
 
 let quizData = [];
 let current = 0;
 let score = 0;
 
-
-// 画面切り替え
+// ---- 画面切り替え ----
 function show(id) {
-  document.querySelectorAll(".screen").forEach(s => {
-    s.classList.remove("active");
-    s.style.display = "none";
-  });
-  const el = document.getElementById(id);
-  if (el) {
-    el.classList.add("active");
-    el.style.display = "block";
-  }
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-// CSV読み込み
+// ---- CSV読み込み ----
 async function loadCSV(path = "./data.csv") {
   const res = await fetch(path);
   if (!res.ok) throw new Error("CSV読み込み失敗");
@@ -33,17 +25,16 @@ async function loadCSV(path = "./data.csv") {
   });
 }
 
-// ランダム抽出（3問）
+// ---- ランダム抽出 ----
 const pickRandom = (arr, n = 3) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
-// 問題を表示
+// ---- 問題表示 ----
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
-
   const choices = document.getElementById("choices");
   choices.innerHTML = "";
 
@@ -67,26 +58,28 @@ function renderQuestion() {
   show("quiz-screen");
 }
 
-// 答えクリック時
+// ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
-  const feedback = document.getElementById("feedback-area");
-  const video = document.getElementById("answer-video");
-  const nextBtn = document.getElementById("next-btn");
-
-  feedback.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
-
+  const judgeText = document.getElementById("judge-text");
+  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
   if (isCorrect) score++;
+  show("judge-screen");
 
-  // 動画をセット（自動再生しない）
+  // 1秒後に答えあわせへ
+  setTimeout(() => showAnswer(q), 1000);
+}
+
+// ---- 答えあわせ画面 ----
+function showAnswer(q) {
+  const video = document.getElementById("answer-video");
   video.src = q.answer_video;
-  video.muted = false;
-  video.controls = true; // 手動再生
-  video.load();
+  video.currentTime = 0;
+  video.play().catch(e => console.warn("再生エラー:", e));
 
-  // 最後の問題ならボタン文言変更
-  nextBtn.textContent = current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
+  const next = document.getElementById("next-btn");
+  next.textContent = current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
 
-  nextBtn.onclick = () => {
+  next.onclick = () => {
     if (current >= quizData.length - 1) {
       renderResult();
     } else {
@@ -98,13 +91,13 @@ function handleAnswer(isCorrect, q) {
   show("answer-screen");
 }
 
-// 結果画面
+// ---- 結果表示 ----
 function renderResult() {
   document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
   show("end-screen");
 }
 
-// イベント登録
+// ---- イベント登録 ----
 document.getElementById("start-btn").onclick = () => show("select-screen");
 
 document.getElementById("quiz-shape-btn").onclick = async () => {

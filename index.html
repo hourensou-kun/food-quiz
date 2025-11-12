@@ -36,12 +36,15 @@
       <h2 id="judge-text"></h2>
     </section>
 
-    <!-- ⑤ 答えあわせ動画画面 -->
-    <section id="answer-screen" class="screen">
-      <h2>こたえあわせ！</h2>
-      <video id="answer-video" autoplay playsinline controls></video>
-      <button id="next-btn">つぎのもんだいへ ▶️</button>
-    </section>
+ <!-- ✅ 答えあわせ動画画面 -->
+<section id="answer-screen" class="screen">
+  <h2>こたえあわせ！</h2>
+  <!-- 🔸 この要素が抜けているとエラーになります -->
+  <div id="feedback-area"></div>
+  <video id="answer-video" autoplay playsinline controls></video>
+  <button id="next-btn">つぎのもんだいへ ▶️</button>
+</section>
+
 
     <!-- ⑥ リザルト画面 -->
     <section id="end-screen" class="screen">

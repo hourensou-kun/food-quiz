@@ -7,7 +7,7 @@ body {
   margin: 0;
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
   background: url("./背景.png") repeat;
-  background-size: 200px 200px; /* 格子のサイズ。画像の大きさに合わせて調整OK */
+  background-size: 1440px 2520px; /* 格子のサイズ。画像の大きさに合わせて調整OK */
   color: #333;
   text-align: center;
   user-select: none;

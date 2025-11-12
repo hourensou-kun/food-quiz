@@ -33,16 +33,6 @@ function showQuestion() {
   const q = quizData[currentQuestion];
   if (!q) return showResult();
 
-  // 🔸ここを追加（要素が存在しないときは再構築する）
-  const quizScreen = document.getElementById("quiz-screen");
-  if (!document.getElementById("question-text")) {
-    quizScreen.innerHTML = `
-      <h2 id="question-text"></h2>
-      <img id="question-image" src="" alt="クイズ画像" />
-      <div id="choices"></div>
-    `;
-  }
-
   const questionText = document.getElementById("question-text");
   const questionImage = document.getElementById("question-image");
   const choicesDiv = document.getElementById("choices");
@@ -51,25 +41,23 @@ function showQuestion() {
   questionImage.src = q.image;
   choicesDiv.innerHTML = "";
 
+  // ✅ choice1が正解・表示はランダム
   const choices = [
     { img: q.choice1_img, correct: true },
     { img: q.choice2_img, correct: false },
     { img: q.choice3_img, correct: false }
   ].sort(() => Math.random() - 0.5);
 
+  // ✅ 画像のみを表示
   choices.forEach(c => {
     const div = document.createElement("div");
     div.classList.add("choice-item");
 
     const img = document.createElement("img");
     img.src = c.img;
-    img.alt = c.text;
-
-    const label = document.createElement("p");
-    label.textContent = c.text || ""; // textがundefined対策
+    img.alt = "選択肢";
 
     div.appendChild(img);
-    div.appendChild(label);
     div.addEventListener("click", () => handleAnswer(c.correct, q));
     choicesDiv.appendChild(div);
   });
@@ -80,82 +68,53 @@ function showQuestion() {
 
 // 答えクリック時
 function handleAnswer(isCorrect, q) {
-  const resultScreen = document.getElementById("answer-screen");
   const video = document.getElementById("answer-video");
   const nextBtn = document.getElementById("next-btn");
-  const resultText = document.getElementById("answer-text");
+  const feedbackArea = document.getElementById("feedback-area");
 
-  // 正誤判定
-  if (isCorrect) {
-    resultText.textContent = "せいかい！";
-    video.src = q.correct_video; // 正解の動画を再生
-    score++;
-  } else {
-    resultText.textContent = "ざんねん！";
-    video.src = q.wrong_video; // 不正解時の動画
-  }
+  // メッセージ表示
+  feedbackArea.textContent = isCorrect ? "せいかい！🎉" : "ざんねん！💦";
+
+  // 動画再生（CSVの answer_video を使用）
+  video.src = q.answer_video;
+  video.onerror = () => {
+    feedbackArea.textContent += "（動画を再生できませんでした）";
+  };
 
   video.currentTime = 0;
   video.play();
+
   showScreen("answer-screen");
 
-   // 🔸ここを修正：最後の問題なら「つぎのもんだいへ」ではなくリザルトへ
+  // 最後の問題なら「けっかをみる」
   if (currentQuestion >= quizData.length - 1) {
-    nextBtn.textContent = "けっかをみる";
+    nextBtn.textContent = "けっかをみる ▶️";
   } else {
-    nextBtn.textContent = "つぎのもんだいへ";
+    nextBtn.textContent = "つぎのもんだいへ ▶️";
   }
 
+  // ボタンクリックイベント
   nextBtn.onclick = () => {
     if (currentQuestion >= quizData.length - 1) {
-      showResult(); // 🔸最後の問題ならリザルト画面へ
+      showResult();
     } else {
       currentQuestion++;
-      showQuestion(); // 🔸次の問題へ
+      showQuestion();
     }
   };
-}
 
-
-
-// 答えあわせ動画画面
-function showAnswerVideo(quiz) {
-  showScreen("quiz-screen"); // ← 元の画面構成に合わせてquiz-screenを再利用
-
-  const quizScreen = document.getElementById("quiz-screen");
-  const videoSrc = quiz.answer_video?.trim() || "video/default.mp4";
-
-  quizScreen.innerHTML = `
-    <div class="answer-video-screen">
-      <h2>こたえあわせ！</h2>
-      <video id="answer-video" src="${videoSrc}" muted autoplay playsinline controls></video>
-      <button id="next-btn" class="next-btn">つぎのもんだいへ ▶️</button>
-    </div>
-  `;
-
-  const video = document.getElementById("answer-video");
-  video.onerror = () => alert("動画を再生できませんでした。パスを確認してください。");
-
-  // ✅ 修正：イベントを確実に登録
-  const nextBtn = document.getElementById("next-btn");
-  nextBtn.addEventListener("click", () => {
-    currentQuestion++;
-    if (currentQuestion < quizData.length) {
-      showQuestion();
-    } else {
-      showResult();
-    }
-  });
+  // スコア加算
+  if (isCorrect) score++;
 }
 
 // 結果画面
 function showResult() {
   showScreen("end-screen");
-  document.getElementById("score-text").textContent =
-    `せいかい：${score} / ${quizData.length}`;
+  const scoreText = document.getElementById("score-text");
+  scoreText.textContent = `せいかい：${score} / ${quizData.length}`;
 }
 
-// スタート
+// スタートボタン
 document.getElementById("start-btn").addEventListener("click", () => {
   showScreen("select-screen");
 });

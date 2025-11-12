@@ -90,6 +90,11 @@ function handleAnswer(isCorrect, q) {
   show("answer-screen");
 }
 
+// ---- 汎用：画面切り替え ----
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 // ---- 結果表示 ----
 function renderResult() {
   const scoreText = document.getElementById("score-text");

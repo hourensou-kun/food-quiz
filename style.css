@@ -88,24 +88,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ===== 問題画面カード（16:9エリア） ===== */
-#quiz-screen {
-  width: 100%;
-  max-width: 480px;
-  aspect-ratio: 16 / 9;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 16px;
-  box-sizing: border-box;
-  margin: 0 auto;
-}
-
-/* 問題文 */
+/* ===== 問題文 ===== */
 #question-text {
   background-color: #ffe9e3;
   border: 2px solid #f7b2a2;
@@ -114,50 +97,42 @@ button:disabled {
   width: 90%;
   font-size: 1.1em;
   text-align: center;
-  margin-bottom: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
-/* 問題画像 */
+/* ===== 問題画像 ===== */
 #question-image {
   width: 70%;
   max-width: 260px;
   border-radius: 12px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  object-fit: contain;
   margin-bottom: 10px;
 }
 
-/* ===== 選択肢：3つを三角形配置 ===== */
+/* ===== 選択肢：3つ（1＋2レイアウト） ===== */
 #choices {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: 12px;
+  justify-items: center;
+  width: 90%;
+  margin-top: 8px;
+  position: relative;
 }
 
-/* 上段（1つ） */
-.choice-row-top {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+.choice-item:nth-child(1) {
+  grid-column: 1 / 3;
+  justify-self: center;
 }
 
-/* 下段（2つ） */
-.choice-row-bottom {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  width: 100%;
-}
-
-/* 各選択肢カード */
 .choice-item {
   background-color: #e0f7fa;
   border: 2px solid #f8b6a8;
   border-radius: 18px;
   width: 100%;
-  max-width: 120px;
+  max-width: 150px;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -177,7 +152,6 @@ button:disabled {
   transform: scale(0.95);
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
-
 
 /* ===== 判定画面 ===== */
 #judge-text {

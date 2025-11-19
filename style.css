@@ -55,31 +55,6 @@ html, body {
   }
 }
 
-
-/* 💡 ゲーム領域（固定解像度） */
-#app {
-  position: relative;
-  width: 675px;
-  height: 1200px;
-  background: url("背景.png") repeat;
-  background-size: 120px 120px;
-  background-color: #fff;
-  overflow: hidden;
-  border-radius: 16px;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-
-  /* スケール調整（JSで上書きされる） */
-  transform-origin: center center;
-  transform: scale(var(--scale));
-}
-
-/* 💡 スマホでの余白対策（スクロール禁止） */
-@media screen and (max-width: 1200px) {
-  html, body {
-    overflow: hidden;
-  }
-}
-
 /* 💡 各画面共通設定 */
 .screen {
   position: absolute;

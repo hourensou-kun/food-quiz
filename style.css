@@ -1,24 +1,24 @@
 /* ==============================
-   🎯 完全フィット型：750×1334固定（全画面で見切れなし）
+   🎯 完全フィット：750×1334固定（PC・スマホ共通）
    ============================== */
 
-/* 💡 ブラウザ全体：黒背景・中央配置 */
+/* 💡 ブラウザ全体：黒背景＋中央配置 */
 html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
   background: #000;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
   color: #333;
   user-select: none;
 }
 
-/* 💡 ゲーム全体（基準解像度） */
+/* 💡 メインゲーム領域（固定解像度 750×1334） */
 #app {
   position: relative;
   width: 750px;
@@ -28,28 +28,22 @@ html, body {
   background-color: #fff;
   overflow: hidden;
   border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
-  transform-origin: top left;
-}
-
-
-/* 💡 PCでもスマホでも、中央に収まるよう調整 */
-#app {
-  position: relative;
-  width: 750px;
-  height: 1334px;
-  background: url("背景.png") repeat;
-  background-size: 80px 80px;
-  background-color: #fff;
-  overflow: hidden;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
   transform-origin: center center;
-  transform: scale(calc(min(100vh / 1334, 100vw / 750)));
+  transform: scale(calc(min(100vw / 750, 100vh / 1334)));
 }
 
+/* 💡 スマホでのはみ出し防止 */
+@media screen and (max-width: 768px) {
+  html, body {
+    overflow: hidden;
+  }
+  #app {
+    transform: scale(calc(min(100vw / 750, 100vh / 1334)));
+  }
+}
 
-/* 💡 各画面（共通） */
+/* ===== 共通画面設定 ===== */
 .screen {
   position: absolute;
   inset: 0;
@@ -66,13 +60,13 @@ html, body {
   display: flex;
 }
 
-/* 💡 フェード効果 */
+/* ===== フェードアニメ ===== */
 @keyframes fadein {
   from { opacity: 0; filter: blur(2px); }
   to { opacity: 1; filter: blur(0); }
 }
 
-/* ===== タイトル画面 ===== */
+/* ===== タイトル ===== */
 #title-screen h1 {
   font-size: 2.6rem;
   color: #ff9800;
@@ -135,7 +129,7 @@ button:disabled {
   margin-bottom: 24px;
 }
 
-/* ===== 選択肢（共通） ===== */
+/* ===== 選択肢 ===== */
 #choices {
   display: flex;
   justify-content: center;
@@ -177,7 +171,7 @@ button:disabled {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* ===== 判定画面 ===== */
+/* ===== 判定 ===== */
 #judge-text {
   font-size: 4rem;
   font-weight: bold;
@@ -190,7 +184,7 @@ button:disabled {
   100% { transform: scale(1); }
 }
 
-/* ===== 答えあわせ動画 ===== */
+/* ===== 答え合わせ動画 ===== */
 #answer-video {
   width: 90%;
   max-width: 600px;
@@ -199,7 +193,7 @@ button:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.25);
 }
 
-/* ===== リザルト画面 ===== */
+/* ===== リザルト ===== */
 #score-text {
   font-size: 1.8rem;
   margin: 24px 0;

@@ -1,36 +1,37 @@
 /* ==============================
-   💻 完全固定：1920×1080モード
+   🎨 完全固定 1920×1080 レイアウト
    ============================== */
 
-/* 💡 ブラウザ全体：黒背景＆中央配置 */
+/* 💡 ブラウザ全体設定 */
 html, body {
   margin: 0;
   padding: 0;
-  background: #000;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  background: #000; /* 黒背景で囲む */
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
   color: #333;
   user-select: none;
 }
 
-/* 💡 ゲーム画面：固定サイズ 1920x1080 */
+/* 💡 メイン領域：1920×1080固定サイズ */
 #app {
   width: 1920px;
   height: 1080px;
   background: url("背景.png") repeat;
   background-size: 100px 100px;
-  border-radius: 0;
-  box-shadow: none;
+  background-color: #fff;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  border-radius: 8px;
 }
 
-/* 💡 各画面：全画面配置 */
+/* 💡 各画面 */
 .screen {
   position: absolute;
   inset: 0;
@@ -39,17 +40,17 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: rgba(255, 255, 255, 0.94);
-  animation: fadein 0.3s ease;
+  background: rgba(255,255,255,0.95);
+  transition: opacity 0.3s ease;
 }
 
 .screen.active {
   display: flex;
 }
 
-/* ===== 画面フェード ===== */
+/* 💡 フェード効果 */
 @keyframes fadein {
-  from { opacity: 0; filter: blur(2px); }
+  from { opacity: 0; filter: blur(3px); }
   to { opacity: 1; filter: blur(0); }
 }
 
@@ -60,11 +61,11 @@ html, body {
   text-shadow: 2px 2px 0 #fff, 4px 4px 8px rgba(0,0,0,0.3);
 }
 #title-screen h2 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #555;
 }
 #title-screen h3 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #777;
 }
 
@@ -73,9 +74,9 @@ button {
   background: linear-gradient(180deg, #ffd54f, #ffb300);
   border: none;
   border-radius: 16px;
-  padding: 22px 48px;
-  margin: 16px;
-  font-size: 1.8rem;
+  padding: 20px 48px;
+  margin: 20px;
+  font-size: 1.6rem;
   font-weight: bold;
   color: #333;
   cursor: pointer;
@@ -98,7 +99,7 @@ button:disabled {
   background-color: #ffe9e3;
   border: 3px solid #f7b2a2;
   border-radius: 12px;
-  padding: 20px 30px;
+  padding: 20px 40px;
   width: 80%;
   font-size: 2rem;
   text-align: center;
@@ -107,14 +108,14 @@ button:disabled {
 
 /* ===== 問題画像 ===== */
 #question-image {
-  width: 40%;
-  max-width: 600px;
+  width: 500px;
+  height: auto;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.25);
   margin-bottom: 40px;
 }
 
-/* ===== 選択肢（中央配置） ===== */
+/* ===== 選択肢（形クイズ・音クイズ共通） ===== */
 #choices {
   display: flex;
   justify-content: center;
@@ -134,4 +135,51 @@ button:disabled {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-  transition: transform 0
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.choice-item img {
+  width: 70%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.choice-item p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+.choice-item:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ===== 判定画面 ===== */
+#judge-text {
+  font-size: 8rem;
+  font-weight: bold;
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ===== 答えあわせ動画 ===== */
+#answer-video {
+  width: 960px;
+  max-width: 960px;
+  border-radius: 20px;
+  margin: 30px 0;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+/* ===== リザルト画面 ===== */
+#score-text {
+  font-size: 2.4rem;
+  margin: 30px 0;
+}

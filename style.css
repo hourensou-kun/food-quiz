@@ -347,7 +347,7 @@ button:disabled {
 
 
 /* ==============================
-   🎵 音クイズ（2択用）の配置
+   🎵 音クイズ（2択）の位置微調整版
    ============================== */
 .choice-container {
   display: flex;
@@ -355,21 +355,21 @@ button:disabled {
   align-items: flex-start;
   flex-wrap: nowrap;
   gap: 6vw;
-  margin-top: -6vh; /* ← 上方向へ配置 */
+  margin-top: -10vh; /* ← 上方向にさらに移動（前は -6vh） */
   width: 100%;
 }
 
-/* カードサイズ調整（音クイズ2択用） */
+/* カードサイズ */
 .choice-container .choice-item {
   width: 30%;
   max-width: 220px;
   aspect-ratio: 1 / 1;
 }
 
-/* スマホ時（より上に＆間隔を狭く） */
+/* 📱 スマホ時（もう少し上げる） */
 @media (max-width: 768px) {
   .choice-container {
-    margin-top: -8vh;
+    margin-top: -12vh; /* ← iPhone向け上げ幅強化 */
     gap: 4vw;
   }
 

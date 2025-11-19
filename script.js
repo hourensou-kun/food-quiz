@@ -245,8 +245,8 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
 
 // 💡 画面スケーリング（常に全体が見えるように）
 function fitToScreen() {
-  const baseWidth = 1200;
-  const baseHeight = 675;
+  const baseWidth = 675;
+  const baseHeight = 1200;
   const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
   document.documentElement.style.setProperty("--scale", scale);
 }

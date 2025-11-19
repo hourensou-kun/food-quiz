@@ -114,3 +114,85 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
 };
 
 document.getElementById("restart-btn").onclick = () => location.reload();
+
+
+// ==============================
+// クイズ2：やさいをきったらどんなおと？
+// ==============================
+
+// ---- 音クイズ専用：問題表示（音だけ再生＋2択＋文字つき）----
+function renderQuestionSound() {
+  const q = quizData[current];
+  if (!q) return renderResult();
+
+  // 問題文と画像を表示
+  document.getElementById("question-text").textContent = q.question;
+  document.getElementById("question-image").src = q.image;
+
+  const choices = document.getElementById("choices");
+  choices.innerHTML = "";
+
+  // 出題時に「音声だけ」再生（映像は非表示）
+  const video = document.getElementById("answer-video");
+  video.src = q.answer_video;
+  video.style.display = "none"; // 映像を隠して音だけ流す
+  video.muted = false;
+  video.currentTime = 0;
+  video.play().catch(e => console.warn("音声再生エラー:", e));
+
+  // 2択（画像＋文字、左右ランダム配置）
+  const opts = [
+    { img: q.choice1_img, text: q.choice1_text, correct: true },
+    { img: q.choice2_img, text: q.choice2_text, correct: false }
+  ].sort(() => Math.random() - 0.5);
+
+  const container = document.createElement("div");
+  container.style.display = "flex";
+  container.style.justifyContent = "center";
+  container.style.gap = "20px";
+
+  opts.forEach(o => {
+    const div = document.createElement("div");
+    div.className = "choice-item";
+
+    const img = document.createElement("img");
+    img.src = o.img;
+    img.alt = o.text;
+
+    const label = document.createElement("p");
+    label.textContent = o.text;
+    label.style.marginTop = "6px";
+    label.style.fontSize = "1.2em";
+    label.style.fontWeight = "bold";
+
+    div.appendChild(img);
+    div.appendChild(label);
+
+    // 答え選択時：音を止めて判定へ
+    div.onclick = () => {
+      video.pause();
+      handleAnswer(o.correct, q);
+    };
+
+    container.appendChild(div);
+  });
+
+  choices.appendChild(container);
+  show("quiz-screen");
+}
+
+// ---- 音クイズボタン登録 ----
+document.getElementById("quiz-sound-btn").disabled = false;
+document.getElementById("quiz-sound-btn").onclick = async () => {
+  try {
+    const data = await loadCSV("./data_sound.csv"); // ← CSVファイル名は音クイズ用
+    quizData = pickRandom(data, 3);
+    current = 0;
+    score = 0;
+    renderQuestionSound();
+  } catch (e) {
+    alert("CSVを読み込めませんでした。");
+    console.error(e);
+  }
+};
+

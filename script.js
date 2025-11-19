@@ -33,30 +33,46 @@ function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
+  // 問題文と画像を設定
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
+
+  // 選択肢のコンテナを初期化
   const choices = document.getElementById("choices");
   choices.innerHTML = "";
 
+  // ✅ choice1〜3 が存在するかチェックして安全に配列化
   const opts = [
-    { img: q.choice1_img, correct: true },
-    { img: q.choice2_img, correct: false },
-    { img: q.choice3_img, correct: false }
-  ].sort(() => Math.random() - 0.5);
+    q.choice1_img ? { img: q.choice1_img, correct: true } : null,
+    q.choice2_img ? { img: q.choice2_img, correct: false } : null,
+    q.choice3_img ? { img: q.choice3_img, correct: false } : null
+  ].filter(Boolean); // nullを除外して安全にする
 
+  // ✅ デバッグ用（もしCSVのchoice3_imgが欠けてるとここに出ます）
+  if (opts.length < 3) {
+    console.warn("⚠️ 選択肢が3つ未満の問題があります:", q);
+  }
+
+  // ✅ ランダム並び替え
+  opts.sort(() => Math.random() - 0.5);
+
+  // ✅ 選択肢を描画
   opts.forEach(o => {
     const div = document.createElement("div");
     div.className = "choice-item";
+
     const img = document.createElement("img");
     img.src = o.img;
     img.alt = "せんたくし";
     div.appendChild(img);
+
     div.onclick = () => handleAnswer(o.correct, q);
     choices.appendChild(div);
   });
 
   show("quiz-screen");
 }
+
 
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {

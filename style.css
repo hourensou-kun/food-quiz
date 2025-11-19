@@ -19,11 +19,11 @@ html, body {
   -webkit-user-select: none;
 }
 
-/* 💡 ゲーム全体（750x1334固定） */
+/* 💡 ゲーム全体（675x1200固定） */
 #app {
   position: relative;
-  width: 750px;
-  height: 1334px;
+  width: 675px;
+  height: 1200px;
   background: url("背景.png") repeat;
   background-size: 80px 80px;
   background-color: #fff;

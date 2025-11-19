@@ -22,8 +22,8 @@ html, body {
 /* 💡 ゲーム領域（固定解像度） */
 #app {
   position: relative;
-  width: 1200px;
-  height: 675px;
+  width: 675px;
+  height: 1200px;
   background: url("背景.png") repeat;
   background-size: 120px 120px;
   background-color: #fff;

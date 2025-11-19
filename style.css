@@ -345,4 +345,21 @@ button:disabled {
   }
 }
 
+/* ===== 音クイズの2択配置調整 ===== */
+.choice-container {
+  margin-top: -4vh; /* ← 全体をちょっと上に */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5vw;
+  flex-wrap: wrap;
+}
+
+/* スマホ向け微調整 */
+@media (max-width: 768px) {
+  .choice-container {
+    margin-top: -6vh; /* スマホではもう少し上へ */
+    gap: 4vw;
+  }
+}
 

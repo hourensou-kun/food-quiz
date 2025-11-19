@@ -243,3 +243,13 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
   }
 };
 
+// 💡 画面スケーリング（常に全体が収まるように）
+function fitToScreen() {
+  const baseWidth = 750;
+  const baseHeight = 1334;
+  const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
+  document.documentElement.style.setProperty("--scale", scale);
+}
+window.addEventListener("resize", fitToScreen);
+window.addEventListener("orientationchange", fitToScreen);
+fitToScreen();

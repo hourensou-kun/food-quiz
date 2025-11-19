@@ -1,6 +1,6 @@
 /* ==============================
-   🎯 完全固定比率 750x1334
-   PCもスマホも全画面で見切れなし・黒背景OK
+   🎯 完全固定比率 1200×675（16:9）
+   PCもスマホも黒背景で全体表示
    ============================== */
 
 html, body {
@@ -19,35 +19,31 @@ html, body {
   -webkit-user-select: none;
 }
 
-/* 💡 ゲーム全体（675x1200固定） */
+/* 💡 ゲーム領域（固定解像度） */
 #app {
   position: relative;
-  width: 675px;
-  height: 1200px;
+  width: 1200px;
+  height: 675px;
   background: url("背景.png") repeat;
-  background-size: 80px 80px;
+  background-size: 120px 120px;
   background-color: #fff;
   overflow: hidden;
   border-radius: 16px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 
-  /* 中央に固定・比率維持でスケール */
+  /* スケール調整（JSで上書きされる） */
   transform-origin: center center;
   transform: scale(var(--scale));
 }
 
-/* 💡 スケールをウィンドウに合わせて自動計算 */
-:root {
-  --scale: 1;
-}
-
-@media screen {
-  body {
-    /* JSでscaleを制御するので空に */
+/* 💡 スマホでの余白対策（スクロール禁止） */
+@media screen and (max-width: 1200px) {
+  html, body {
+    overflow: hidden;
   }
 }
 
-/* 💡 各画面 */
+/* 💡 各画面共通設定 */
 .screen {
   position: absolute;
   inset: 0;
@@ -68,7 +64,7 @@ html, body {
   to { opacity: 1; filter: blur(0); }
 }
 
-/* ===== タイトル画面 ===== */
+/* ===== タイトル ===== */
 #title-screen h1 {
   font-size: 2.6rem;
   color: #ff9800;
@@ -122,11 +118,11 @@ button:disabled {
 
 /* ===== 問題画像 ===== */
 #question-image {
-  width: 60%;
+  width: 40%;
   max-width: 400px;
   border-radius: 12px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 /* ===== 選択肢 ===== */
@@ -142,8 +138,8 @@ button:disabled {
   background-color: #fff;
   border: 2px solid #f8b6a8;
   border-radius: 16px;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,7 +153,7 @@ button:disabled {
   border-radius: 8px;
 }
 .choice-item p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #333;
   margin-top: 8px;
@@ -181,7 +177,7 @@ button:disabled {
 
 /* ===== 答えあわせ動画 ===== */
 #answer-video {
-  width: 90%;
+  width: 80%;
   max-width: 600px;
   border-radius: 12px;
   margin: 20px 0;
@@ -190,6 +186,6 @@ button:disabled {
 
 /* ===== リザルト ===== */
 #score-text {
-  font-size: 1.8rem;
-  margin: 24px 0;
+  font-size: 1.6rem;
+  margin: 20px 0;
 }

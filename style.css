@@ -1,14 +1,14 @@
 /* ==============================
-   📱 縦長固定：750x1334 (9:16)
+   📱 固定基準750×1334＋スマホ自動スケーリング対応
    ============================== */
 
-/* 💡 ブラウザ全体設定 */
+/* 💡 ブラウザ全体：中央配置・黒背景 */
 html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background: #000; /* 黒背景 */
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,17 +18,25 @@ html, body {
   user-select: none;
 }
 
-/* 💡 ゲーム全体：固定サイズ（750×1334） */
+/* 💡 ゲーム画面（固定解像度） */
 #app {
+  position: relative;
   width: 750px;
   height: 1334px;
   background: url("背景.png") repeat;
   background-size: 80px 80px;
   background-color: #fff;
-  position: relative;
   overflow: hidden;
   border-radius: 16px;
   box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  transform-origin: top left;
+}
+
+/* 💡 画面サイズに合わせてスケーリング（スマホ・小画面対応） */
+@media screen and (max-width: 750px), screen and (max-height: 1334px) {
+  #app {
+    transform: scale(calc(min(100vw / 750, 100vh / 1334)));
+  }
 }
 
 /* 💡 各画面（共通） */
@@ -56,7 +64,7 @@ html, body {
 
 /* ===== タイトル画面 ===== */
 #title-screen h1 {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   color: #ff9800;
   text-shadow: 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.3);
 }
@@ -102,9 +110,10 @@ button:disabled {
   border-radius: 10px;
   padding: 12px 20px;
   width: 90%;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   text-align: center;
   margin-bottom: 20px;
+  line-height: 1.4;
 }
 
 /* ===== 問題画像 ===== */
@@ -121,8 +130,9 @@ button:disabled {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   flex-wrap: wrap;
+  width: 90%;
 }
 
 .choice-item {
@@ -146,7 +156,7 @@ button:disabled {
 }
 
 .choice-item p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
   color: #333;
   margin-top: 8px;

@@ -122,7 +122,6 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
 
 document.getElementById("restart-btn").onclick = () => location.reload();
 
-
 // ==============================
 // クイズ2：やさいをきったらどんなおと？
 // ==============================
@@ -137,15 +136,15 @@ function renderQuestionSound() {
   document.getElementById("question-image").src = q.image;
 
   const choices = document.getElementById("choices");
-  choices.innerHTML = ""; // ← 以前の3択HTMLを確実に消す！
+  choices.innerHTML = ""; // ← 前問のHTMLを確実にリセット
 
-  // 出題時に「音声だけ」再生
+  // 出題時に「音声だけ」再生（映像非表示）
   const video = document.getElementById("answer-video");
-  video.pause(); // ← 念のため前の再生を止める
+  video.pause();
   video.src = q.answer_video;
-  video.style.display = "none"; // 映像を隠して音だけ流す
-  video.muted = false;
   video.currentTime = 0;
+  video.muted = false;
+  video.style.display = "none"; // ← 出題時は音だけ
   video.play().catch(e => console.warn("音声再生エラー:", e));
 
   // 2択（画像＋文字、左右ランダム）
@@ -154,14 +153,13 @@ function renderQuestionSound() {
     { img: q.choice2_img, text: q.choice2_text, correct: false }
   ].sort(() => Math.random() - 0.5);
 
-  // コンテナを新規生成
+  // コンテナ生成
   const container = document.createElement("div");
   container.className = "choice-container";
   container.style.display = "flex";
   container.style.justifyContent = "center";
   container.style.gap = "20px";
 
-  // 2択を作成
   opts.forEach(o => {
     const div = document.createElement("div");
     div.className = "choice-item";
@@ -180,8 +178,8 @@ function renderQuestionSound() {
     div.appendChild(label);
 
     div.onclick = () => {
-      video.pause(); // 出題時の音を止める
-      handleAnswer(o.correct, q);
+      video.pause(); // 出題音を止める
+      handleAnswerSound(o.correct, q); // ← 音クイズ専用判定へ
     };
 
     container.appendChild(div);
@@ -191,16 +189,54 @@ function renderQuestionSound() {
   show("quiz-screen");
 }
 
+// ---- 音クイズ用：判定＆答えあわせ遷移 ----
+function handleAnswerSound(isCorrect, q) {
+  const judgeText = document.getElementById("judge-text");
+  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
+  if (isCorrect) score++;
+  show("judge-screen");
+
+  // 1秒後に答えあわせへ
+  setTimeout(() => showAnswerSound(q), 1000);
+}
+
+// ---- 音クイズ用：答えあわせ（映像＋音で再生）----
+function showAnswerSound(q) {
+  const video = document.getElementById("answer-video");
+  video.pause();
+  video.src = q.answer_video;
+  video.currentTime = 0;
+  video.muted = false;
+  video.style.display = "block"; // ← 映像を見せる
+  video.play().catch(e => console.warn("動画再生エラー:", e));
+
+  const next = document.getElementById("next-btn");
+  next.textContent = current >= quizData.length - 1
+    ? "けっかをみる ▶️"
+    : "つぎのもんだいへ ▶️";
+
+  next.onclick = () => {
+    video.pause();
+    if (current >= quizData.length - 1) {
+      renderResult();
+    } else {
+      current++;
+      renderQuestionSound(); // ← 次も音クイズ専用で出題！
+    }
+  };
+
+  show("answer-screen");
+}
 
 // ---- 音クイズボタン登録 ----
 document.getElementById("quiz-sound-btn").disabled = false;
 document.getElementById("quiz-sound-btn").onclick = async () => {
   try {
-    const data = await loadCSV("./data_sound.csv"); // ← CSVファイル名は音クイズ用
+    const data = await loadCSV("./data_sound.csv");
     quizData = pickRandom(data, 3);
     current = 0;
     score = 0;
-    renderQuestionSound();
+    renderQuestionSound(); // ← 専用関数呼び出し
   } catch (e) {
     alert("CSVを読み込めませんでした。");
     console.error(e);

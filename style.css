@@ -3,6 +3,11 @@
    PCもスマホも黒背景で全体表示
    ============================== */
 
+/* ==============================
+   🎯 9:16 固定で常に画面いっぱいにフィット
+   JS不要版（CSSだけでスケーリング）
+   ============================== */
+
 html, body {
   margin: 0;
   padding: 0;
@@ -18,6 +23,38 @@ html, body {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* 💡 ゲーム領域：常に9:16を維持しつつ、画面いっぱいに */
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: 9 / 16; /* ← これが重要 */
+  background: url("背景.png") repeat;
+  background-size: 120px 120px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  /* 中央固定 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 横長画面（PCなど）の場合は高さを優先して中央寄せ */
+  max-height: 100vh;
+  max-width: calc(100vh * 9 / 16);
+}
+
+/* 縦長画面（スマホなど）の場合は幅を優先して中央寄せ */
+@media (orientation: portrait) {
+  #app {
+    max-width: 100vw;
+    max-height: calc(100vw * 16 / 9);
+  }
+}
+
 
 /* 💡 ゲーム領域（固定解像度） */
 #app {

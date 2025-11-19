@@ -33,30 +33,32 @@ function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
-  // 問題文と画像を設定
-  document.getElementById("question-text").textContent = q.question;
-  document.getElementById("question-image").src = q.image;
-
-  // 選択肢のコンテナを初期化
+  const questionText = document.getElementById("question-text");
+  const questionImage = document.getElementById("question-image");
   const choices = document.getElementById("choices");
+
+  questionText.textContent = q.question || "";
+  questionImage.src = q.image || "";
   choices.innerHTML = "";
 
-  // ✅ choice1〜3 が存在するかチェックして安全に配列化
+  // ✅ choice1_img と choice1 のどちらにも対応
   const opts = [
-    q.choice1_img ? { img: q.choice1_img, correct: true } : null,
-    q.choice2_img ? { img: q.choice2_img, correct: false } : null,
-    q.choice3_img ? { img: q.choice3_img, correct: false } : null
-  ].filter(Boolean); // nullを除外して安全にする
+    q.choice1_img || q.choice1 ? { img: q.choice1_img || q.choice1, correct: true } : null,
+    q.choice2_img || q.choice2 ? { img: q.choice2_img || q.choice2, correct: false } : null,
+    q.choice3_img || q.choice3 ? { img: q.choice3_img || q.choice3, correct: false } : null
+  ].filter(Boolean);
 
-  // ✅ デバッグ用（もしCSVのchoice3_imgが欠けてるとここに出ます）
+  console.log("✅ 抽出された選択肢:", opts);
+
+  // ✅ エラー表示（CSVの行に問題がある場合）
   if (opts.length < 3) {
     console.warn("⚠️ 選択肢が3つ未満の問題があります:", q);
   }
 
-  // ✅ ランダム並び替え
+  // ランダム順に並び替え
   opts.sort(() => Math.random() - 0.5);
 
-  // ✅ 選択肢を描画
+  // DOMに反映
   opts.forEach(o => {
     const div = document.createElement("div");
     div.className = "choice-item";

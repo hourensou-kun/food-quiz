@@ -79,7 +79,7 @@ function renderQuestion() {
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
   const judgeText = document.getElementById("judge-text");
-  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
+  judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
   if (isCorrect) score++;
   show("judge-screen");
 
@@ -100,8 +100,8 @@ function showAnswer(q) {
 
   const next = document.getElementById("next-btn");
   next.textContent = current >= quizData.length - 1
-    ? "けっかをみる ▶️"
-    : "つぎのもんだいへ ▶️";
+    ? "けっかをみる"
+    : "つぎのもんだいへ";
 
  next.onclick = () => {
   video.pause(); // ← 答えあわせ動画を止めて次へ
@@ -109,7 +109,7 @@ function showAnswer(q) {
     renderResult();
   } else {
     current++;
-    renderQuestion(); // ✅ ← これに修正！
+    renderQuestion(); 
   }
 };
 
@@ -240,7 +240,7 @@ next.onclick = () => {
     renderResult();
   } else {
     current++;
-    renderQuestionSound(); // ✅ ← ここを修正！
+    renderQuestionSound(); 
   }
   };
 

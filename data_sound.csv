@@ -1,0 +1,7 @@
+question,image,choice1_img,choice1_text,choice2_img,choice2_text,answer_video
+どっちのたべものをりょうりしているかな,video/hourensou-kun_cut.gif,image/greenpepper.png,ピーマン,image/peach.png,もも,video/greenpepper_sound.mov
+どっちのたべもののかわをむいているかな,video/hourensou-kun_cut.gif,image/onion.png,たまねぎ,image/banana.png,バナナ,video/onion_sound.mov
+どっちのたべもののかわをむいているかな,video/hourensou-kun_cut.gif,image/apple.png,りんご,image/orange.png,みかん（オレンジ）,video/apple_sound.mov
+どっちのたべものをきっているかな,video/hourensou-kun_cut.gif,image/lotusroot.png,れんこん,image/peach.png,もも,video/lotusroot_sound.mov
+どっちのたべもののかわをむいているかな,video/hourensou-kun_cut.gif,image/orange.png,みかん（オレンジ）,image/okura.png,オクラ,video/orange_sound.mov
+どっちのたべものをきっているかな？,video/hourensou-kun_cut.gif,image/cabbage.png,キャベツ,image/peach.png,もも,video/cabbage_sound.mov

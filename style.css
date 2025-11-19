@@ -203,9 +203,8 @@ button:disabled {
 }
 
 /* ==============================
-   🎨 問題画面レイアウト調整（#quiz-screen 限定）
+   🎨 音クイズ画面（#quiz-screen）
    ============================== */
-
 #quiz-screen {
   display: flex;
   flex-direction: column;
@@ -213,57 +212,103 @@ button:disabled {
   justify-content: flex-start;
   padding: 3vh 2vw;
   box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
-/* 問題文 */
+/* ==== 上：問題文（ピンク帯） ==== */
 #quiz-screen #question-text {
   background-color: #ffe9e3;
   border: 2px solid #f7b2a2;
-  border-radius: 10px;
-  padding: 10px 14px;
-  width: 85%;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 90%;
   font-size: 1.3rem;
   text-align: center;
-  line-height: 1.4;
-  margin-bottom: 2vh;
+  margin-bottom: 1.5vh;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* 問題画像 */
-#quiz-screen #question-image {
-  width: 60%;
-  max-width: 400px;
-  height: auto;
+/* ==== 中央：動画／画像枠（緑） ==== */
+#quiz-screen .media-frame {
+  background-color: #eaffea;
+  border: 2px solid #b6e7b6;
   border-radius: 14px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-  margin: 2vh 0 3vh 0;
-  object-fit: contain;
-}
-
-/* 選択肢3つを縦並びに */
-#quiz-screen #choices {
+  width: 90%;
+  aspect-ratio: 16 / 9;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5vh;
-  width: 80%;
+  margin-bottom: 3vh;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 選択肢カード */
+/* 中の動画 or 画像 */
+#quiz-screen video,
+#quiz-screen img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* ==== 下：選択肢（青枠） ==== */
+#quiz-screen #choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 1.5vh;
+  justify-items: center;
+  align-items: center;
+  width: 90%;
+  margin-top: auto;
+}
+
+/* 1つめは中央寄せ */
+#quiz-screen #choices .choice-item:nth-child(1) {
+  grid-column: 1 / 3;
+  justify-self: center;
+}
+
+/* 各選択肢（青いカード） */
 #quiz-screen .choice-item {
-  background-color: #fff;
+  background-color: #e0f7fa;
   border: 2px solid #f8b6a8;
-  border-radius: 14px;
-  width: 80%;
-  max-width: 300px;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 200px;
   aspect-ratio: 1 / 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+#quiz-screen .choice-item img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+#quiz-screen .choice-item:active {
+  transform: scale(0.96);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* ==== スマホ向け ==== */
+@media (max-width: 768px) {
+  #quiz-screen #question-text {
+    font-size: 1.1rem;
+  }
+  #quiz-screen .media-frame {
+    width: 95%;
+    margin-bottom: 2vh;
+  }
+  #quiz-screen .choice-item {
+    max-width: 160px;
+  }
+}
+
 
 /* 選択肢画像 */
 #quiz-screen .choice-item img {

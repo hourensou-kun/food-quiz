@@ -203,10 +203,9 @@ button:disabled {
 }
 
 /* ==============================
-   🎨 問題画面レイアウト調整（16:9内で最適化）
+   🎨 問題画面レイアウト調整（#quiz-screen 限定）
    ============================== */
 
-/* 画面全体で中央寄せを保つ */
 #quiz-screen {
   display: flex;
   flex-direction: column;
@@ -216,8 +215,8 @@ button:disabled {
   box-sizing: border-box;
 }
 
-/* 問題文（幅広く・中央寄せ・少し大きめ） */
-#question-text {
+/* 問題文 */
+#quiz-screen #question-text {
   background-color: #ffe9e3;
   border: 2px solid #f7b2a2;
   border-radius: 10px;
@@ -229,8 +228,8 @@ button:disabled {
   margin-bottom: 2vh;
 }
 
-/* 問題画像（中央に・横幅の6割程度） */
-#question-image {
+/* 問題画像 */
+#quiz-screen #question-image {
   width: 60%;
   max-width: 400px;
   height: auto;
@@ -240,8 +239,8 @@ button:disabled {
   object-fit: contain;
 }
 
-/* 選択肢3つを縦に並べる（間隔一定） */
-#choices {
+/* 選択肢3つを縦並びに */
+#quiz-screen #choices {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -250,8 +249,8 @@ button:disabled {
   width: 80%;
 }
 
-/* 各選択肢カード（幅広・高さ一定・中央寄せ） */
-.choice-item {
+/* 選択肢カード */
+#quiz-screen .choice-item {
   background-color: #fff;
   border: 2px solid #f8b6a8;
   border-radius: 14px;
@@ -266,8 +265,8 @@ button:disabled {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* 選択肢の画像（やや小さめ） */
-.choice-item img {
+/* 選択肢画像 */
+#quiz-screen .choice-item img {
   width: 70%;
   height: auto;
   object-fit: contain;
@@ -275,25 +274,26 @@ button:disabled {
   margin-bottom: 6px;
 }
 
-/* 選択肢タップ時 */
-.choice-item:active {
+/* タップアニメ */
+#quiz-screen .choice-item:active {
   transform: scale(0.95);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* スマホでは少し縮めて詰まりすぎないように */
+/* スマホ微調整 */
 @media (max-width: 768px) {
-  #question-text {
+  #quiz-screen #question-text {
     font-size: 1.1rem;
   }
-  #question-image {
+  #quiz-screen #question-image {
     width: 70%;
     margin: 2vh 0;
   }
-  .choice-item {
+  #quiz-screen .choice-item {
     width: 90%;
     max-width: none;
     aspect-ratio: 1 / 1;
   }
 }
+
 

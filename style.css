@@ -1,185 +1,172 @@
-/* ===== 背景（方眼紙） ===== */
-body {
+/* ==============================
+   💻 1920x1080固定レイアウト
+   ============================== */
+
+/* 💡 全体背景（方眼紙など） */
+html, body {
   margin: 0;
-  font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  padding: 0;
+  width: 100%;
+  height: 100%;
   background: url("背景.png") repeat;
   background-size: 100px 100px;
-  background-attachment: fixed;
-  color: #333;
-  text-align: center;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* ===== アプリ全体コンテナ ===== */
-#app {
-  max-width: 480px;
-  margin: 40px auto;
-  padding: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ===== 共通：カード枠（中央に少し小さめ16:9） ===== */
-.screen {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.93);
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  box-sizing: border-box;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
-  animation: fadein 0.4s ease;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
-
-  /* 💡 PC・横向き画面用（やや小さめ） */
-  width: 90vw;
-  height: calc(90vw * 9 / 16); /* 16:9比率を維持しつつ少し縮小 */
-  max-height: 80vh;            /* 画面高さの80%まで */
+  font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  color: #333;
+  user-select: none;
 }
 
-/* 💡 スマホ縦画面用（高さ基準・少し小さめ） */
-@media (orientation: portrait) {
-  .screen {
-    height: 80vh;                    /* 画面の80%の高さまで */
-    width: calc(80vh * 16 / 9);      /* 高さ基準で16:9を維持 */
-    max-width: 90vw;                 /* はみ出さないよう制限 */
+/* 💡 ゲーム全体：1920x1080固定サイズ */
+#app {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+/* 💡 画面サイズに合わせて自動スケーリング（比率維持） */
+@media (max-width: 1920px), (max-height: 1080px) {
+  #app {
+    transform: scale(calc(min(100vw / 1920, 100vh / 1080)));
   }
 }
 
-/* アクティブ画面のみ表示 */
+/* 💡 各画面（.screen） */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  box-sizing: border-box;
+  animation: fadein 0.4s ease;
+}
+
 .screen.active {
   display: flex;
-  opacity: 1;
-  pointer-events: auto;
 }
 
-
-/* ===== 画面フェード ===== */
+/* 💡 フェードイン効果 */
 @keyframes fadein {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; filter: blur(2px); }
+  to { opacity: 1; filter: blur(0); }
 }
 
-/* ===== タイトル ===== */
+/* ====== タイトル ====== */
 #title-screen h1 {
-  font-size: 2.4em;
+  font-size: 4rem;
   color: #ff9800;
-  text-shadow: 2px 2px 0 #fff, 3px 3px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 0 #fff, 4px 4px 8px rgba(0,0,0,0.3);
 }
 #title-screen h2 {
-  font-size: 1.1em;
+  font-size: 1.8rem;
   color: #555;
 }
 #title-screen h3 {
-  font-size: 0.9em;
+  font-size: 1.2rem;
   color: #777;
 }
 
-/* ===== ボタン ===== */
+/* ====== ボタン ====== */
 button {
   background: linear-gradient(180deg, #ffd54f, #ffb300);
   border: none;
-  border-radius: 12px;
-  padding: 14px 28px;
-  margin: 10px;
-  font-size: 1.2em;
+  border-radius: 16px;
+  padding: 20px 40px;
+  margin: 16px;
+  font-size: 1.6rem;
   font-weight: bold;
   color: #333;
   cursor: pointer;
-  box-shadow: 0 4px 0 #e1a100;
+  box-shadow: 0 6px 0 #e1a100;
   transition: transform 0.1s ease;
 }
 
 button:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #e1a100;
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #e1a100;
 }
 
 button:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* ===== 問題文 ===== */
+/* ====== 問題文 ====== */
 #question-text {
   background-color: #ffe9e3;
-  border: 2px solid #f7b2a2;
-  border-radius: 10px;
-  padding: 6px 10px;
-  width: 90%;
-  font-size: 1.1em;
-  text-align: center;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-}
-
-/* ===== 問題画像 ===== */
-#question-image {
-  width: 70%;
-  max-width: 260px;
+  border: 3px solid #f7b2a2;
   border-radius: 12px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  margin-bottom: 10px;
+  padding: 20px 30px;
+  width: 80%;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* ===== 選択肢：3つ（1＋2レイアウト） ===== */
+/* ====== 問題画像 ====== */
+#question-image {
+  width: 40%;
+  max-width: 600px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  margin-bottom: 40px;
+}
+
+/* ====== 選択肢 ====== */
 #choices {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto auto;
-  gap: 12px;
-  justify-items: center;
-  width: 90%;
-  margin-top: 8px;
-  position: relative;
-}
-
-.choice-item:nth-child(1) {
-  grid-column: 1 / 3;
-  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
 .choice-item {
-  background-color: #e0f7fa;
-  border: 2px solid #f8b6a8;
-  border-radius: 18px;
-  width: 100%;
-  max-width: 150px;
-  aspect-ratio: 1 / 1;
+  background-color: #fff;
+  border: 3px solid #f8b6a8;
+  border-radius: 20px;
+  width: 300px;
+  height: 300px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .choice-item img {
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
+  width: 70%;
+  height: auto;
   border-radius: 10px;
+}
+
+.choice-item p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
 }
 
 .choice-item:active {
   transform: scale(0.95);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* ===== 判定画面 ===== */
+/* ====== 判定画面 ====== */
 #judge-text {
-  font-size: 4em;
+  font-size: 8rem;
   font-weight: bold;
   animation: pop 0.5s ease;
 }
@@ -190,54 +177,17 @@ button:disabled {
   100% { transform: scale(1); }
 }
 
-/* ===== 答えあわせ動画 ===== */
+/* ====== 答えあわせ動画 ====== */
 #answer-video {
-  width: 90%;
-  max-width: 400px;
-  border-radius: 12px;
-  margin: 12px 0;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  width: 80%;
+  max-width: 960px;
+  border-radius: 20px;
+  margin: 30px 0;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
 }
 
-/* ===== リザルト画面 ===== */
+/* ====== リザルト画面 ====== */
 #score-text {
-  font-size: 1.4em;
-  margin: 20px 0;
+  font-size: 2.4rem;
+  margin: 30px 0;
 }
-
-/* ===== 横向き対応 ===== */
-@media (orientation: landscape) {
-  #app {
-    margin: 20px auto;
-  }
-  .screen {
-    max-width: 640px;
-  }
-}
-
-/* 💡 スマホ・タブレットでも比率維持（1920x1080ベース） */
-#app {
-  position: relative;
-  width: 1920px;
-  height: 1080px;
-  margin: auto;
-  transform-origin: center;
-}
-
-@media (max-width: 1920px), (max-height: 1080px) {
-  #app {
-    transform: scale(calc(min(100vw / 1920, 100vh / 1080)));
-  }
-}
-
-/* 💡 フォントスケールを可変にする */
-html {
-  font-size: calc(min(1vw + 0.5vh, 18px));
-}
-
-/* 💡 アニメーションをやわらかく */
-@keyframes fadein {
-  from { opacity: 0; filter: blur(2px); }
-  to { opacity: 1; filter: blur(0); }
-}
-

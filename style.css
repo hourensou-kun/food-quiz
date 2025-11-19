@@ -1,44 +1,36 @@
 /* ==============================
-   💻 1920x1080固定レイアウト
+   💻 完全固定：1920×1080モード
    ============================== */
 
-/* 💡 全体背景（方眼紙など） */
+/* 💡 ブラウザ全体：黒背景＆中央配置 */
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
-  background: url("背景.png") repeat;
-  background-size: 100px 100px;
+  background: #000;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
   color: #333;
   user-select: none;
 }
 
-/* 💡 ゲーム全体：1920x1080固定サイズ */
+/* 💡 ゲーム画面：固定サイズ 1920x1080 */
 #app {
-  position: relative;
   width: 1920px;
   height: 1080px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  background: url("背景.png") repeat;
+  background-size: 100px 100px;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
   overflow: hidden;
-  transform-origin: center center;
 }
 
-/* 💡 画面サイズに合わせて自動スケーリング（比率維持） */
-@media (max-width: 1920px), (max-height: 1080px) {
-  #app {
-    transform: scale(calc(min(100vw / 1920, 100vh / 1080)));
-  }
-}
-
-/* 💡 各画面（.screen） */
+/* 💡 各画面：全画面配置 */
 .screen {
   position: absolute;
   inset: 0;
@@ -47,44 +39,43 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 40px;
-  box-sizing: border-box;
-  animation: fadein 0.4s ease;
+  background: rgba(255, 255, 255, 0.94);
+  animation: fadein 0.3s ease;
 }
 
 .screen.active {
   display: flex;
 }
 
-/* 💡 フェードイン効果 */
+/* ===== 画面フェード ===== */
 @keyframes fadein {
   from { opacity: 0; filter: blur(2px); }
   to { opacity: 1; filter: blur(0); }
 }
 
-/* ====== タイトル ====== */
+/* ===== タイトル ===== */
 #title-screen h1 {
   font-size: 4rem;
   color: #ff9800;
   text-shadow: 2px 2px 0 #fff, 4px 4px 8px rgba(0,0,0,0.3);
 }
 #title-screen h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #555;
 }
 #title-screen h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #777;
 }
 
-/* ====== ボタン ====== */
+/* ===== ボタン ===== */
 button {
   background: linear-gradient(180deg, #ffd54f, #ffb300);
   border: none;
   border-radius: 16px;
-  padding: 20px 40px;
+  padding: 22px 48px;
   margin: 16px;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #333;
   cursor: pointer;
@@ -102,7 +93,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ====== 問題文 ====== */
+/* ===== 問題文 ===== */
 #question-text {
   background-color: #ffe9e3;
   border: 3px solid #f7b2a2;
@@ -114,7 +105,7 @@ button:disabled {
   margin-bottom: 30px;
 }
 
-/* ====== 問題画像 ====== */
+/* ===== 問題画像 ===== */
 #question-image {
   width: 40%;
   max-width: 600px;
@@ -123,7 +114,7 @@ button:disabled {
   margin-bottom: 40px;
 }
 
-/* ====== 選択肢 ====== */
+/* ===== 選択肢（中央配置） ===== */
 #choices {
   display: flex;
   justify-content: center;
@@ -136,58 +127,11 @@ button:disabled {
   background-color: #fff;
   border: 3px solid #f8b6a8;
   border-radius: 20px;
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.choice-item img {
-  width: 70%;
-  height: auto;
-  border-radius: 10px;
-}
-
-.choice-item p {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-  margin-top: 10px;
-}
-
-.choice-item:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-/* ====== 判定画面 ====== */
-#judge-text {
-  font-size: 8rem;
-  font-weight: bold;
-  animation: pop 0.5s ease;
-}
-
-@keyframes pop {
-  0% { transform: scale(0); opacity: 0; }
-  70% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-/* ====== 答えあわせ動画 ====== */
-#answer-video {
-  width: 80%;
-  max-width: 960px;
-  border-radius: 20px;
-  margin: 30px 0;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-}
-
-/* ====== リザルト画面 ====== */
-#score-text {
-  font-size: 2.4rem;
-  margin: 30px 0;
-}
+  transition: transform 0

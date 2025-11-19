@@ -1,8 +1,8 @@
 /* ==============================
-   📱 固定基準750×1334＋スマホ自動スケーリング対応
+   🎯 完全フィット型：750×1334固定（全画面で見切れなし）
    ============================== */
 
-/* 💡 ブラウザ全体：中央配置・黒背景 */
+/* 💡 ブラウザ全体：黒背景・中央配置 */
 html, body {
   margin: 0;
   padding: 0;
@@ -18,7 +18,7 @@ html, body {
   user-select: none;
 }
 
-/* 💡 ゲーム画面（固定解像度） */
+/* 💡 ゲーム全体（基準解像度） */
 #app {
   position: relative;
   width: 750px;
@@ -32,8 +32,8 @@ html, body {
   transform-origin: top left;
 }
 
-/* 💡 画面サイズに合わせてスケーリング（スマホ・小画面対応） */
-@media screen and (max-width: 750px), screen and (max-height: 1334px) {
+/* 💡 ウィンドウサイズに応じてスケーリング（全体が見切れず表示） */
+@media screen {
   #app {
     transform: scale(calc(min(100vw / 750, 100vh / 1334)));
   }

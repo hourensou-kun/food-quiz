@@ -233,14 +233,14 @@ function showAnswerSound(q) {
     ? "けっかをみる ▶️"
     : "つぎのもんだいへ ▶️";
 
-  next.onclick = () => {
-    video.pause();
-    if (current >= quizData.length - 1) {
-      renderResult();
-    } else {
-      current++;
-      renderQuestionSound(); // ← 次も音クイズ専用で出題！
-    }
+next.onclick = () => {
+  video.pause();
+  if (current >= quizData.length - 1) {
+    renderResult();
+  } else {
+    current++;
+    renderQuestion(); // ✅ ← ここを修正！
+  }
   };
 
   show("answer-screen");

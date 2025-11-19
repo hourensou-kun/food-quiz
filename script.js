@@ -243,37 +243,5 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
   }
 };
 
-// 💡 画面スケーリング（歪み防止・黒帯OK）
-function fitToScreen() {
-  const baseWidth = 675;
-  const baseHeight = 1200;
 
-  // windowサイズを取得（モバイルSafari対策）
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
-  // 比率を維持して収まる最大スケールを計算
-  const scale = Math.min(w / baseWidth, h / baseHeight);
-
-  // スケールを適用
-  document.documentElement.style.setProperty("--scale", scale);
-
-  // #appを正確に中央配置（黒帯を均等に）
-  const app = document.getElementById("app");
-  const offsetX = (w - baseWidth * scale) / 2;
-  const offsetY = (h - baseHeight * scale) / 2;
-  app.style.position = "absolute";
-  app.style.left = `${offsetX}px`;
-  app.style.top = `${offsetY}px`;
-}
-
-window.addEventListener("resize", fitToScreen);
-window.addEventListener("orientationchange", fitToScreen);
-window.addEventListener("load", fitToScreen);
-fitToScreen();
-
-
-window.addEventListener("resize", fitToScreen);
-window.addEventListener("orientationchange", fitToScreen);
-fitToScreen();
 

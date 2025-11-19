@@ -13,7 +13,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: url("背景.png") repeat;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -355,7 +355,7 @@ button:disabled {
   align-items: flex-start;
   flex-wrap: nowrap;
   gap: 6vw;
-  margin-top: -10vh; /* ← 上方向にさらに移動（前は -6vh） */
+  margin-top: -20vh; /* ← 上方向にさらに移動（前は -6vh） */
   width: 100%;
 }
 

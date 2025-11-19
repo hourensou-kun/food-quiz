@@ -1,13 +1,13 @@
 /* ==============================
-   🎯 完全フィット：750×1334固定（PC・スマホ共通）
+   🎯 完全固定比率 750x1334
+   PCもスマホも全画面で見切れなし・黒背景OK
    ============================== */
 
-/* 💡 ブラウザ全体：黒背景＋中央配置 */
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: #000;
   overflow: hidden;
   display: flex;
@@ -16,9 +16,10 @@ html, body {
   font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
   color: #333;
   user-select: none;
+  -webkit-user-select: none;
 }
 
-/* 💡 メインゲーム領域（固定解像度 750×1334） */
+/* 💡 ゲーム全体（750x1334固定） */
 #app {
   position: relative;
   width: 750px;
@@ -29,21 +30,24 @@ html, body {
   overflow: hidden;
   border-radius: 16px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+
+  /* 中央に固定・比率維持でスケール */
   transform-origin: center center;
-  transform: scale(calc(min(100vw / 750, 100vh / 1334)));
+  transform: scale(var(--scale));
 }
 
-/* 💡 スマホでのはみ出し防止 */
-@media screen and (max-width: 768px) {
-  html, body {
-    overflow: hidden;
-  }
-  #app {
-    transform: scale(calc(min(100vw / 750, 100vh / 1334)));
+/* 💡 スケールをウィンドウに合わせて自動計算 */
+:root {
+  --scale: 1;
+}
+
+@media screen {
+  body {
+    /* JSでscaleを制御するので空に */
   }
 }
 
-/* ===== 共通画面設定 ===== */
+/* 💡 各画面 */
 .screen {
   position: absolute;
   inset: 0;
@@ -55,18 +59,16 @@ html, body {
   background: rgba(255,255,255,0.95);
   animation: fadein 0.3s ease;
 }
-
 .screen.active {
   display: flex;
 }
 
-/* ===== フェードアニメ ===== */
 @keyframes fadein {
   from { opacity: 0; filter: blur(2px); }
   to { opacity: 1; filter: blur(0); }
 }
 
-/* ===== タイトル ===== */
+/* ===== タイトル画面 ===== */
 #title-screen h1 {
   font-size: 2.6rem;
   color: #ff9800;
@@ -96,12 +98,10 @@ button {
   box-shadow: 0 5px 0 #e1a100;
   transition: transform 0.1s ease;
 }
-
 button:active {
   transform: translateY(3px);
   box-shadow: 0 2px 0 #e1a100;
 }
-
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -138,7 +138,6 @@ button:disabled {
   flex-wrap: wrap;
   width: 90%;
 }
-
 .choice-item {
   background-color: #fff;
   border: 2px solid #f8b6a8;
@@ -152,20 +151,17 @@ button:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-
 .choice-item img {
   width: 70%;
   height: auto;
   border-radius: 8px;
 }
-
 .choice-item p {
   font-size: 1.1rem;
   font-weight: bold;
   color: #333;
   margin-top: 8px;
 }
-
 .choice-item:active {
   transform: scale(0.95);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -177,14 +173,13 @@ button:disabled {
   font-weight: bold;
   animation: pop 0.5s ease;
 }
-
 @keyframes pop {
   0% { transform: scale(0); opacity: 0; }
   70% { transform: scale(1.2); opacity: 1; }
   100% { transform: scale(1); }
 }
 
-/* ===== 答え合わせ動画 ===== */
+/* ===== 答えあわせ動画 ===== */
 #answer-video {
   width: 90%;
   max-width: 600px;

@@ -55,26 +55,30 @@ html, body {
   }
 }
 
-/* 💡 各画面共通設定 */
+/* 💡 すべての画面を完全に非表示スタートに */
 .screen {
   position: absolute;
   inset: 0;
-  display: none;
+  display: none !important; /* ←完全に隠す */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255, 255, 255, 0.95);
   animation: fadein 0.3s ease;
-}
-.screen.active {
-  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
 }
 
-@keyframes fadein {
-  from { opacity: 0; filter: blur(2px); }
-  to { opacity: 1; filter: blur(0); }
+/* 💡 表示中（active）の画面だけ表示＆前面へ */
+.screen.active {
+  display: flex !important;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
 }
+
 
 /* ===== タイトル ===== */
 #title-screen h1 {

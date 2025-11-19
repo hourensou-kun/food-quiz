@@ -345,21 +345,22 @@ button:disabled {
   }
 }
 
-/* ===== 音クイズの2択配置調整 ===== */
+/* ===== 音クイズの2択配置調整（Safari対応） ===== */
 .choice-container {
-  margin-top: -4vh; /* ← 全体をちょっと上に */
+  margin-top: -8vh; /* 上方向にしっかり移動 */
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 5vw;
+  align-items: flex-start;
+  gap: 6vw;
   flex-wrap: wrap;
+  transform: translateY(-2vh); /* Safari対策の追加補正 */
 }
 
-/* スマホ向け微調整 */
+/* スマホ・小画面向け微調整 */
 @media (max-width: 768px) {
   .choice-container {
-    margin-top: -6vh; /* スマホではもう少し上へ */
+    margin-top: -10vh;
     gap: 4vw;
+    transform: translateY(-3vh);
   }
 }
-

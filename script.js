@@ -103,15 +103,16 @@ function showAnswer(q) {
     ? "けっかをみる ▶️"
     : "つぎのもんだいへ ▶️";
 
-  next.onclick = () => {
-    video.pause(); // ← 答えあわせ動画を止めて次へ
-    if (current >= quizData.length - 1) {
-      renderResult();
-    } else {
-      current++;
-      renderQuestionSound();
-    }
-  };
+ next.onclick = () => {
+  video.pause(); // ← 答えあわせ動画を止めて次へ
+  if (current >= quizData.length - 1) {
+    renderResult();
+  } else {
+    current++;
+    renderQuestion(); // ✅ ← これに修正！
+  }
+};
+
 
   show("answer-screen");
 }
@@ -239,7 +240,7 @@ next.onclick = () => {
     renderResult();
   } else {
     current++;
-    renderQuestion(); // ✅ ← ここを修正！
+    renderQuestionSound(); // ✅ ← ここを修正！
   }
   };
 

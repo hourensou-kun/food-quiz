@@ -345,22 +345,37 @@ button:disabled {
   }
 }
 
-/* ===== 音クイズの2択配置調整（Safari対応） ===== */
+
+/* ==============================
+   🎵 音クイズ（2択用）の配置
+   ============================== */
 .choice-container {
-  margin-top: -8vh; /* 上方向にしっかり移動 */
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  flex-wrap: nowrap;
   gap: 6vw;
-  flex-wrap: wrap;
-  transform: translateY(-2vh); /* Safari対策の追加補正 */
+  margin-top: -6vh; /* ← 上方向へ配置 */
+  width: 100%;
 }
 
-/* スマホ・小画面向け微調整 */
+/* カードサイズ調整（音クイズ2択用） */
+.choice-container .choice-item {
+  width: 30%;
+  max-width: 220px;
+  aspect-ratio: 1 / 1;
+}
+
+/* スマホ時（より上に＆間隔を狭く） */
 @media (max-width: 768px) {
   .choice-container {
-    margin-top: -10vh;
+    margin-top: -8vh;
     gap: 4vw;
-    transform: translateY(-3vh);
+  }
+
+  .choice-container .choice-item {
+    width: 38%;
+    max-width: none;
   }
 }
+

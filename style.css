@@ -28,7 +28,7 @@ html, body {
 #app {
   position: relative;
   width: 95vw;
-  height: 90vh;
+  height: 95vh;
   aspect-ratio: 9 / 16; /* ← これが重要 */
   background: url("背景.png") repeat;
   background-size: 120px 120px;

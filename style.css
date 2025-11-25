@@ -27,7 +27,7 @@ html, body {
 /* 💡 ゲーム領域：常に9:16を維持しつつ、画面いっぱいに */
 #app {
   position: relative;
-  width: 97vw;
+  width: 95vw;
   height: 90vh;
   aspect-ratio: 9 / 16; /* ← これが重要 */
   background: url("背景.png") repeat;

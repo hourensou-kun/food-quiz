@@ -379,3 +379,65 @@ button:disabled {
   }
 }
 
+/* ==========================================
+   🎨 すべての選択肢を「正方形」に統一
+   - 3択：上1＋下2
+   - 2択：上に横並びで表示（Safari/Chrome両対応）
+   ========================================== */
+
+/* 選択肢ブロック（共通） */
+#choices {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 2vh; /* 行間調整 */
+  margin-top: 2vh;
+}
+
+/* 各選択肢カード → 正方形固定 */
+.choice-item {
+  width: 32vw;          /* 正方形になるように */
+  height: 32vw;         /* ← 高さと幅を同じにする */
+  max-width: 280px;     /* 大きくなりすぎないように */
+  max-height: 280px;
+  background: #e6f8ff;
+  border: 2px solid #f8b6a8;
+  border-radius: 18px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px;
+}
+
+/* 選択肢画像（中央で縮小表示） */
+.choice-item img {
+  width: 70%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+/* ------------------------------
+   🎯 2択のときは位置を上に持ち上げる
+   （Safari / Chrome 両対応）
+   ------------------------------ */
+
+.choice-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 4vw;
+  margin-top: -6vh;   /* ← 上方向に持ち上げる */
+}
+
+@media (min-width: 768px) {
+  .choice-container {
+    margin-top: -4vh; /* PCは少し控えめ */
+  }
+}

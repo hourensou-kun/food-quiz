@@ -235,7 +235,7 @@ function renderQuestionSound() {
 
   currentMode = "sound";
   // 音クイズ中はクイズBGMを小さく
-  setBGM("quiz", 0.25);
+  setBGM("quiz", 0.05);
 
   // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
@@ -297,7 +297,7 @@ function renderQuestionSound() {
 // 判定（音クイズ）
 function handleAnswerSound(isCorrect, q) {
   const judgeText = document.getElementById("judge-text");
-  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
+  judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
 
   const se = isCorrect ? seCorrect : seWrong;
   se.currentTime = 0;
@@ -319,7 +319,7 @@ function showAnswerSound(q) {
   video.style.display = "block";
 
   // 音クイズ中なので、ここでも小さめのまま
-  setBGM("quiz", 0.25);
+  setBGM("quiz", 0.05);
 
   video.play().catch((e) => console.warn("動画再生エラー:", e));
 

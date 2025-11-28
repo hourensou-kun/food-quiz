@@ -5,6 +5,8 @@
 let quizData = [];
 let current = 0;
 let score = 0;
+let lastScreenId = null;  
+
 
 // 「形」クイズか「音」クイズか（BGM音量調整用）
 let currentMode = null; // "shape" or "sound"
@@ -426,62 +428,62 @@ document.getElementById("back-btn").onclick = () => {
   // タイトルのBGMを再生（強制ON）
   setBGM("title", 1.0);
 };
+// ==============================
+// 📂 メニュー関連
+// ==============================
 
-// ==============================
-// 🌟 メニューとチュートリアル
-// ==============================
 const menuBtn = document.getElementById("menu-btn");
-const menuOverlay = document.getElementById("menu-overlay");
-const tutorialOverlay = document.getElementById("tutorial-overlay");
+const menuBackGameBtn = document.getElementById("menu-back-game-btn");
+const menuToTitleBtn = document.getElementById("menu-to-title-btn");
+const menuToTutorialBtn = document.getElementById("menu-to-tutorial-btn");
+const tutorialBackMenuBtn = document.getElementById("tutorial-back-menu-btn");
 
-const menuContinueBtn = document.getElementById("menu-continue-btn");
-const menuTitleBtn = document.getElementById("menu-title-btn");
-const menuTutorialBtn = document.getElementById("menu-tutorial-btn");
-const tutorialBackBtn = document.getElementById("tutorial-back-btn");
+// 今表示している画面を調べるヘルパー
+function getActiveScreenId() {
+  const active = document.querySelector(".screen.active");
+  return active ? active.id : null;
+}
 
-// メニューボタンを押したとき
+// メニューをひらく
 if (menuBtn) {
   menuBtn.onclick = () => {
-    const active = document.querySelector(".screen.active");
-    lastScreenBeforeMenu = active ? active.id : null;
-    menuOverlay.classList.remove("hidden");
+    // ひらく前の画面を覚えておく
+    lastScreenId = getActiveScreenId() || "quiz-screen";
+    show("menu-screen");
   };
 }
 
 // 「ゲームにもどる」
-if (menuContinueBtn) {
-  menuContinueBtn.onclick = () => {
-    menuOverlay.classList.add("hidden");
-    if (lastScreenBeforeMenu) {
-      show(lastScreenBeforeMenu);
+if (menuBackGameBtn) {
+  menuBackGameBtn.onclick = () => {
+    if (lastScreenId) {
+      show(lastScreenId);
+    } else {
+      show("quiz-screen");
     }
   };
 }
 
-// 「タイトルにもどる」
-if (menuTitleBtn) {
-  menuTitleBtn.onclick = () => {
-    menuOverlay.classList.add("hidden");
-    show("title-screen");
-    // 🎵 タイトルBGMを必ず鳴らす（すでに setBGM がある前提）
-    if (typeof setBGM === "function") {
-      setBGM("title", 1.0);
-    }
+// 「タイトルへ」 → 全部リセットして最初から
+if (menuToTitleBtn) {
+  menuToTitleBtn.onclick = () => {
+    // すでに「はじめにもどる」で location.reload() を使っているので、
+    // 同じ動きに合わせます
+    location.reload();
   };
 }
 
-// 「あそびかた」→ チュートリアル画面へ
-if (menuTutorialBtn) {
-  menuTutorialBtn.onclick = () => {
-    menuOverlay.classList.add("hidden");
-    tutorialOverlay.classList.remove("hidden");
+// 「あそびかた」 → チュートリアル画面へ
+if (menuToTutorialBtn) {
+  menuToTutorialBtn.onclick = () => {
+    show("tutorial-screen");
   };
 }
 
-// チュートリアルからメニューにもどる
-if (tutorialBackBtn) {
-  tutorialBackBtn.onclick = () => {
-    tutorialOverlay.classList.add("hidden");
-    menuOverlay.classList.remove("hidden");
+// チュートリアルの「メニューにもどる」
+if (tutorialBackMenuBtn) {
+  tutorialBackMenuBtn.onclick = () => {
+    show("menu-screen");
   };
 }
+

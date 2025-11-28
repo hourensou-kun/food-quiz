@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 9:16 固定レイアウト　ver1．5
+   🎯 9:16 固定レイアウト　ver1．6
    ============================== */
 
 html,
@@ -23,7 +23,7 @@ body {
   position: relative;
   width: 99vw;
   height: 99vh;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 3 / 4;
   background-color: #fffef6;  /* うすいクリーム色 */
   border-radius: 22px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
@@ -34,14 +34,14 @@ body {
   align-items: center;
 
   max-height: 100vh;
-  max-width: calc(100vh * 9 / 16);
+  max-width: calc(100vh * 3 / 4);
 }
 
 /* 縦長端末向け保険 */
 @media (orientation: portrait) {
   #app {
     max-width: 100vw;
-    max-height: calc(100vw * 16 / 9);
+    max-height: calc(100vw * 4 / 4);
   }
 }
 

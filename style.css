@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 3:4 固定レイアウト　ver1．6
+   🎯 3:4 固定レイアウト　ver1．7
    ============================== */
 
 html,
@@ -45,22 +45,59 @@ body {
   }
 }
 
+
 /* ==============================
    🖥 画面共通
    ============================== */
 
-/* ベースは全部 flex にしておく */
+/* 画面本体：背景は透明にして、白いカードは ::before で描く */
 .screen {
   position: absolute;
   inset: 0;
-  display: flex;
+  display: none !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: rgba(255, 255, 255, 0.95); /* 白で覆って下の画面を隠す */
-  animation: fadein 0.25s ease;
+
+  /* ここがポイント：背景を透明にして、
+     外側のマス目模様を見えるようにする */
+  background: transparent;
+
+  animation: fadein 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
 }
+
+/* 表示中 */
+.screen.active {
+  display: flex !important;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* すべての画面に共通の「白いカード」（3:4 比率） */
+.screen::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 💡 ここで 3:4 のカードにする */
+  width: 92%;
+  max-width: 680px;
+  aspect-ratio: 3 / 4;
+
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
+
+  z-index: -1; /* 画面の中身より後ろに置く */
+}
+
 
 /* active が付いていない画面は必ず非表示にする（保険） */
 .screen:not(.active) {

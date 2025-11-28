@@ -84,13 +84,39 @@
   </section>
 
 </div>
+      <!-- ⑦ メニュー画面 -->
+    <section id="menu-screen" class="screen">
+      <div class="menu-panel">
+        <h2>メニュー</h2>
+        <button id="menu-back-game-btn">ゲームにもどる</button>
+        <button id="menu-to-title-btn">タイトルへ</button>
+        <button id="menu-to-tutorial-btn">あそびかた</button>
+      </div>
+    </section>
 
-  </div> <!-- #app の閉じタグのすぐ後ろに追加 -->
+    <!-- ⑧ チュートリアル画面 -->
+    <section id="tutorial-screen" class="screen">
+      <div class="menu-panel tutorial-panel">
+        <h2>あそびかた</h2>
 
-  <!-- 🎵 効果音 & BGM -->
-  <audio id="se-correct" src="music/Quiz-Ding_Dong05-4(Slow-Short).mp3" preload="auto"></audio>
-  <audio id="se-wrong"   src="music/Short_Accent10-1(Low).mp3"        preload="auto"></audio>
-  <audio id="bgm"        src="music/Tekuteku_Aruko-1(Marimba).mp3"    preload="auto" loop></audio>
+        <h3>やさいをきったら どんな かたち？</h3>
+        <p>
+          ・えが とまったら、したの ３つの えの なかから<br>
+          ・「きったときの かたち」だと おもう ものを えらんでね。<br>
+          ・ただしい えを おすと「せいかい！」の こえと どうがが でてくるよ。
+        </p>
+
+        <h3>やさいをきったらどんなおと？</h3>
+        <p>
+          ・おとを よく きいて、どちらの たべものを きっているか えらぶ クイズだよ。<br>
+          ・２つの えの うち、あっていると おもう ほうを えらんでね。<br>
+          ・こたえの あとで、ほんとうの どうがが みられるよ。
+        </p>
+
+        <button id="tutorial-back-menu-btn">メニューにもどる</button>
+      </div>
+    </section>
+
 
   <script src="script.js"></script>
 </body>

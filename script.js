@@ -6,6 +6,7 @@ let quizData = [];
 let current = 0;
 let score = 0;
 let lastScreenId = null;  
+let lastQuizType = null; // "shape" か "sound" を入れる
 
 
 // 「形」クイズか「音」クイズか（BGM音量調整用）
@@ -69,6 +70,28 @@ document.addEventListener("click", (e) => {
     seButton.play().catch(() => {});
   }
 });
+
+// 形クイズ
+document.getElementById("quiz-shape-btn").onclick = async () => {
+  lastQuizType = "shape";
+  // ここから先は今までの処理のまま
+  const data = await loadCSV("./data.csv");
+  quizData = pickRandom(data, 3);
+  current = 0;
+  score = 0;
+  renderQuestion();
+};
+
+// 音クイズ
+document.getElementById("quiz-sound-btn").onclick = async () => {
+  lastQuizType = "sound";
+  const data = await loadCSV("./data_sound.csv");
+  quizData = pickRandom(data, 3);
+  current = 0;
+  score = 0;
+  renderQuestionSound();
+};
+
 
 // ==============================
 // 画面切り替え
@@ -344,6 +367,36 @@ function renderResult() {
   show("end-screen");
 }
 
+function openTutorial(forcedType) {
+  // forcedType があればそれを優先、なければ最後に遊んでいたクイズ種別
+  const type = forcedType || lastQuizType || "shape";
+
+  const titleEl = document.getElementById("tutorial-title");
+  const bodyEl = document.getElementById("tutorial-body");
+
+  if (type === "sound") {
+    // 🎵 音クイズの説明
+    titleEl.textContent = "やさいをきったらどんなおと？ のあそびかた";
+    bodyEl.innerHTML = `
+      <p>1. えのしたにある ▶ ボタンをおすと、やさいをきる「おと」が ながれます。</p>
+      <p>2. どっちの たべものを きっている おとか、よく きいて えらびましょう。</p>
+      <p>3. せいかいすると、やさいをきっている どうがが みられます。</p>
+    `;
+  } else {
+    // 🥦 形クイズの説明（デフォルト）
+    titleEl.textContent = "やさいをきったらどんなかたち？ のあそびかた";
+    bodyEl.innerHTML = `
+      <p>1. うえの しゃしんを みて、なにの やさいか かんがえましょう。</p>
+      <p>2. やさいを きったときの かたちが、したの えの どれかに でてきます。</p>
+      <p>3. 「これだ！」と おもった かたちを タップして こたえましょう。</p>
+    `;
+  }
+
+  // チュートリアル画面へ
+  show("tutorial-screen");
+}
+
+
 // ==============================
 // 🎮 イベント登録
 // ==============================
@@ -500,4 +553,12 @@ if (tutorialBackMenuBtn) {
     show("menu-screen");
   };
 }
+// 問題選択画面からのチュートリアル
+document.getElementById("tutorial-shape-btn").onclick = () => {
+  openTutorial("shape");
+};
+
+document.getElementById("tutorial-sound-btn").onclick = () => {
+  openTutorial("sound");
+};
 

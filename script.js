@@ -418,3 +418,12 @@ document.getElementById("credit-back-btn").onclick = () => {
   setBGM("title", 1.0);
 };
 
+// ==============================
+// 🔙 クイズ選択画面 → タイトルへ戻る
+// ==============================
+document.getElementById("back-btn").onclick = () => {
+  show("title-screen");
+  // タイトルのBGMを再生（強制ON）
+  setBGM("title", 1.0);
+};
+

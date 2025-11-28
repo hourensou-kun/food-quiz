@@ -420,3 +420,8 @@ button:disabled {
   margin: 0 0 8px;
 }
 
+/* クイズ画面上部を少し下げる（メニューボタンと重ならないように） */
+#quiz-screen {
+  padding-top: 6vh; /* ← 数値で調整可能（5〜8vhが最適） */
+}
+

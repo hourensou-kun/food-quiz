@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 9:16 固定レイアウト（共通）ver1.4
+   🎯 9:16 固定レイアウト　ver1．5
    ============================== */
 
 html,
@@ -8,7 +8,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background: url("背景.png") repeat;
+  background: url("背景.png") repeat;   /* 外側の模様だけ */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,15 +18,13 @@ body {
   -webkit-user-select: none;
 }
 
-/* 白いゲームカード（9:16） */
+/* 白いカード本体（中は無地） */
 #app {
   position: relative;
   width: 95vw;
   height: 95vh;
   aspect-ratio: 9 / 16;
-  background: url("背景.png") repeat;
-  background-size: 120px 120px;
-  background-color: #fff;
+  background-color: #fffef6;  /* うすいクリーム色 */
   border-radius: 22px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
   overflow: hidden;
@@ -39,7 +37,7 @@ body {
   max-width: calc(100vh * 9 / 16);
 }
 
-/* 縦長端末向けの保険 */
+/* 縦長端末向け保険 */
 @media (orientation: portrait) {
   #app {
     max-width: 100vw;
@@ -51,20 +49,22 @@ body {
    🖥 画面共通
    ============================== */
 
+/* ベースは全部 flex にしておく */
 .screen {
   position: absolute;
   inset: 0;
-  display: none;              /* JS で .active を付ける */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: transparent;    /* 背景のマス目を見せる */
+  background: rgba(255, 255, 255, 0.95); /* 白で覆って下の画面を隠す */
   animation: fadein 0.25s ease;
 }
 
-.screen.active {
-  display: flex;
+/* active が付いていない画面は必ず非表示にする（保険） */
+.screen:not(.active) {
+  display: none !important;
 }
 
 @keyframes fadein {
@@ -76,9 +76,15 @@ body {
    🎨 タイトル・ゲーム選択画面
    ============================== */
 
+#title-screen,
+#select-screen {
+  padding: 4vh 4vw;
+  box-sizing: border-box;
+}
+
 #title-screen h1 {
   font-size: 2.6rem;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   color: #ff9800;
   text-shadow: 1px 1px 0 #fff, 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -86,7 +92,7 @@ body {
 #title-screen h2 {
   font-size: 1.4rem;
   color: #555;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 #title-screen h3 {
@@ -96,7 +102,6 @@ body {
   line-height: 1.6;
 }
 
-/* 選択画面も中央寄せ */
 #select-screen h2 {
   font-size: 1.8rem;
   margin-bottom: 24px;
@@ -137,15 +142,13 @@ button:disabled {
    ============================== */
 
 #quiz-screen {
-  display: flex;
-  flex-direction: column;
+  padding: 3vh 4vw 4vh;
+  box-sizing: border-box;
   align-items: center;
   justify-content: flex-start;
-  box-sizing: border-box;
-  padding: 3vh 4vw 4vh;
 }
 
-/* 上部のピンク帯（問題文） */
+/* ピンクの問題文帯 */
 #question-text {
   background-color: #ffe3dd;
   border: 2px solid #f7b2a2;
@@ -159,7 +162,7 @@ button:disabled {
   margin: 0 0 2vh;
 }
 
-/* 中央の黄緑の枠（画像を入れる場所） */
+/* 黄緑の枠（画像・動画を入れるところ） */
 .media-frame {
   position: relative;
   width: 100%;
@@ -184,15 +187,15 @@ button:disabled {
   max-height: 100%;
   object-fit: contain;
   border-radius: 18px;
-  background: #fff;
+  background: #ffffff;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* ==============================
    🎨 3択レイアウト（クイズ1）
-   #choices 直下に .choice-item が3つ入る
    ============================== */
 
+/* 3択のときは #choices 直下に .choice-item が3つ入る */
 #choices {
   width: 100%;
   max-width: 92%;
@@ -203,7 +206,6 @@ button:disabled {
   grid-auto-rows: 1fr;
   gap: 2vh 4vw;
   justify-items: center;
-  align-items: stretch;
 }
 
 /* 正方形のカード（共通） */
@@ -246,9 +248,7 @@ button:disabled {
   box-shadow: 0 2px 0 rgba(248, 182, 168, 0.8);
 }
 
-/* 3択時：1枚目は左上、2枚目右上、3枚目左下に自然に入るので特別指定は不要 */
-
-/* スマホ少し小さめ */
+/* スマホ：カード少し小さく */
 @media (max-width: 768px) {
   .choice-item {
     max-width: 200px;
@@ -257,31 +257,28 @@ button:disabled {
 
 /* ==============================
    🎵 音クイズ（2択専用レイアウト）
-   JS で #choices の中に .choice-container を作る
    ============================== */
 
+/* JS が作る .choice-container 用
+   → 2択のときだけ使われる */
 .choice-container {
-  grid-column: 1 / 3;  /* 上の grid をまたいで中央に出す */
+  grid-column: 1 / 3;  /* 3択用グリッドをまたいで中央表示 */
   width: 100%;
-
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 5vw;
-  margin-top: 1vh; /* 黄緑の枠のすぐ下あたり */
+  margin-top: 1vh; /* 緑の枠のすぐ下あたり */
 }
 
-/* 2択用カードは少し横に広め */
 .choice-container .choice-item {
   max-width: 210px;
 }
 
-/* 文字を少し大きめに */
 .choice-container .choice-item p {
   font-size: 1.2rem;
 }
 
-/* 横幅の広い端末では余白を少し詰める */
 @media (min-width: 768px) {
   .choice-container {
     gap: 3vw;
@@ -289,7 +286,7 @@ button:disabled {
 }
 
 /* ==============================
-   🎬 判定画面／答えあわせ／結果
+   🎬 判定・答えあわせ・結果画面
    ============================== */
 
 #judge-text {

@@ -8,7 +8,7 @@ let score = 0;
 
 // BGMの音量プリセット
 const BGM_NORMAL = 0.5;  // いつもの音量
-const BGM_LOW    = 0.25; // 音クイズ中の音量
+const BGM_LOW    = 0.1; // 音クイズ中の音量
 
 /* ============================
    🎵 BGM & 効果音 ヘルパー

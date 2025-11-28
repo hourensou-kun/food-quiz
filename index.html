@@ -121,28 +121,33 @@
       </div>
     </section>
 
-    <!-- ⑧ チュートリアル画面 -->
-    <section id="tutorial-screen" class="screen">
-      <div class="menu-panel tutorial-panel">
-        <h2>あそびかた</h2>
+  <!-- ⑧ チュートリアル画面（修正版） -->
+<section id="tutorial-screen" class="screen">
+  <div class="menu-panel tutorial-panel">
 
-        <h3>やさいをきったら どんな かたち？</h3>
-        <p>
-          ・えが とまったら、したの ３つの えの なかから<br>
-          ・「きったときの かたち」だと おもう ものを えらんでね。<br>
-          ・ただしい えを おすと「せいかい！」の こえと どうがが でてくるよ。
-        </p>
+    <!-- JSが書き換えるタイトル -->
+    <h2 id="tutorial-title">あそびかた</h2>
 
-        <h3>やさいをきったらどんなおと？</h3>
-        <p>
-          ・おとを よく きいて、どちらの たべものを きっているか えらぶ クイズだよ。<br>
-          ・２つの えの うち、あっていると おもう ほうを えらんでね。<br>
-          ・こたえの あとで、ほんとうの どうがが みられるよ。
-        </p>
+    <!-- JSが書き換える本文 -->
+    <div id="tutorial-body" style="
+      width: 85%;
+      background: #fff8dc;
+      padding: 20px;
+      border-radius: 14px;
+      border: 2px solid #f0d48a;
+      text-align: left;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    ">
+      <!-- ここにJSが文章を入れる -->
+    </div>
 
-        <button id="tutorial-back-menu-btn">メニューにもどる</button>
-      </div>
-    </section>
+    <button id="tutorial-back-menu-btn">メニューにもどる</button>
+
+  </div>
+</section>
+
 
 
   <script src="script.js"></script>

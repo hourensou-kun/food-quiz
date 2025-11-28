@@ -7,58 +7,63 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="app">
+ <div id="app">
 
-    <!-- ① タイトル画面 -->
-    <section id="title-screen" class="screen active">
-      <h1>やさいクイズ！</h1>
-      <button id="start-btn">スタート</button>
-      <h2>保護者の方へ</h2>
-      <h3>このゲームでは動画を使用しています。音量にお気をつけてプレイしてください。</h3>
-    </section>
+  <!-- 🔰 0. 注意書き画面（NEW） -->
+  <section id="notice-screen" class="screen active">
+    <h2>このゲームであそぶまえに</h2>
+    <p>おうちのひとと いっしょにあそんでね。</p>
+    <p>おとがでるので、<br>ボリュームにきをつけてね。</p>
+    <button id="notice-ok-btn">つぎへ ▶️</button>
+  </section>
 
-    <!-- ② ゲーム選択画面 -->
-    <section id="select-screen" class="screen">
-      <h2>どのクイズであそぶ？</h2>
-      <button id="quiz-shape-btn">やさいをきったらどんなかたち？</button>
-      <button id="quiz-sound-btn" disabled>やさいをきったらどんなおと？</button>
-    </section>
+  <!-- ① タイトル画面（active を外す！） -->
+  <section id="title-screen" class="screen">
+    <h1>やさいクイズ！</h1>
+    <button id="start-btn">スタート</button>
+    <h2>保護者の方へ</h2>
+    <h3>このゲームでは動画を使用しています。音量にお気をつけてプレイしてください。</h3>
+  </section>
 
-    <!-- ③ 問題画面 -->
-    <section id="quiz-screen" class="screen">
-  <h2 id="question-text"></h2>
+  <!-- ② ゲーム選択画面 -->
+  <section id="select-screen" class="screen">
+    <h2>どのクイズであそぶ？</h2>
+    <button id="quiz-shape-btn">やさいをきったらどんなかたち？</button>
+    <button id="quiz-sound-btn" disabled>やさいをきったらどんなおと？</button>
+  </section>
 
-  <!-- 🔸 緑の枠で囲む（動画や画像をここに表示） -->
-  <div class="media-frame">
-    <img id="question-image" src="" alt="クイズ画像" />
-    <!-- 音クイズにしたい場合は video でもOK：
-    <video id="question-video" autoplay playsinline></video> -->
-  </div>
+  <!-- ③ 問題画面 -->
+  <section id="quiz-screen" class="screen">
+    <h2 id="question-text"></h2>
 
-  <div id="choices"></div>
-</section>
+    <div class="media-frame">
+      <img id="question-image" src="" alt="クイズ画像" />
+    </div>
 
+    <div id="choices"></div>
+  </section>
 
-    <!-- ④ 正誤判定画面 -->
-    <section id="judge-screen" class="screen">
-      <h2 id="judge-text"></h2>
-    </section>
+  <!-- ④ 正誤判定画面 -->
+  <section id="judge-screen" class="screen">
+    <h2 id="judge-text"></h2>
+  </section>
 
-    <!-- ⑤ 答えあわせ動画画面 -->
-    <section id="answer-screen" class="screen">
-      <h2>こたえあわせ！</h2>
-      <video id="answer-video" autoplay playsinline controls></video>
-      <button id="next-btn">つぎのもんだいへ ▶️</button>
-    </section>
+  <!-- ⑤ 答えあわせ動画画面 -->
+  <section id="answer-screen" class="screen">
+    <h2>こたえあわせ！</h2>
+    <video id="answer-video" autoplay playsinline controls></video>
+    <button id="next-btn">つぎのもんだいへ ▶️</button>
+  </section>
 
-    <!-- ⑥ リザルト画面 -->
-    <section id="end-screen" class="screen">
-      <h2>がんばったね！</h2>
-      <p id="score-text"></p>
-      <button id="restart-btn">はじめにもどる</button>
-    </section>
+  <!-- ⑥ リザルト画面 -->
+  <section id="end-screen" class="screen">
+    <h2>がんばったね！</h2>
+    <p id="score-text"></p>
+    <button id="restart-btn">はじめにもどる</button>
+  </section>
 
-  </div>
+</div>
+
   </div> <!-- #app の閉じタグのすぐ後ろに追加 -->
 
   <!-- 🎵 効果音 & BGM -->

@@ -41,10 +41,24 @@
   <section id="select-screen" class="screen">
     <!-- 🔙 戻るボタン -->
 <img id="back-btn" class="back-button" src="image/Back.png" alt="もどる" />
-    <h2>どのクイズであそぶ？</h2>
+    
+  <h2>どのクイズであそぶ？</h2>
+
+  <div class="quiz-item">
     <button id="quiz-shape-btn">やさいをきったらどんなかたち？</button>
-    <button id="quiz-sound-btn" disabled>やさいをきったらどんなおと？</button>
-  </section>
+    <button id="tutorial-shape-btn" class="sub-btn">
+      このクイズのあそびかた
+    </button>
+  </div>
+
+  <div class="quiz-item">
+    <button id="quiz-sound-btn">やさいをきったらどんなおと？</button>
+    <button id="tutorial-sound-btn" class="sub-btn">
+      このクイズのあそびかた
+    </button>
+  </div>
+</section>
+
 
   <!-- ③ 問題画面 -->
 <section id="quiz-screen" class="screen">

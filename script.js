@@ -427,3 +427,61 @@ document.getElementById("back-btn").onclick = () => {
   setBGM("title", 1.0);
 };
 
+// ==============================
+// 🌟 メニューとチュートリアル
+// ==============================
+const menuBtn = document.getElementById("menu-btn");
+const menuOverlay = document.getElementById("menu-overlay");
+const tutorialOverlay = document.getElementById("tutorial-overlay");
+
+const menuContinueBtn = document.getElementById("menu-continue-btn");
+const menuTitleBtn = document.getElementById("menu-title-btn");
+const menuTutorialBtn = document.getElementById("menu-tutorial-btn");
+const tutorialBackBtn = document.getElementById("tutorial-back-btn");
+
+// メニューボタンを押したとき
+if (menuBtn) {
+  menuBtn.onclick = () => {
+    const active = document.querySelector(".screen.active");
+    lastScreenBeforeMenu = active ? active.id : null;
+    menuOverlay.classList.remove("hidden");
+  };
+}
+
+// 「ゲームにもどる」
+if (menuContinueBtn) {
+  menuContinueBtn.onclick = () => {
+    menuOverlay.classList.add("hidden");
+    if (lastScreenBeforeMenu) {
+      show(lastScreenBeforeMenu);
+    }
+  };
+}
+
+// 「タイトルにもどる」
+if (menuTitleBtn) {
+  menuTitleBtn.onclick = () => {
+    menuOverlay.classList.add("hidden");
+    show("title-screen");
+    // 🎵 タイトルBGMを必ず鳴らす（すでに setBGM がある前提）
+    if (typeof setBGM === "function") {
+      setBGM("title", 1.0);
+    }
+  };
+}
+
+// 「あそびかた」→ チュートリアル画面へ
+if (menuTutorialBtn) {
+  menuTutorialBtn.onclick = () => {
+    menuOverlay.classList.add("hidden");
+    tutorialOverlay.classList.remove("hidden");
+  };
+}
+
+// チュートリアルからメニューにもどる
+if (tutorialBackBtn) {
+  tutorialBackBtn.onclick = () => {
+    tutorialOverlay.classList.add("hidden");
+    menuOverlay.classList.remove("hidden");
+  };
+}

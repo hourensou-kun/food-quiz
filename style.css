@@ -332,3 +332,26 @@ button:disabled {
   margin: 1vh 0;
   color: #555;
 }
+/* ===== 🔙 戻るボタン ===== */
+.back-button {
+  position: absolute;
+  top: 2vh;
+  left: 2vh;
+  width: 60px;
+  height: 60px;
+  z-index: 30;
+
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 0 #e6c48c;
+  padding: 8px;
+  object-fit: contain;
+
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.back-button:active {
+  transform: scale(0.92);
+}
+

@@ -1,45 +1,41 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき完全版）
+// やさいクイズ script.js（BGM + 効果音つき）1.1
 // ==============================
 
 let quizData = [];
 let current = 0;
 let score = 0;
+
+// 「形」クイズか「音」クイズか（BGM音量調整用）
 let currentMode = null; // "shape" or "sound"
 
 // ==============================
 // 🎵 BGM & 効果音
 // ==============================
 
-// 単一の BGM プレイヤー（曲だけ切り替える）
+// BGMは1本だけ使う
 const bgm = new Audio();
 bgm.loop = true;
 
-let bgmStarted = false;
-let currentBgmType = null;   // "title" or "quiz"
-let currentBgmVolume = 1.0;
+// どのBGMを鳴らしているか
+const BGM_FILES = {
+  title: "music/Tekuteku_Aruko-1(Marimba).mp3",   // タイトル・セレクト用
+  quiz:  "music/Dotabata_Panic-1(Fast).mp3",      // クイズ中用
+};
+let currentBgmType = null;
 
-// 効果音（必要に応じて currentTime = 0 してから再生）
+// 効果音
 const seCorrect = new Audio("music/Quiz-Ding_Dong05-4(Slow-Short).mp3");
 const seWrong   = new Audio("music/Short_Accent10-1(Low).mp3");
 const seButton  = new Audio("music/Inspiration03-1(High).mp3");
 const seResult  = new Audio("music/Quiz-Results01-1.mp3");
 
-// BGM 種類ごとのファイル
-const BGM_FILES = {
-  title: "music/Tekuteku_Aruko-1(Marimba).mp3",      // タイトル・クイズ選択
-  quiz:  "music/Dotabata_Panic-1(Fast).mp3",         // クイズ中
-};
-
-// BGM をセット（タイプ: "title" / "quiz", volume: 0〜1）
-function setBGM(type, volume) {
-  // まだブラウザから再生許可が出ていない場合は、設定だけ覚えておく
-  if (!bgmStarted) {
-    currentBgmType = type;
-    currentBgmVolume = volume;
-    return;
-  }
-
+/**
+ * BGMを切り替えて再生する
+ * @param {"title"|"quiz"|null} type
+ * @param {number} volume 0〜1
+ */
+function setBGM(type, volume = 1.0) {
   if (!type) {
     bgm.pause();
     currentBgmType = null;
@@ -49,51 +45,22 @@ function setBGM(type, volume) {
   const src = BGM_FILES[type];
   if (!src) return;
 
-  // 曲が変わる場合のみ src を入れ替え
-  if (currentBgmType !== type) {
-    bgm.pause();
+  // 曲が違うときだけsrc入れ替え
+  if (!bgm.src.includes(src)) {
     bgm.src = src;
     currentBgmType = type;
   }
 
-  // 音量変更
-  if (currentBgmVolume !== volume) {
-    bgm.volume = volume;
-    currentBgmVolume = volume;
-  }
+  bgm.volume = volume;
 
-  if (bgm.paused) {
-    bgm.play().catch(() => {
-      // iOS 等で失敗しても、次のユーザー操作で再トライされるので無視
+  bgm
+    .play()
+    .catch((e) => {
+      console.warn("BGM再生エラー:", e);
     });
-  }
 }
 
-// 最初のユーザー操作で BGM 再生を解禁 & タイトルBGM を鳴らす
-document.addEventListener(
-  "click",
-  () => {
-    if (!bgmStarted) {
-      bgmStarted = true;
-      // その時点の画面に合わせて BGM をスタート
-      const active = document.querySelector(".screen.active");
-      if (active && active.id === "quiz-screen") {
-        // すでにクイズ画面にいたらクイズBGM
-        if (currentMode === "sound") {
-          setBGM("quiz", 0.25);
-        } else {
-          setBGM("quiz", 1.0);
-        }
-      } else {
-        // それ以外（タイトルや選択画面）はタイトルBGM
-        setBGM("title", 1.0);
-      }
-    }
-  },
-  { once: true }
-);
-
-// すべてのボタンに「ポチッ」の効果音
+// すべてのボタンに「ポチッ」SEをつける
 document.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
     seButton.currentTime = 0;
@@ -109,6 +76,19 @@ function show(id) {
     s.classList.remove("active")
   );
   document.getElementById(id).classList.add("active");
+
+  // 画面ごとのBGM（保険でここでも制御しておく）
+  if (id === "title-screen" || id === "select-screen") {
+    // タイトル系画面
+    setBGM("title", 1.0);
+  } else if (id === "quiz-screen") {
+    // クイズ画面
+    if (currentMode === "sound") {
+      setBGM("quiz", 0.25); // 音クイズは小さめ
+    } else if (currentMode === "shape") {
+      setBGM("quiz", 1.0); // 形クイズは普通の音量
+    }
+  }
 }
 
 // ==============================
@@ -126,7 +106,6 @@ async function loadCSV(path = "./data.csv") {
   });
 }
 
-// ランダム抽出
 const pickRandom = (arr, n = 3) =>
   [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
@@ -134,13 +113,13 @@ const pickRandom = (arr, n = 3) =>
 // 🥕 クイズ1：やさいをきったらどんなかたち？
 // ==============================
 
-// 問題表示
+// ---- 問題表示 ----
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   currentMode = "shape";
-  // クイズ1はクイズBGMを普通の音量で
+  // クイズ用BGM（普通の音量）
   setBGM("quiz", 1.0);
 
   const questionText = document.getElementById("question-text");
@@ -168,10 +147,12 @@ function renderQuestion() {
   opts.forEach((o) => {
     const div = document.createElement("div");
     div.className = "choice-item";
+
     const img = document.createElement("img");
     img.src = o.img;
     img.alt = "せんたくし";
     div.appendChild(img);
+
     div.onclick = () => handleAnswer(o.correct, q);
     choices.appendChild(div);
   });
@@ -179,7 +160,7 @@ function renderQuestion() {
   show("quiz-screen");
 }
 
-// 判定（クイズ1）
+// ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
   const judgeText = document.getElementById("judge-text");
   judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
@@ -192,11 +173,12 @@ function handleAnswer(isCorrect, q) {
   if (isCorrect) score++;
   show("judge-screen");
 
+  // 1秒後に答えあわせへ
   setTimeout(() => showAnswer(q), 1000);
 }
 
-// 答えあわせ（クイズ1）
-// 👉 BGM は止めない・音量もそのまま
+// ---- 答えあわせ画面（クイズ1）----
+// 🔸 クイズ1は動画中もBGMを止めない
 function showAnswer(q) {
   const video = document.getElementById("answer-video");
 
@@ -228,21 +210,21 @@ function showAnswer(q) {
 // 🎵 クイズ2：やさいをきったらどんなおと？
 // ==============================
 
-// 問題表示（音だけ＋2択＋文字つき）
+// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   currentMode = "sound";
-  // 音クイズ中はクイズBGMを小さく
-  setBGM("quiz", 0.05);
+  // クイズ用BGM（小さめ）
+  setBGM("quiz", 0.25);
 
   // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
 
   const choices = document.getElementById("choices");
-  choices.innerHTML = "";
+  choices.innerHTML = ""; // ← 前問のHTMLを確実にリセット
 
   // 出題時に「音声だけ」再生（映像非表示）
   const video = document.getElementById("answer-video");
@@ -250,7 +232,7 @@ function renderQuestionSound() {
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "none"; // 出題時は音だけ
+  video.style.display = "none"; // ← 出題時は音だけ
   video.play().catch((e) => console.warn("音声再生エラー:", e));
 
   // 2択（画像＋文字、左右ランダム）
@@ -259,6 +241,7 @@ function renderQuestionSound() {
     { img: q.choice2_img, text: q.choice2_text, correct: false },
   ].sort(() => Math.random() - 0.5);
 
+  // コンテナ生成
   const container = document.createElement("div");
   container.className = "choice-container";
   container.style.display = "flex";
@@ -284,7 +267,7 @@ function renderQuestionSound() {
 
     div.onclick = () => {
       video.pause(); // 出題音を止める
-      handleAnswerSound(o.correct, q);
+      handleAnswerSound(o.correct, q); // ← 音クイズ専用判定へ
     };
 
     container.appendChild(div);
@@ -294,10 +277,10 @@ function renderQuestionSound() {
   show("quiz-screen");
 }
 
-// 判定（音クイズ）
+// ---- 音クイズ用：判定＆答えあわせ遷移 ----
 function handleAnswerSound(isCorrect, q) {
   const judgeText = document.getElementById("judge-text");
-  judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
+  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
 
   const se = isCorrect ? seCorrect : seWrong;
   se.currentTime = 0;
@@ -306,22 +289,22 @@ function handleAnswerSound(isCorrect, q) {
   if (isCorrect) score++;
   show("judge-screen");
 
+  // 1秒後に答えあわせへ
   setTimeout(() => showAnswerSound(q), 1000);
 }
 
-// 答えあわせ（音クイズ：動画＋BGM小さめのまま）
+// ---- 音クイズ用：答えあわせ（映像＋音で再生）----
 function showAnswerSound(q) {
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "block";
-
-  // 音クイズ中なので、ここでも小さめのまま
-  setBGM("quiz", 0.05);
-
+  video.style.display = "block"; // ← 映像を見せる
   video.play().catch((e) => console.warn("動画再生エラー:", e));
+
+  // 音クイズ中はこの画面でも小さいBGMのまま
+  setBGM("quiz", 0.25);
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -333,7 +316,7 @@ function showAnswerSound(q) {
       renderResult();
     } else {
       current++;
-      renderQuestionSound();
+      renderQuestionSound(); // ← 次も音クイズ専用で出題！
     }
   };
 
@@ -341,17 +324,19 @@ function showAnswerSound(q) {
 }
 
 // ==============================
-// 🎉 結果（クイズ1・2共通）
+// 🎉 結果表示（クイズ1・2共通）
 // ==============================
 function renderResult() {
-  document.getElementById("score-text").textContent =
-    `せいかい：${score} / ${quizData.length}`;
+  document.getElementById(
+    "score-text"
+  ).textContent = `せいかい：${score} / ${quizData.length}`;
 
-  // リザルト用SE
+  // リザルトSE
   seResult.currentTime = 0;
   seResult.play().catch(() => {});
 
-  // BGMはタイトル用に戻す（1本だけなので重ならない）
+  // BGMはタイトル用に戻す
+  currentMode = null;
   setBGM("title", 1.0);
 
   show("end-screen");
@@ -361,12 +346,22 @@ function renderResult() {
 // 🎮 イベント登録
 // ==============================
 
-document.getElementById("start-btn").onclick = () => {
-  // スタートを押した時点でタイトルBGMを鳴らしておく
+// 🔰 注意画面 → タイトル画面へ
+// （ここで必ずタイトルBGMを鳴らす）
+document.getElementById("notice-ok-btn").onclick = () => {
+  show("title-screen");
+  currentMode = null;
   setBGM("title", 1.0);
-  show("select-screen");
 };
 
+// タイトル → クイズ選択
+document.getElementById("start-btn").onclick = () => {
+  show("select-screen");
+  currentMode = null;
+  setBGM("title", 1.0);
+};
+
+// クイズ1スタート
 document.getElementById("quiz-shape-btn").onclick = async () => {
   try {
     const data = await loadCSV("./data.csv");
@@ -381,7 +376,7 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
   }
 };
 
-// 音クイズボタン
+// クイズ2スタート
 document.getElementById("quiz-sound-btn").disabled = false;
 document.getElementById("quiz-sound-btn").onclick = async () => {
   try {
@@ -397,36 +392,13 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
   }
 };
 
-// 既存：スタートボタン
-document.getElementById("start-btn").onclick = () => {
-  // スタートを押した時点でタイトルBGMを鳴らしておく
-  setBGM("title", 1.0);
-  show("select-screen");
-};
-
-// ……クイズ1ボタン、クイズ2ボタン、restart-btn などのあとに、これを追加👇
-
-// 🔰 注意画面 → タイトル画面へ
-document.getElementById("notice-ok-btn").onclick = () => {
-  // 画面をタイトルに切り替え
-  show("title-screen");
-  // タイトル用BGMをセット（最初のタップなのでここから流れ始める想定）
-  setBGM("title", 1.0);
-};
-
-
-// リスタート
+// はじめにもどる → タイトル画面 & タイトルBGM
 document.getElementById("restart-btn").onclick = () => {
-  // スコアなどはリセットしておく
   current = 0;
   score = 0;
   quizData = [];
   currentMode = null;
 
-  // タイトル画面に戻す
   show("title-screen");
-
-  // タイトル用BGMをしっかり鳴らす
   setBGM("title", 1.0);
 };
-

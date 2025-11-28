@@ -367,34 +367,49 @@ function renderResult() {
   show("end-screen");
 }
 
+// ==============================
+// 📘 チュートリアルを開く
+// ==============================
 function openTutorial(forcedType) {
-  // forcedType があればそれを優先、なければ最後に遊んでいたクイズ種別
-  const type = forcedType || lastQuizType || "shape";
+  // 直前の画面を記録（戻るときに使う）
+  const active = document.querySelector(".screen.active");
+  if (active) {
+    lastScreenId = active.id;
+  }
+
+  // どのクイズの説明を出すか決める
+  const type = forcedType || currentMode || lastQuizType || "shape";
 
   const titleEl = document.getElementById("tutorial-title");
-  const bodyEl = document.getElementById("tutorial-body");
+  const bodyEl  = document.getElementById("tutorial-body");
+
+  if (!titleEl || !bodyEl) {
+    console.warn("tutorial-title / tutorial-body が見つかりません");
+    show("tutorial-screen");
+    return;
+  }
 
   if (type === "sound") {
     // 🎵 音クイズの説明
     titleEl.textContent = "やさいをきったらどんなおと？ のあそびかた";
     bodyEl.innerHTML = `
-      <p>1. えのしたにある ▶ ボタンをおすと、やさいをきる「おと」が ながれます。</p>
-      <p>2. どっちの たべものを きっている おとか、よく きいて えらびましょう。</p>
-      <p>3. せいかいすると、やさいをきっている どうがが みられます。</p>
+      <p>1. おとが なったら、どちらの たべものを きっている おとか よく きいてね。</p>
+      <p>2. ２つの え の うち、「これだ！」と おもった ほうを タップしよう。</p>
+      <p>3. せいかいすると、やさいを きっている どうがが みられるよ。</p>
     `;
   } else {
     // 🥦 形クイズの説明（デフォルト）
     titleEl.textContent = "やさいをきったらどんなかたち？ のあそびかた";
     bodyEl.innerHTML = `
-      <p>1. うえの しゃしんを みて、なにの やさいか かんがえましょう。</p>
-      <p>2. やさいを きったときの かたちが、したの えの どれかに でてきます。</p>
-      <p>3. 「これだ！」と おもった かたちを タップして こたえましょう。</p>
+      <p>1. うえの しゃしんを みて、どんな やさいか かんがえてみよう。</p>
+      <p>2. やさいを きったときの かたちが、したの ３つの え の どれかに でてくるよ。</p>
+      <p>3. 「これだ！」と おもった かたちを タップして こたえよう。</p>
     `;
   }
 
-  // チュートリアル画面へ
   show("tutorial-screen");
 }
+
 
 
 // ==============================
@@ -424,12 +439,14 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
     current = 0;
     score = 0;
     currentMode = "shape";
+    lastQuizType = "shape";   // ★これを追加
     renderQuestion();
   } catch (e) {
     alert("CSVを読み込めませんでした。");
     console.error(e);
   }
 };
+
 
 // クイズ2スタート
 document.getElementById("quiz-sound-btn").disabled = false;
@@ -440,12 +457,14 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
     current = 0;
     score = 0;
     currentMode = "sound";
+    lastQuizType = "sound";   // ★これを追加
     renderQuestionSound();
   } catch (e) {
     alert("CSVを読み込めませんでした。");
     console.error(e);
   }
 };
+
 
 // はじめにもどる → タイトル画面 & タイトルBGM
 document.getElementById("restart-btn").onclick = () => {
@@ -543,16 +562,33 @@ if (menuToTitleBtn) {
 // 「あそびかた」 → チュートリアル画面へ
 if (menuToTutorialBtn) {
   menuToTutorialBtn.onclick = () => {
-    show("tutorial-screen");
+    // ひらく前の画面を記録（ふつうは menu-screen）
+    const active = document.querySelector(".screen.active");
+    if (active) {
+      lastScreenId = active.id;
+    } else {
+      lastScreenId = "menu-screen";
+    }
+
+    // 今プレイ中のクイズ（currentMode）に合わせてチュートリアル表示
+    openTutorial();
   };
 }
+
 
 // チュートリアルの「メニューにもどる」
 if (tutorialBackMenuBtn) {
   tutorialBackMenuBtn.onclick = () => {
-    show("menu-screen");
+    // さっき覚えた画面に戻る
+    if (lastScreenId) {
+      show(lastScreenId);
+    } else {
+      show("menu-screen"); // 保険
+    }
   };
 }
+
+
 // 問題選択画面からのチュートリアル
 document.getElementById("tutorial-shape-btn").onclick = () => {
   openTutorial("shape");

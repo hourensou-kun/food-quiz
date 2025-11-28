@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.2
+// やさいクイズ script.js（BGM + 効果音つき）1.3
 // ==============================
 
 let quizData = [];
@@ -74,27 +74,45 @@ document.addEventListener("click", (e) => {
 });
 
 // 形クイズ
+// クイズ1スタート
 document.getElementById("quiz-shape-btn").onclick = async () => {
-  lastQuizType = "shape";
-  // ここから先は今までの処理のまま
-  const data = await loadCSV("./data.csv");
-  quizData = pickRandom(data, 3);
-  current = 0;
-  score = 0;
- startCountdown(renderQuestion);
+  try {
+    const data = await loadCSV("./data.csv");
+    quizData = pickRandom(data, 3);
+    current = 0;
+    score = 0;
+    currentMode = "shape";
+    lastQuizType = "shape";
 
+    // ★ここで直接 renderQuestion ではなくカウントダウン！
+    startCountdown(renderQuestion);
+  } catch (e) {
+    alert("CSVを読み込めませんでした。");
+    console.error(e);
+  }
 };
+
 
 // 音クイズ
+// クイズ2スタート
+document.getElementById("quiz-sound-btn").disabled = false;
 document.getElementById("quiz-sound-btn").onclick = async () => {
-  lastQuizType = "sound";
-  const data = await loadCSV("./data_sound.csv");
-  quizData = pickRandom(data, 3);
-  current = 0;
-  score = 0;
-startCountdown(renderQuestionSound);
+  try {
+    const data = await loadCSV("./data_sound.csv");
+    quizData = pickRandom(data, 3);
+    current = 0;
+    score = 0;
+    currentMode = "sound";
+    lastQuizType = "sound";
 
+    // ★こっちも直接 renderQuestionSound ではなくカウントダウン！
+    startCountdown(renderQuestionSound);
+  } catch (e) {
+    alert("CSVを読み込めませんでした。");
+    console.error(e);
+  }
 };
+
 
 
 // ==============================

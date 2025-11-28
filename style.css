@@ -156,7 +156,7 @@ button:disabled {
   padding: 10px 16px;
   width: 100%;
   max-width: 92%;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   box-shadow: 0 4px 0 rgba(246, 180, 170, 0.6);
   margin: 0 0 2vh;
@@ -416,7 +416,7 @@ button:disabled {
 
 /* クイズ画面上部を少し下げる（メニューボタンと重ならないように） */
 #quiz-screen {
-  padding-top: 12vh; /* ← 数値で調整可能（5〜8vhが最適） */
+  padding-top: 11vh; /* ← 数値で調整可能（5〜8vhが最適） */
 }
 
 /* 問題選択画面のクイズ＋サブボタンの並び */

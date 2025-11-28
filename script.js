@@ -7,6 +7,8 @@ let current = 0;
 let score = 0;
 let lastScreenId = null;  
 let lastQuizType = null; // "shape" か "sound" を入れる
+let lastGameScreenId = null; // 「ゲームにもどる」用の戻り先
+
 
 
 // 「形」クイズか「音」クイズか（BGM音量調整用）
@@ -519,22 +521,24 @@ function getActiveScreenId() {
 // メニューをひらく
 if (menuBtn) {
   menuBtn.onclick = () => {
-    // ひらく前の画面を覚えておく
-    lastScreenId = getActiveScreenId() || "quiz-screen";
+    // ひらく前の「ゲーム画面」を覚えておく
+    lastGameScreenId = getActiveScreenId() || "quiz-screen";
     show("menu-screen");
   };
 }
 
+
 // 「ゲームにもどる」
 if (menuBackGameBtn) {
   menuBackGameBtn.onclick = () => {
-    if (lastScreenId) {
-      show(lastScreenId);
+    if (lastGameScreenId) {
+      show(lastGameScreenId);      // メニューを開く前のゲーム画面へ
     } else {
-      show("quiz-screen");
+      show("quiz-screen");         // 念のための保険
     }
   };
 }
+
 
 // 「タイトルへ」 → 注意画面を飛ばしてタイトルへ
 if (menuToTitleBtn) {

@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 3:4 固定レイアウト　ver1．7
+   🎯 3:4 固定レイアウト　ver1．8
    ============================== */
 
 html,
@@ -41,7 +41,7 @@ body {
 @media (orientation: portrait) {
   #app {
     max-width: 100vw;
-    max-height: calc(100vw * 4 / 4);
+    max-height: calc(100vw * 4 / 3);
   }
 }
 

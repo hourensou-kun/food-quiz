@@ -81,7 +81,8 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
   quizData = pickRandom(data, 3);
   current = 0;
   score = 0;
-  renderQuestion();
+ startCountdown(renderQuestion);
+
 };
 
 // 音クイズ
@@ -91,7 +92,8 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
   quizData = pickRandom(data, 3);
   current = 0;
   score = 0;
-  renderQuestionSound();
+startCountdown(renderQuestionSound);
+
 };
 
 
@@ -601,4 +603,28 @@ document.getElementById("tutorial-shape-btn").onclick = () => {
 document.getElementById("tutorial-sound-btn").onclick = () => {
   openTutorial("sound");
 };
+
+// ==============================
+// 🎬 カウントダウン機能
+// ==============================
+
+function startCountdown(nextAction) {
+  let count = 3;
+  const cdEl = document.getElementById("countdown-number");
+
+  show("countdown-screen");
+  cdEl.textContent = count;
+
+  const timer = setInterval(() => {
+    count--;
+    if (count >= 1) {
+      cdEl.textContent = count;
+    } else if (count === 0) {
+      cdEl.textContent = "スタート！";
+    } else {
+      clearInterval(timer);
+      nextAction();  // ← クイズ開始
+    }
+  }, 900);
+}
 

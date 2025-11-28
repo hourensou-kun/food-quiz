@@ -37,7 +37,7 @@ const seResult  = new Audio("music/Quiz-Results01-1.mp3");
  * @param {"title"|"quiz"|null} type
  * @param {number} volume 0〜1
  */
-function setBGM(type, volume = 1.0) {
+function setBGM(type, volume = 0.5) {
   if (!type) {
     bgm.pause();
     currentBgmType = null;
@@ -86,7 +86,7 @@ function show(id) {
   } else if (id === "quiz-screen") {
     // クイズ画面
     if (currentMode === "sound") {
-      setBGM("quiz", 0.25); // 音クイズは小さめ
+      setBGM("quiz", 0.1); // 音クイズは小さめ
     } else if (currentMode === "shape") {
       setBGM("quiz", 1.0); // 形クイズは普通の音量
     }
@@ -219,7 +219,7 @@ function renderQuestionSound() {
 
   currentMode = "sound";
   // クイズ用BGM（小さめ）
-  setBGM("quiz", 0.25);
+  setBGM("quiz", 0.1);
 
   // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
@@ -306,7 +306,7 @@ function showAnswerSound(q) {
   video.play().catch((e) => console.warn("動画再生エラー:", e));
 
   // 音クイズ中はこの画面でも小さいBGMのまま
-  setBGM("quiz", 0.25);
+  setBGM("quiz", 0.1);
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -472,7 +472,7 @@ if (menuToTitleBtn) {
     if (bgm) {
       bgm.pause();
       bgm.currentTime = 0;
-      bgm.volume = 1.0; // 標準音量に戻す
+      bgm.volume = 0.5; // 標準音量に戻す
       bgm.play().catch(()=>{});
     }
 

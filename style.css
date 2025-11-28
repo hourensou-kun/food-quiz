@@ -466,7 +466,7 @@ button:disabled {
 }
 
 .countdown-text {
-  font-size: 6rem;
+  font-size: 3rem;
   font-weight: bold;
   color: #ff7043;
   text-shadow: 3px 3px 0 #fff, 6px 6px 6px rgba(0,0,0,0.3);

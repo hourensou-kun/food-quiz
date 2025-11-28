@@ -402,3 +402,19 @@ document.getElementById("restart-btn").onclick = () => {
   show("title-screen");
   setBGM("title", 1.0);
 };
+
+// ==============================
+// 🎫 クレジット画面
+// ==============================
+
+document.getElementById("credit-btn").onclick = () => {
+  show("credit-screen");
+  // タイトル画面と同じBGMを維持
+  setBGM("title", 1.0);
+};
+
+document.getElementById("credit-back-btn").onclick = () => {
+  show("title-screen");
+  setBGM("title", 1.0);
+};
+

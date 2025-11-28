@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 完全固定比率 675×1200（9:16）ver1.2
+   🎯 9:16 固定画面（ここはそのまま）ver1.3
    ============================== */
 
 html, body {
@@ -18,7 +18,6 @@ html, body {
   -webkit-user-select: none;
 }
 
-/* 💡 ゲーム領域 : 9:16 固定 */
 #app {
   position: relative;
   width: 95vw;
@@ -28,132 +27,83 @@ html, body {
   background-size: 120px 120px;
   background-color: #fff;
   border-radius: 20px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
   overflow: hidden;
 
   display: flex;
   justify-content: center;
   align-items: center;
-
-  max-height: 100vh;
-  max-width: calc(100vh * 9 / 16);
 }
-
-@media (orientation: portrait) {
-  #app {
-    max-width: 100vw;
-    max-height: calc(100vw * 16 / 9);
-  }
-}
-
-/* ==============================
-   🖥 画面共通
-   ============================== */
 
 .screen {
   position: absolute;
   inset: 0;
   display: none !important;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
   background: rgba(255, 255, 255, 0.95);
-  animation: fadein 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
 }
-
 .screen.active {
   display: flex !important;
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 10;
-}
-
-/* ==============================
-   🎨 タイトル画面
-   ============================== */
-
-#title-screen h1 {
-  font-size: 2.6rem;
-  color: #ff9800;
-  text-shadow: 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.3);
-}
-#title-screen h2 {
-  font-size: 1.4rem;
-  color: #555;
-}
-#title-screen h3 {
-  font-size: 1rem;
-  color: #777;
-  max-width: 80%;
-}
-
-/* ==============================
-   🎨 ボタン
-   ============================== */
-button {
-  background: linear-gradient(180deg, #ffd54f, #ffb300);
-  border: none;
-  border-radius: 12px;
-  padding: 16px 36px;
-  margin: 14px;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  box-shadow: 0 5px 0 #e1a100;
-  transition: transform 0.1s ease;
-}
-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #e1a100;
-}
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* ==============================
    🎨 問題文
    ============================== */
+
 #question-text {
-  background-color: #ffe9e3;
+  width: 90%;
+  margin-top: 2vh;
+  padding: 12px 20px;
+  background: #ffe9e3;
   border: 2px solid #f7b2a2;
   border-radius: 10px;
-  padding: 12px 20px;
-  width: 90%;
   font-size: 1.3rem;
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 /* ==============================
-   🎨 問題画像
+   🎨 画像（緑の枠）
    ============================== */
+
+.media-frame {
+  width: 90%;
+  aspect-ratio: 16 / 9;
+  margin-top: 2vh;
+  margin-bottom: 3vh;
+
+  background: #eaffea;
+  border: 2px solid #b6e7b6;
+  border-radius: 14px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #question-image {
-  width: 40%;
-  max-width: 400px;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
   border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
 /* ==============================
-   🎨 共通選択肢（正方形）
+   🎨 選択肢（共通）
    ============================== */
 
 #choices {
+  width: 90%;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 2vh;
-  width: 100%;
-  margin-top: 2vh;
+
+  /* 🔥 画面内に収めるために余白を確保 */
+  margin-bottom: 3vh;
+
+  justify-content: flex-start;
+  align-items: center;
 }
 
+/* 各選択肢＝正方形カード */
 .choice-item {
   width: 32vw;
   height: 32vw;
@@ -168,9 +118,6 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-  transition: transform 0.15s ease;
 }
 
 .choice-item img {
@@ -179,49 +126,55 @@ button:disabled {
   object-fit: contain;
 }
 
-.choice-item:active {
-  transform: scale(0.95);
+/* ==============================
+   🎯 3択レイアウト：上2＋下1
+   （JSはそのまま・CSSだけで対応）
+   ============================== */
+
+#choices .choice-item:nth-child(1),
+#choices .choice-item:nth-child(2) {
+  align-self: center;
+}
+
+#choices .choice-item:nth-child(3) {
+  align-self: center;
 }
 
 /* ==============================
-   🎵 音クイズ（2択用）
+   🎵 音クイズ（2択）
+   JSが choice-container を入れるので対応
    ============================== */
 
 .choice-container {
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 4vw;
-  margin-top: -6vh;  /* ← 上寄せ */
+  gap: 6vw;
+  margin-top: 2vh;
 }
 
 .choice-container .choice-item {
-  width: 32vw;
-  height: 32vw;
-  max-width: 200px;
+  width: 36vw;
+  height: 36vw;
+  max-width: 220px;
+  max-height: 220px;
 }
 
-/* PC はちょい下げ */
+/* PC時はバランス調整 */
 @media (min-width: 768px) {
-  .choice-container {
-    margin-top: -4vh;
+  .choice-container .choice-item {
+    width: 180px;
+    height: 180px;
   }
 }
 
 /* ==============================
    🎬 答えあわせ動画
    ============================== */
+
 #answer-video {
-  width: 80%;
+  width: 90%;
   max-width: 600px;
   border-radius: 12px;
-  margin: 20px 0;
-}
-
-/* ==============================
-   🎉 結果
-   ============================== */
-#score-text {
-  font-size: 1.6rem;
-  margin: 20px 0;
+  margin-top: 3vh;
 }

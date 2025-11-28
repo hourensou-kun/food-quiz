@@ -47,15 +47,22 @@
   </section>
 
   <!-- ③ 問題画面 -->
-  <section id="quiz-screen" class="screen">
-    <h2 id="question-text"></h2>
+<section id="quiz-screen" class="screen">
+  <!-- 右上メニューボタン -->
+  <img id="menu-btn" src="image/Menu.png" alt="メニュー" />
 
-    <div class="media-frame">
-      <img id="question-image" src="" alt="クイズ画像" />
-    </div>
+  <h2 id="question-text"></h2>
 
-    <div id="choices"></div>
-  </section>
+  <!-- 🔸 緑の枠で囲む（動画や画像をここに表示） -->
+  <div class="media-frame">
+    <img id="question-image" src="" alt="クイズ画像" />
+    <!-- 音クイズにしたい場合は video でもOK：
+    <video id="question-video" autoplay playsinline></video> -->
+  </div>
+
+  <div id="choices"></div>
+</section>
+
 
   <!-- ④ 正誤判定画面 -->
   <section id="judge-screen" class="screen">

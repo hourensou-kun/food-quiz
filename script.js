@@ -464,14 +464,28 @@ if (menuBackGameBtn) {
   };
 }
 
-// 「タイトルへ」 → 全部リセットして最初から
+// 「タイトルへ」 → 注意画面を飛ばしてタイトルへ
 if (menuToTitleBtn) {
   menuToTitleBtn.onclick = () => {
-    // すでに「はじめにもどる」で location.reload() を使っているので、
-    // 同じ動きに合わせます
-    location.reload();
+
+    // 🔸 BGMを最初に戻す
+    if (bgm) {
+      bgm.pause();
+      bgm.currentTime = 0;
+      bgm.volume = 1.0; // 標準音量に戻す
+      bgm.play().catch(()=>{});
+    }
+
+    // 🔸 クイズ状態をリセット
+    quizData = [];
+    current = 0;
+    score = 0;
+
+    // 🔸 タイトル画面へ（注意画面には戻らない）
+    show("title-screen");
   };
 }
+
 
 // 「あそびかた」 → チュートリアル画面へ
 if (menuToTutorialBtn) {

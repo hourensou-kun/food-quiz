@@ -416,4 +416,17 @@ document.getElementById("notice-ok-btn").onclick = () => {
 
 
 // リスタート
-document.getElementById("restart-btn").onclick = () => location.reload();
+document.getElementById("restart-btn").onclick = () => {
+  // スコアなどはリセットしておく
+  current = 0;
+  score = 0;
+  quizData = [];
+  currentMode = null;
+
+  // タイトル画面に戻す
+  show("title-screen");
+
+  // タイトル用BGMをしっかり鳴らす
+  setBGM("title", 1.0);
+};
+

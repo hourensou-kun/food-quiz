@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.5
+// やさいクイズ script.js（BGM + 効果音つき）1.6
 // ==============================
 
 let quizData = [];
@@ -588,17 +588,20 @@ document.getElementById("tutorial-sound-btn").onclick = () => {
 };
 
 // ==============================
-// 🎬 カウントダウン機能（1ファイルまとめて再生）
+// 🎬 カウントダウン機能（BGM一時停止つき）
 // ==============================
 function startCountdown(nextAction) {
   const cdEl = document.getElementById("countdown-number");
+
+  // 🔇 BGM を一時停止（フェードアウトしたければ後で追加可能）
+  if (bgm) bgm.pause();
 
   // カウントダウン開始と同時に mp3 を再生
   const seCountdown = new Audio("music/Countdown03-2.mp3");
   seCountdown.currentTime = 0;
   seCountdown.play().catch(()=>{});
 
-  // 見た目上のカウントだけ進める
+  // 見た目上のカウント表示
   let count = 3;
   show("countdown-screen");
   cdEl.textContent = "3";
@@ -614,8 +617,18 @@ function startCountdown(nextAction) {
       cdEl.textContent = "スタート！";
     } else {
       clearInterval(timer);
+
+      // 🟢 カウントダウン終了 → クイズ開始
       nextAction();
+
+      // 🔊 BGM を現在のモードの設定音量で再開
+      if (currentMode === "sound") {
+        setBGM("quiz", 0.1);   // 音クイズなら小さめ
+      } else if (currentMode === "shape") {
+        setBGM("quiz", 1.0);   // 形なら普通
+      }
     }
-  }, 1000); // ← 音声とほぼ同じスピードで変化させる
+  }, 1000);
 }
+
 

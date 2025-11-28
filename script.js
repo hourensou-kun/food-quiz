@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.3
+// やさいクイズ script.js（BGM + 効果音つき）1.4
 // ==============================
 
 let quizData = [];
@@ -73,45 +73,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// 形クイズ
-// クイズ1スタート
-document.getElementById("quiz-shape-btn").onclick = async () => {
-  try {
-    const data = await loadCSV("./data.csv");
-    quizData = pickRandom(data, 3);
-    current = 0;
-    score = 0;
-    currentMode = "shape";
-    lastQuizType = "shape";
-
-    // ★ここで直接 renderQuestion ではなくカウントダウン！
-    startCountdown(renderQuestion);
-  } catch (e) {
-    alert("CSVを読み込めませんでした。");
-    console.error(e);
-  }
-};
-
-
-// 音クイズ
-// クイズ2スタート
-document.getElementById("quiz-sound-btn").disabled = false;
-document.getElementById("quiz-sound-btn").onclick = async () => {
-  try {
-    const data = await loadCSV("./data_sound.csv");
-    quizData = pickRandom(data, 3);
-    current = 0;
-    score = 0;
-    currentMode = "sound";
-    lastQuizType = "sound";
-
-    // ★こっちも直接 renderQuestionSound ではなくカウントダウン！
-    startCountdown(renderQuestionSound);
-  } catch (e) {
-    alert("CSVを読み込めませんでした。");
-    console.error(e);
-  }
-};
 
 
 
@@ -453,7 +414,7 @@ document.getElementById("start-btn").onclick = () => {
   setBGM("title", 1.0);
 };
 
-// クイズ1スタート
+// クイズ1スタート（形クイズ）
 document.getElementById("quiz-shape-btn").onclick = async () => {
   try {
     const data = await loadCSV("./data.csv");
@@ -461,16 +422,17 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
     current = 0;
     score = 0;
     currentMode = "shape";
-    lastQuizType = "shape";   // ★これを追加
-    renderQuestion();
+    lastQuizType = "shape";
+
+    // ⭐ ここでカウントダウン → 終わったら renderQuestion()
+    startCountdown(renderQuestion);
   } catch (e) {
     alert("CSVを読み込めませんでした。");
     console.error(e);
   }
 };
 
-
-// クイズ2スタート
+// クイズ2スタート（音クイズ）
 document.getElementById("quiz-sound-btn").disabled = false;
 document.getElementById("quiz-sound-btn").onclick = async () => {
   try {
@@ -479,13 +441,16 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
     current = 0;
     score = 0;
     currentMode = "sound";
-    lastQuizType = "sound";   // ★これを追加
-    renderQuestionSound();
+    lastQuizType = "sound";
+
+    // ⭐ こっちはカウントダウン → 終わったら renderQuestionSound()
+    startCountdown(renderQuestionSound);
   } catch (e) {
     alert("CSVを読み込めませんでした。");
     console.error(e);
   }
 };
+
 
 
 // はじめにもどる → タイトル画面 & タイトルBGM

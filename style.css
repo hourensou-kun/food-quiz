@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 3:4 固定レイアウト　ver1．8
+   🎯 3:4 固定レイアウト　ver1．9
    ============================== */
 
 html,
@@ -34,14 +34,14 @@ body {
   align-items: center;
 
   max-height: 100vh;
-  max-width: calc(100vh * 3 / 4);
+  max-width: calc(100vh * 9 / 16);
 }
 
 /* 縦長端末向け保険 */
 @media (orientation: portrait) {
   #app {
     max-width: 100vw;
-    max-height: calc(100vw * 4 / 3);
+    max-height: calc(100vw * 16 / 9);
   }
 }
 
@@ -89,7 +89,7 @@ body {
   /* 💡 ここで 3:4 のカードにする */
   width: 92%;
   max-width: 680px;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 2 / 3;
 
   border-radius: 30px;
   background: #fff;

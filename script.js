@@ -33,7 +33,7 @@ let currentBgmType = null;
 const seCorrect = new Audio("music/Quiz-Ding_Dong05-4(Slow-Short).mp3");
 const seWrong   = new Audio("music/Short_Accent10-1(Low).mp3");
 const seButton  = new Audio("music/Inspiration03-1(High).mp3");
-const seResult  = new Audio("music/Quiz-Results01-1.mp3");
+const seResult  = new Audio("music/Phrase02-1.mp3");
 
 /**
  * BGMを切り替えて再生する

@@ -588,26 +588,34 @@ document.getElementById("tutorial-sound-btn").onclick = () => {
 };
 
 // ==============================
-// 🎬 カウントダウン機能
+// 🎬 カウントダウン機能（1ファイルまとめて再生）
 // ==============================
-
 function startCountdown(nextAction) {
-  let count = 3;
   const cdEl = document.getElementById("countdown-number");
 
+  // カウントダウン開始と同時に mp3 を再生
+  const seCountdown = new Audio("music/Countdown03-2.mp3");
+  seCountdown.currentTime = 0;
+  seCountdown.play().catch(()=>{});
+
+  // 見た目上のカウントだけ進める
+  let count = 3;
   show("countdown-screen");
-  cdEl.textContent = count;
+  cdEl.textContent = "3";
 
   const timer = setInterval(() => {
     count--;
-    if (count >= 1) {
-      cdEl.textContent = count;
+
+    if (count === 2) {
+      cdEl.textContent = "2";
+    } else if (count === 1) {
+      cdEl.textContent = "1";
     } else if (count === 0) {
       cdEl.textContent = "スタート！";
     } else {
       clearInterval(timer);
-      nextAction();  // ← クイズ開始
+      nextAction();
     }
-  }, 900);
+  }, 1000); // ← 音声とほぼ同じスピードで変化させる
 }
 

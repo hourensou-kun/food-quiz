@@ -397,5 +397,23 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
   }
 };
 
+// 既存：スタートボタン
+document.getElementById("start-btn").onclick = () => {
+  // スタートを押した時点でタイトルBGMを鳴らしておく
+  setBGM("title", 1.0);
+  show("select-screen");
+};
+
+// ……クイズ1ボタン、クイズ2ボタン、restart-btn などのあとに、これを追加👇
+
+// 🔰 注意画面 → タイトル画面へ
+document.getElementById("notice-ok-btn").onclick = () => {
+  // 画面をタイトルに切り替え
+  show("title-screen");
+  // タイトル用BGMをセット（最初のタップなのでここから流れ始める想定）
+  setBGM("title", 1.0);
+};
+
+
 // リスタート
 document.getElementById("restart-btn").onclick = () => location.reload();

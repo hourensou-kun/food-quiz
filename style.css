@@ -21,8 +21,8 @@ body {
 /* 白いカード本体（中は無地） */
 #app {
   position: relative;
-  width: 95vw;
-  height: 95vh;
+  width: 99vw;
+  height: 99vh;
   aspect-ratio: 9 / 16;
   background-color: #fffef6;  /* うすいクリーム色 */
   border-radius: 22px;

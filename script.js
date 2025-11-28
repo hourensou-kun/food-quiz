@@ -1,73 +1,49 @@
 // ==============================
-// やさいクイズ script.js（完全分離画面タイプ）+ BGM/効果音（フェード付き）
+// やさいクイズ script.js（完全分離画面タイプ）+ BGM/効果音
 // ==============================
 
 let quizData = [];
 let current = 0;
 let score = 0;
 
+// BGMの音量プリセット
+const BGM_NORMAL = 0.5;  // いつもの音量
+const BGM_LOW    = 0.25; // 音クイズ中の音量
+
 /* ============================
    🎵 BGM & 効果音 ヘルパー
    ============================ */
-let bgmFadeTimer = null;
 
-function playBGM() {
+// BGMを流す（必要なら音量を指定）
+function playBGM(volume = BGM_NORMAL) {
   const bgm = document.getElementById("bgm");
   if (!bgm) return;
 
-  // フェード中だったら止める
-  if (bgmFadeTimer) {
-    clearInterval(bgmFadeTimer);
-    bgmFadeTimer = null;
-  }
-
-  // 通常音量
-  bgm.volume = 0.5;
+  bgm.volume = volume;
 
   if (bgm.paused) {
     bgm.play().catch(() => {
-      // モバイルで失敗しても無視（ユーザー操作後にまた呼ばれる）
+      // iOSなどで失敗しても、ユーザー操作後にまた呼ばれるので無視
     });
   }
 }
 
-// 音量を徐々に下げてから停止
-function pauseBGM() {
+// BGM音量だけ変える
+function setBGMVolume(v) {
   const bgm = document.getElementById("bgm");
   if (!bgm) return;
-  if (bgm.paused) return;
-
-  if (bgmFadeTimer) {
-    clearInterval(bgmFadeTimer);
-  }
-
-  const fadeDuration = 600; // フェード時間（ms）
-  const steps = 12;
-  const stepTime = fadeDuration / steps;
-  const startVolume = bgm.volume;
-  const volumeStep = startVolume / steps;
-
-  bgmFadeTimer = setInterval(() => {
-    let v = bgm.volume - volumeStep;
-    if (v <= 0.01) {
-      v = 0;
-      bgm.volume = v;
-      bgm.pause();
-      bgm.volume = 0.5; // 次回再生用にリセット
-      clearInterval(bgmFadeTimer);
-      bgmFadeTimer = null;
-    } else {
-      bgm.volume = v;
-    }
-  }, stepTime);
+  bgm.volume = v;
 }
 
+// 正解SE
 function playSECorrect() {
   const se = document.getElementById("se-correct");
   if (!se) return;
   se.currentTime = 0;
   se.play().catch(() => {});
 }
+
+// 不正解SE
 function playSEWrong() {
   const se = document.getElementById("se-wrong");
   if (!se) return;
@@ -75,13 +51,19 @@ function playSEWrong() {
   se.play().catch(() => {});
 }
 
-// ---- 画面切り替え ----
+/* ============================
+   🖥 画面切り替え
+   ============================ */
+
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// ---- CSV読み込み ----
+/* ============================
+   🗂 CSV読み込み＆問題選択
+   ============================ */
+
 async function loadCSV(path = "./data.csv") {
   const res = await fetch(path);
   if (!res.ok) throw new Error("CSV読み込み失敗");
@@ -94,10 +76,14 @@ async function loadCSV(path = "./data.csv") {
   });
 }
 
-// ---- ランダム抽出 ----
+// ランダム抽出
 const pickRandom = (arr, n = 3) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
-// ---- 問題表示（クイズ1：かたち）----
+/* ============================
+   🥕 クイズ1：やさいのかたち
+   ============================ */
+
+// 問題表示（形クイズ）
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
@@ -117,8 +103,10 @@ function renderQuestion() {
     q.choice3_img || q.choice3 ? { img: q.choice3_img || q.choice3, correct: false } : null
   ].filter(Boolean);
 
+  // シャッフル
   opts.sort(() => Math.random() - 0.5);
 
+  // DOMに反映
   opts.forEach(o => {
     const div = document.createElement("div");
     div.className = "choice-item";
@@ -132,12 +120,15 @@ function renderQuestion() {
     choices.appendChild(div);
   });
 
+  // クイズ1ではBGMは通常音量
+  setBGMVolume(BGM_NORMAL);
+
   show("quiz-screen");
 }
 
-// ---- ○×判定画面（1秒後に答えあわせ）----
+// 判定（クイズ1）
 function handleAnswer(isCorrect, q) {
-  // 🎵 効果音
+  // 効果音
   if (isCorrect) {
     playSECorrect();
   } else {
@@ -149,21 +140,20 @@ function handleAnswer(isCorrect, q) {
   if (isCorrect) score++;
   show("judge-screen");
 
+  // 1秒後に答えあわせへ
   setTimeout(() => showAnswer(q), 1000);
 }
 
-// ---- 答えあわせ画面（クイズ1）----
-// ※ここでは BGM は止めない（動画＋BGM 同時）
+// 答えあわせ（クイズ1）
+// 👉 BGMは止めず、そのまま流しっぱなし
 function showAnswer(q) {
   const video = document.getElementById("answer-video");
 
   video.pause();
   video.src = q.answer_video;
-  video.style.display = "block";
+  video.style.display = "block"; // 映像を表示する
   video.muted = false;
   video.currentTime = 0;
-
-  // クイズ1では BGM 停止しない
   video.play().catch(e => console.warn("再生エラー:", e));
 
   const next = document.getElementById("next-btn");
@@ -172,8 +162,7 @@ function showAnswer(q) {
     : "つぎのもんだいへ";
 
   next.onclick = () => {
-    video.pause(); // 答えあわせ動画を止める
-
+    video.pause(); // 答えあわせ動画を止めて次へ
     if (current >= quizData.length - 1) {
       renderResult();
     } else {
@@ -185,38 +174,45 @@ function showAnswer(q) {
   show("answer-screen");
 }
 
-// ---- 結果表示 ----
+/* ============================
+   🎉 結果表示
+   ============================ */
+
 function renderResult() {
-  document.getElementById("score-text").textContent = `せいかい：${score} / ${quizData.length}`;
+  document.getElementById("score-text").textContent =
+    `せいかい：${score} / ${quizData.length}`;
+  // 結果画面ではBGMをふつうの音量に戻しておく
+  setBGMVolume(BGM_NORMAL);
   show("end-screen");
 }
 
 /* ============================
-   🎮 イベント登録
+   🎛 イベント登録（共通）
    ============================ */
 
-// ✅ ブラウザの制限で「ユーザー操作のあと」しか再生できないので
-//   最初のクリックで BGM をスタートさせる
+// ✅ ブラウザ制限対応：最初の1回のクリックでBGMを許可
 document.addEventListener(
   "click",
   () => {
-    playBGM();
+    playBGM(BGM_NORMAL);
   },
   { once: true }
 );
 
-// スタートボタン：画面遷移だけ（BGM再生は上の1回きりリスナーでも行われる）
+// スタート → ゲーム選択へ
 document.getElementById("start-btn").onclick = () => {
-  playBGM();          // 念のためここでも呼ぶ（2回目以降は無視される）
+  playBGM(BGM_NORMAL); // 念のためここでも
   show("select-screen");
 };
 
+// クイズ1ボタン
 document.getElementById("quiz-shape-btn").onclick = async () => {
   try {
     const data = await loadCSV("./data.csv");
     quizData = pickRandom(data, 3);
     current = 0;
     score = 0;
+    setBGMVolume(BGM_NORMAL); // クイズ1はいつも標準音量
     renderQuestion();
   } catch (e) {
     alert("CSVを読み込めませんでした。");
@@ -224,13 +220,14 @@ document.getElementById("quiz-shape-btn").onclick = async () => {
   }
 };
 
+// リスタート
 document.getElementById("restart-btn").onclick = () => location.reload();
 
-// ==============================
-// クイズ2：やさいをきったらどんなおと？
-// ==============================
+/* ============================
+   🎵 クイズ2：やさいをきったらどんなおと？
+   ============================ */
 
-// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
+// 問題表示（音クイズ：BGMは小さく流しっぱなし）
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
@@ -242,16 +239,16 @@ function renderQuestionSound() {
   const choices = document.getElementById("choices");
   choices.innerHTML = "";
 
-  // 出題時：「音声だけ」再生（映像非表示）
+  // BGMは止めず、音クイズ中は小さく
+  setBGMVolume(BGM_LOW);
+
+  // 出題時に「音声だけ」再生（映像非表示）
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "none";
-
-  // 🔇 音クイズの問題音声の間は BGM をフェードアウト
-  pauseBGM();
+  video.style.display = "none"; // 出題時は音だけ
   video.play().catch(e => console.warn("音声再生エラー:", e));
 
   // 2択（画像＋文字、左右ランダム）
@@ -284,8 +281,7 @@ function renderQuestionSound() {
     div.appendChild(label);
 
     div.onclick = () => {
-      video.pause();   // 出題音を止める
-      playBGM();       // 🔊 判定画面では BGM 再開
+      video.pause();          // 出題音を止める
       handleAnswerSound(o.correct, q);
     };
 
@@ -296,9 +292,9 @@ function renderQuestionSound() {
   show("quiz-screen");
 }
 
-// ---- 音クイズ用：判定＆答えあわせ遷移 ----
+// 判定（音クイズ）
 function handleAnswerSound(isCorrect, q) {
-  // 🎵 効果音
+  // 効果音
   if (isCorrect) {
     playSECorrect();
   } else {
@@ -310,10 +306,11 @@ function handleAnswerSound(isCorrect, q) {
   if (isCorrect) score++;
   show("judge-screen");
 
+  // 1秒後に答えあわせへ
   setTimeout(() => showAnswerSound(q), 1000);
 }
 
-// ---- 音クイズ用：答えあわせ（映像＋音で再生）----
+// 答えあわせ（音クイズ：動画＋BGM小さめ）
 function showAnswerSound(q) {
   const video = document.getElementById("answer-video");
   video.pause();
@@ -322,8 +319,8 @@ function showAnswerSound(q) {
   video.muted = false;
   video.style.display = "block";
 
-  // 🔇 答えあわせ動画の間も BGM フェードアウト
-  pauseBGM();
+  // 答えあわせ中もBGMは小さめのまま
+  setBGMVolume(BGM_LOW);
   video.play().catch(e => console.warn("動画再生エラー:", e));
 
   const next = document.getElementById("next-btn");
@@ -333,12 +330,14 @@ function showAnswerSound(q) {
 
   next.onclick = () => {
     video.pause();
-    playBGM();   // 🔊 次の問題 or 結果では BGM 再開
 
     if (current >= quizData.length - 1) {
+      // 結果画面ではBGMをふつうの音量に戻す
+      setBGMVolume(BGM_NORMAL);
       renderResult();
     } else {
       current++;
+      // 次の問題も音クイズなので、また1/4音量で出す
       renderQuestionSound();
     }
   };
@@ -346,7 +345,7 @@ function showAnswerSound(q) {
   show("answer-screen");
 }
 
-// ---- 音クイズボタン登録 ----
+// 音クイズボタン登録
 document.getElementById("quiz-sound-btn").disabled = false;
 document.getElementById("quiz-sound-btn").onclick = async () => {
   try {
@@ -354,6 +353,8 @@ document.getElementById("quiz-sound-btn").onclick = async () => {
     quizData = pickRandom(data, 3);
     current = 0;
     score = 0;
+    // 音クイズモード：BGM小さめからスタート
+    setBGMVolume(BGM_LOW);
     renderQuestionSound();
   } catch (e) {
     alert("CSVを読み込めませんでした。");

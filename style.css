@@ -3,11 +3,6 @@
    PCもスマホも黒背景で全体表示
    ============================== */
 
-/* ==============================
-   🎯 9:16 固定で常に画面いっぱいにフィット
-   JS不要版（CSSだけでスケーリング）
-   ============================== */
-
 html, body {
   margin: 0;
   padding: 0;
@@ -24,12 +19,12 @@ html, body {
   -webkit-user-select: none;
 }
 
-/* 💡 ゲーム領域：常に9:16を維持しつつ、画面いっぱいに */
+/* 9:16 固定比率 */
 #app {
   position: relative;
   width: 95vw;
   height: 95vh;
-  aspect-ratio: 9 / 16; /* ← これが重要 */
+  aspect-ratio: 9 / 16;
   background: url("背景.png") repeat;
   background-size: 120px 120px;
   background-color: #fff;
@@ -37,17 +32,14 @@ html, body {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 
-  /* 中央固定 */
   display: flex;
   justify-content: center;
   align-items: center;
 
-  /* 横長画面（PCなど）の場合は高さを優先して中央寄せ */
   max-height: 100vh;
   max-width: calc(100vh * 9 / 16);
 }
 
-/* 縦長画面（スマホなど）の場合は幅を優先して中央寄せ */
 @media (orientation: portrait) {
   #app {
     max-width: 100vw;
@@ -55,30 +47,28 @@ html, body {
   }
 }
 
-/* 💡 すべての画面を完全に非表示スタートに */
+/* ==============================
+    画面切り替え
+   ============================== */
+
 .screen {
   position: absolute;
   inset: 0;
-  display: none !important; /* ←完全に隠す */
+  display: none !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255,255,255,0.95);
   animation: fadein 0.3s ease;
   opacity: 0;
   pointer-events: none;
-  z-index: 0;
 }
 
-/* 💡 表示中（active）の画面だけ表示＆前面へ */
 .screen.active {
   display: flex !important;
   opacity: 1;
   pointer-events: auto;
-  z-index: 10;
 }
-
 
 /* ===== タイトル ===== */
 #title-screen h1 {
@@ -86,15 +76,8 @@ html, body {
   color: #ff9800;
   text-shadow: 1px 1px 0 #fff, 2px 2px 4px rgba(0,0,0,0.3);
 }
-#title-screen h2 {
-  font-size: 1.4rem;
-  color: #555;
-}
-#title-screen h3 {
-  font-size: 1rem;
-  color: #777;
-  max-width: 80%;
-}
+#title-screen h2 { font-size: 1.4rem; color: #555; }
+#title-screen h3 { font-size: 1rem; color: #777; max-width: 80%; }
 
 /* ===== ボタン ===== */
 button {
@@ -110,14 +93,7 @@ button {
   box-shadow: 0 5px 0 #e1a100;
   transition: transform 0.1s ease;
 }
-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #e1a100;
-}
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+button:active { transform: translateY(3px); }
 
 /* ===== 問題文 ===== */
 #question-text {
@@ -127,9 +103,7 @@ button:disabled {
   padding: 12px 20px;
   width: 90%;
   font-size: 1.3rem;
-  text-align: center;
   margin-bottom: 20px;
-  line-height: 1.4;
 }
 
 /* ===== 問題画像 ===== */
@@ -137,103 +111,55 @@ button:disabled {
   width: 40%;
   max-width: 400px;
   border-radius: 12px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
   margin-bottom: 20px;
 }
 
-/* ===== 選択肢 ===== */
-#choices {
-  display: flex;
-  justify-content: center;
+/* ==============================
+   🎨 統一された選択肢レイアウト（2択/3択 共通）
+   ============================== */
+
+#quiz-screen #choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2vh;
+  justify-items: center;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
   width: 90%;
+  margin-top: 2vh;
 }
+
+/* 1つ目は中央に広く配置 → 3択の上段中央 */
+#quiz-screen #choices .choice-item:nth-child(1) {
+  grid-column: 1 / 3;
+}
+
+/* 選択肢（正方形） */
 .choice-item {
-  background-color: #fff;
+  background-color: #e0f7fa;
   border: 2px solid #f8b6a8;
-  border-radius: 16px;
-  width: 150px;
-  height: 150px;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1 / 1;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  align-items: center;
+
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
+
 .choice-item img {
   width: 70%;
   height: auto;
-  border-radius: 8px;
-}
-.choice-item p {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #333;
-  margin-top: 8px;
-}
-.choice-item:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* ===== 判定 ===== */
-#judge-text {
-  font-size: 4rem;
-  font-weight: bold;
-  animation: pop 0.5s ease;
-}
-@keyframes pop {
-  0% { transform: scale(0); opacity: 0; }
-  70% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-/* ===== 答えあわせ動画 ===== */
-#answer-video {
-  width: 80%;
-  max-width: 600px;
-  border-radius: 12px;
-  margin: 20px 0;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-}
-
-/* ===== リザルト ===== */
-#score-text {
-  font-size: 1.6rem;
-  margin: 20px 0;
+  object-fit: contain;
+  margin-bottom: 6px;
 }
 
 /* ==============================
-   🎨 音クイズ画面（#quiz-screen）
+   🎵 音クイズ用：動画枠
    ============================== */
-#quiz-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 3vh 2vw;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-}
-
-/* ==== 上：問題文（ピンク帯） ==== */
-#quiz-screen #question-text {
-  background-color: #ffe9e3;
-  border: 2px solid #f7b2a2;
-  border-radius: 8px;
-  padding: 8px 12px;
-  width: 90%;
-  font-size: 1.3rem;
-  text-align: center;
-  margin-bottom: 1.5vh;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* ==== 中央：動画／画像枠（緑） ==== */
 #quiz-screen .media-frame {
   background-color: #eaffea;
   border: 2px solid #b6e7b6;
@@ -241,203 +167,15 @@ button:disabled {
   width: 90%;
   aspect-ratio: 16 / 9;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   margin-bottom: 3vh;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 中の動画 or 画像 */
 #quiz-screen video,
 #quiz-screen img {
   width: 90%;
   height: 90%;
   object-fit: contain;
   border-radius: 12px;
-}
-
-/* ==== 下：選択肢（青枠） ==== */
-#quiz-screen #choices {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 1fr;
-  gap: 1.5vh;
-  justify-items: center;
-  align-items: center;
-  width: 90%;
-  margin-top: auto;
-}
-
-/* 1つめは中央寄せ */
-#quiz-screen #choices .choice-item:nth-child(1) {
-  grid-column: 1 / 3;
-  justify-self: center;
-}
-
-/* 各選択肢（青いカード） */
-#quiz-screen .choice-item {
-  background-color: #e0f7fa;
-  border: 2px solid #f8b6a8;
-  border-radius: 18px;
-  width: 100%;
-  max-width: 200px;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-#quiz-screen .choice-item img {
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
-  border-radius: 10px;
-}
-#quiz-screen .choice-item:active {
-  transform: scale(0.96);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-/* ==== スマホ向け ==== */
-@media (max-width: 768px) {
-  #quiz-screen #question-text {
-    font-size: 1.1rem;
-  }
-  #quiz-screen .media-frame {
-    width: 95%;
-    margin-bottom: 2vh;
-  }
-  #quiz-screen .choice-item {
-    max-width: 160px;
-  }
-}
-
-
-/* 選択肢画像 */
-#quiz-screen .choice-item img {
-  width: 70%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 10px;
-  margin-bottom: 6px;
-}
-
-/* タップアニメ */
-#quiz-screen .choice-item:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* スマホ微調整 */
-@media (max-width: 768px) {
-  #quiz-screen #question-text {
-    font-size: 1.1rem;
-  }
-  #quiz-screen #question-image {
-    width: 70%;
-    margin: 2vh 0;
-  }
-  #quiz-screen .choice-item {
-    width: 90%;
-    max-width: none;
-    aspect-ratio: 1 / 1;
-  }
-}
-
-
-/* ==============================
-   🎵 音クイズ（2択）の位置微調整版
-   ============================== */
-.choice-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  gap: 6vw;
-  margin-top: -48vh; /* ← 上方向にさらに移動（前は -6vh） */
-  width: 100%;
-}
-
-/* カードサイズ */
-.choice-container .choice-item {
-  width: 30%;
-  max-width: 220px;
-  aspect-ratio: 1 / 1;
-}
-
-/* 📱 スマホ時（もう少し上げる） */
-@media (max-width: 768px) {
-  .choice-container {
-    margin-top: -50vh; /* ← iPhone向け上げ幅強化 */
-    gap: 4vw;
-  }
-
-  .choice-container .choice-item {
-    width: 38%;
-    max-width: none;
-  }
-}
-
-/* ==========================================
-   🎨 すべての選択肢を「正方形」に統一
-   - 3択：上1＋下2
-   - 2択：上に横並びで表示（Safari/Chrome両対応）
-   ========================================== */
-
-/* 選択肢ブロック（共通） */
-#choices {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 2vh; /* 行間調整 */
-  margin-top: 2vh;
-}
-
-/* 各選択肢カード → 正方形固定 */
-.choice-item {
-  width: 32vw;          /* 正方形になるように */
-  height: 32vw;         /* ← 高さと幅を同じにする */
-  max-width: 280px;     /* 大きくなりすぎないように */
-  max-height: 280px;
-  background: #e6f8ff;
-  border: 2px solid #f8b6a8;
-  border-radius: 18px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  padding: 10px;
-}
-
-/* 選択肢画像（中央で縮小表示） */
-.choice-item img {
-  width: 70%;
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 6px;
-}
-
-/* ------------------------------
-   🎯 2択のときは位置を上に持ち上げる
-   （Safari / Chrome 両対応）
-   ------------------------------ */
-
-.choice-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 4vw;
-  margin-top: -6vh;   /* ← 上方向に持ち上げる */
-}
-
-@media (min-width: 768px) {
-  .choice-container {
-    margin-top: -4vh; /* PCは少し控えめ */
-  }
 }

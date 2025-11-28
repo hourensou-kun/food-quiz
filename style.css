@@ -315,3 +315,20 @@ button:disabled {
   font-size: 1.6rem;
   margin: 16px 0 8px;
 }
+
+/* ===== クレジット画面 ===== */
+#credit-screen {
+  padding: 4vh 5vw;
+}
+
+#credit-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 2vh;
+  color: #444;
+}
+
+#credit-screen p {
+  font-size: 1.2rem;
+  margin: 1vh 0;
+  color: #555;
+}

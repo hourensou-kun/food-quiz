@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（完全分離画面タイプ）+ BGM/効果音
+// やさいクイズ script.js（完全分離画面タイプ）+ BGM/効果音（フェード付き）
 // ==============================
 
 let quizData = [];
@@ -9,18 +9,57 @@ let score = 0;
 /* ============================
    🎵 BGM & 効果音 ヘルパー
    ============================ */
+let bgmFadeTimer = null;
+
 function playBGM() {
   const bgm = document.getElementById("bgm");
   if (!bgm) return;
+
+  // フェード中だったら止める
+  if (bgmFadeTimer) {
+    clearInterval(bgmFadeTimer);
+    bgmFadeTimer = null;
+  }
+
+  // 通常音量
+  bgm.volume = 0.5;
+
   if (bgm.paused) {
-    bgm.volume = 0.5;            // お好みで音量調整
-    bgm.play().catch(() => {});  // iOS対策：失敗しても無視
+    bgm.play().catch(() => {
+      // モバイルで失敗しても無視（ユーザー操作後にまた呼ばれる）
+    });
   }
 }
+
+// 音量を徐々に下げてから停止
 function pauseBGM() {
   const bgm = document.getElementById("bgm");
   if (!bgm) return;
-  bgm.pause();
+  if (bgm.paused) return;
+
+  if (bgmFadeTimer) {
+    clearInterval(bgmFadeTimer);
+  }
+
+  const fadeDuration = 600; // フェード時間（ms）
+  const steps = 12;
+  const stepTime = fadeDuration / steps;
+  const startVolume = bgm.volume;
+  const volumeStep = startVolume / steps;
+
+  bgmFadeTimer = setInterval(() => {
+    let v = bgm.volume - volumeStep;
+    if (v <= 0.01) {
+      v = 0;
+      bgm.volume = v;
+      bgm.pause();
+      bgm.volume = 0.5; // 次回再生用にリセット
+      clearInterval(bgmFadeTimer);
+      bgmFadeTimer = null;
+    } else {
+      bgm.volume = v;
+    }
+  }, stepTime);
 }
 
 function playSECorrect() {
@@ -58,7 +97,7 @@ async function loadCSV(path = "./data.csv") {
 // ---- ランダム抽出 ----
 const pickRandom = (arr, n = 3) => [...arr].sort(() => Math.random() - 0.5).slice(0, n);
 
-// ---- 問題表示（かたちクイズ）----
+// ---- 問題表示（クイズ1：かたち）----
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
@@ -113,7 +152,8 @@ function handleAnswer(isCorrect, q) {
   setTimeout(() => showAnswer(q), 1000);
 }
 
-// ---- 答えあわせ画面（動画再生：BGMは一時停止）----
+// ---- 答えあわせ画面（クイズ1）----
+// ※ここでは BGM は止めない（動画＋BGM 同時）
 function showAnswer(q) {
   const video = document.getElementById("answer-video");
 
@@ -123,8 +163,7 @@ function showAnswer(q) {
   video.muted = false;
   video.currentTime = 0;
 
-  // 🔇 クイズ動画の間は BGM を止める
-  pauseBGM();
+  // クイズ1では BGM 停止しない
   video.play().catch(e => console.warn("再生エラー:", e));
 
   const next = document.getElementById("next-btn");
@@ -133,8 +172,7 @@ function showAnswer(q) {
     : "つぎのもんだいへ";
 
   next.onclick = () => {
-    video.pause();       // 答えあわせ動画を止める
-    playBGM();           // 🔊 次の問題や結果画面では BGM 再開
+    video.pause(); // 答えあわせ動画を止める
 
     if (current >= quizData.length - 1) {
       renderResult();
@@ -153,10 +191,23 @@ function renderResult() {
   show("end-screen");
 }
 
-// ---- イベント登録 ----
-// スタートで BGM 再生開始（ユーザー操作なので iOS でもOK）
+/* ============================
+   🎮 イベント登録
+   ============================ */
+
+// ✅ ブラウザの制限で「ユーザー操作のあと」しか再生できないので
+//   最初のクリックで BGM をスタートさせる
+document.addEventListener(
+  "click",
+  () => {
+    playBGM();
+  },
+  { once: true }
+);
+
+// スタートボタン：画面遷移だけ（BGM再生は上の1回きりリスナーでも行われる）
 document.getElementById("start-btn").onclick = () => {
-  playBGM();
+  playBGM();          // 念のためここでも呼ぶ（2回目以降は無視される）
   show("select-screen");
 };
 
@@ -191,7 +242,7 @@ function renderQuestionSound() {
   const choices = document.getElementById("choices");
   choices.innerHTML = "";
 
-  // 出題時：「音声だけ」再生（映像非表示）→ BGM は止める
+  // 出題時：「音声だけ」再生（映像非表示）
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
@@ -199,7 +250,8 @@ function renderQuestionSound() {
   video.muted = false;
   video.style.display = "none";
 
-  pauseBGM();  // 🔇 クイズ音声中は BGM オフ
+  // 🔇 音クイズの問題音声の間は BGM をフェードアウト
+  pauseBGM();
   video.play().catch(e => console.warn("音声再生エラー:", e));
 
   // 2択（画像＋文字、左右ランダム）
@@ -270,7 +322,8 @@ function showAnswerSound(q) {
   video.muted = false;
   video.style.display = "block";
 
-  pauseBGM(); // 🔇 答えあわせ動画の間も BGM オフ
+  // 🔇 答えあわせ動画の間も BGM フェードアウト
+  pauseBGM();
   video.play().catch(e => console.warn("動画再生エラー:", e));
 
   const next = document.getElementById("next-btn");

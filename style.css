@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11.4
+   🎯 2:3 固定レイアウト　ver2.11.5
 
    ============================== */
 
@@ -158,13 +158,20 @@ button:disabled {
    🎨 問題画面（クイズ1・2 共通）
    ============================== */
 
-
 #quiz-screen {
-  position: relative;         /* 助っ人キャラ用に必要 */
-  display: block;             /* ← ここで flex をやめる！ */
-  padding: 10vh 4vw 12vh;     /* 上・左右・下の余白（必要ならあとで微調整） */
+  position: relative;
   box-sizing: border-box;
+
+  /* 上・左右・下の余白（必要ならあとで微調整してOK） */
+  padding: 8vh 4vw 10vh;
+
+  /* ★ここがポイント：縦方向を「上そろえ」にする */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;   /* ← これで中央寄せじゃなくなる */
 }
+
 
 
 

@@ -633,4 +633,20 @@ function startCountdown(nextAction) {
   }, 1000);
 }
 
+// ==============================
+// 📚 絵本紹介画面の遷移
+// ==============================
+
+// タイトル → 絵本紹介
+document.getElementById("book-info-btn").onclick = () => {
+  show("book-info-screen");
+  setBGM("title", 1.0); // タイトル系BGMキープ
+};
+
+// 絵本紹介 → タイトル
+document.getElementById("book-info-back-btn").onclick = () => {
+  show("title-screen");
+  setBGM("title", 1.0);
+};
+
 

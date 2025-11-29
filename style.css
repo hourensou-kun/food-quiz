@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.0
+   🎯 2:3 固定レイアウト　ver2.10.1
 
    ============================== */
 
@@ -77,26 +77,6 @@ body {
   pointer-events: auto;
   z-index: 10;
 }
-
-/* 👇すべての画面に共通の「白いカード」（3:4 比率） */
-/*.screen::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);*/
-
-  /* 💡 ここで 3:4 のカードにする */
- /* width: 92%;
-  max-width: 680px;
-  aspect-ratio: 2 / 3;
-
-  border-radius: 30px;
-  background: #fff;
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
-
-  z-index: -1; /* 画面の中身より後ろに置く */
-}*/
 
 
 /* active が付いていない画面は必ず非表示にする（保険） */
@@ -179,48 +159,13 @@ button:disabled {
    ============================== */
 
 #quiz-screen {
+　position: relative;
   padding: 3vh 4vw 4vh;
   box-sizing: border-box;
   align-items: center;
   justify-content: flex-start;
 }
-/* 形クイズ用：選択肢＋キャラを横並びにするラッパー */
-.choices-and-helper {
-  width: 100%;
-  max-width: 92%;
-  margin-top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 2vw;
-}
 
-/* 形クイズ用キャラ画像（右側にちょこんと） */
-#shape-helper {
-  display: none;           /* JS で切り替え */
-  max-width: 32%;
-  height: auto;
-}
-
-/* 音クイズ用キャラ画像（選択肢の下に中央配置） */
-#sound-helper {
-  display: none;           /* JS で切り替え */
-  width: 70%;
-  max-width: 320px;
-  height: auto;
-  margin: 8px auto 0;
-}
-
-/* スマホで横幅がきつい場合は少し小さく */
-@media (max-width: 480px) {
-  #shape-helper {
-    max-width: 36%;
-  }
-  #sound-helper {
-    width: 80%;
-    max-width: 280px;
-  }
-}
 
 /* ピンクの問題文帯 */
 #question-text {
@@ -579,10 +524,6 @@ button:disabled {
 }
 
 
-
-
-
-
 /* チュートリアル本文 */
 .tutorial-body {
   max-width: 85%;
@@ -679,6 +620,51 @@ button:disabled {
 
   #credit-screen p {
     font-size: 1.0rem;
+  }
+}
+
+/* ==============================
+   🥦 クイズ画面のキャラ画像
+   ============================== */
+
+/* 共通：最初は非表示、絶対配置 */
+#shape-helper,
+#sound-helper {
+  position: absolute;
+  display: none;
+  pointer-events: none; /* タップ判定を邪魔しない */
+}
+
+/* 形クイズ用：カードの右側あたりに出す */
+#shape-helper {
+  right: 4vw;
+  bottom: 9vh;
+  width: 24vw;
+  max-width: 150px;
+  height: auto;
+}
+
+/* 音クイズ用：選択肢の下で中央寄せ */
+#sound-helper {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 6vh;
+  width: 70%;
+  max-width: 280px;
+  height: auto;
+}
+
+/* スマホで少し小さく調整 */
+@media (max-width: 480px) {
+  #shape-helper {
+    width: 28vw;
+    max-width: 140px;
+    bottom: 8vh;
+  }
+  #sound-helper {
+    width: 80%;
+    max-width: 260px;
+    bottom: 5vh;
   }
 }
 

@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.8
+// やさいクイズ script.js（BGM + 効果音つき）1.9.0
 // ==============================
 
 let quizData = [];
@@ -165,7 +165,15 @@ function renderQuestion() {
     choices.appendChild(div);
   });
 
+  // ★ 形クイズ用キャラを表示、音クイズ用は消す
+  const shapeHelper = document.getElementById("shape-helper");
+  const soundHelper = document.getElementById("sound-helper");
+  if (shapeHelper) shapeHelper.style.display = "block";
+  if (soundHelper) soundHelper.style.display = "none";
+
   show("quiz-screen");
+}
+
 }
 
 // ---- ○×判定画面（1秒後に自動遷移）----
@@ -282,8 +290,17 @@ function renderQuestionSound() {
   });
 
   choices.appendChild(container);
+    choices.appendChild(container);
+
+  // ★ 音クイズ用キャラを表示、形クイズ用は消す
+  const shapeHelper = document.getElementById("shape-helper");
+  const soundHelper = document.getElementById("sound-helper");
+  if (shapeHelper) shapeHelper.style.display = "none";
+  if (soundHelper) soundHelper.style.display = "block";
+
   show("quiz-screen");
 }
+
 
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
 function handleAnswerSound(isCorrect, q) {

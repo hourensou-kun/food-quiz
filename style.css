@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.2
+   🎯 2:3 固定レイアウト　ver2.10.3
 
    ============================== */
 
@@ -637,10 +637,10 @@ button:disabled {
 #shape-helper {
   display: none;              /* JSで on/off */
   position: absolute;
-  right: 5vw;                 /* 右からの距離（調整したければここ） */
-  bottom: 5vh;                /* 下からの距離 */
-  width: 26%;                 /* 全体に対する幅の割合 */
-  max-width: 190px;           /* 大きくなり過ぎないように */
+  right: 9vw;                 /* 右からの距離（調整したければここ） */
+  bottom: 15vh;                /* 下からの距離 */
+  width: 35%;                 /* 全体に対する幅の割合 */
+  max-width: 250px;           /* 大きくなり過ぎないように */
   height: auto;
 }
 
@@ -649,10 +649,10 @@ button:disabled {
   display: none;              /* JSで on/off */
   position: absolute;
   left: 50%;
-  bottom: 4vh;
+  bottom: 2vh;
   transform: translateX(-50%);  /* 真ん中にくるように */
-  width: 58%;
-  max-width: 260px;
+  width: 50%;
+  max-width: 250px;
   height: auto;
 }
 

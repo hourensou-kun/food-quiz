@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.0
+   🎯 2:3 固定レイアウト　ver2.1
    ============================== */
 
 html,
@@ -21,9 +21,9 @@ body {
 /* 白いカード本体（中は無地） */
 #app {
   position: relative;
-  width: 99vw;
-  height: 99vh;
-  aspect-ratio: 2 / 3;
+  width: 98vw;
+  height: 98vh;
+  aspect-ratio: 3 / 4;
   background-color: #fffef6;  /* うすいクリーム色 */
   border-radius: 22px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
@@ -51,7 +51,7 @@ body {
    ============================== */
 
 /* 画面本体：背景は透明にして、白いカードは ::before で描く */
-.screen {
+/*.screen {
   position: absolute;
   inset: 0;
   display: none !important;
@@ -62,13 +62,13 @@ body {
 
   /* ここがポイント：背景を透明にして、
      外側のマス目模様を見えるようにする */
-  background: transparent;
+  /*background: transparent;
 
   animation: fadein 0.3s ease;
   opacity: 0;
   pointer-events: none;
   z-index: 0;
-}
+}*/
 
 /* 表示中 */
 .screen.active {

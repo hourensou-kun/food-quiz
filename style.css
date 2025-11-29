@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9.7
+   🎯 2:3 固定レイアウト　ver2.9.8
 
    ============================== */
 
@@ -363,7 +363,7 @@ button:disabled {
   border: 3px solid #ffb980;
   padding: 20px 24px;
   max-width: 90%;
-  width: 520px;
+  width: 500px;
   box-shadow: 0 8px 18px rgba(0,0,0,0.22);
 
   display: flex;
@@ -512,7 +512,7 @@ button:disabled {
 
 /* クイズ画面上部を少し下げる（メニューボタンと重ならないように） */
 #quiz-screen {
-  padding-top: 9vh; /* ← 数値で調整可能（5〜8vhが最適） */
+  padding-top: 10vh; /* ← 数値で調整可能（5〜8vhが最適） */
 }
 
 /* 問題選択画面のクイズ＋サブボタンの並び */
@@ -539,46 +539,9 @@ button:disabled {
   box-shadow: 0 1px 0 #f1a000;
 }
 
-/* タイトル下部の「えほん」「クレジット」を横ならびに */
-.title-sub-row {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 12px;
-  margin-top: 28px;
-}
 
-/* 絵本ボタン（画像＋セリフ） */
-.book-sub-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px;
-  min-width: 0;        /* 画像サイズにあわせる */
-}
 
-/* 絵本を抱えたほうれんそうくん画像 */
-.book-icon {
-  height: 60px;        /* クレジットボタンと同じくらいの高さ感 */
-  width: auto;
-  display: block;
-}
 
-/* 「えほんもあるよ！」のセリフ */
-.book-speech {
-  margin-left: 6px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #ff8c00;
-  white-space: nowrap;
-}
-
-/* クレジットボタンを少し小さめにしてバランスを取る */
-.credit-sub-btn {
-  font-size: 0.85rem;
-  padding: 8px 18px;
-  margin-top: 0;
-}
 
 
 /* チュートリアル本文 */

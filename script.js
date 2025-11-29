@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.1
+// やさいクイズ script.js（BGM + 効果音つき）1.10.2
 // ==============================
 
 let quizData = [];
@@ -241,6 +241,7 @@ function showAnswer(q) {
 // ==============================
 
 // ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
+// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
@@ -263,7 +264,7 @@ function renderQuestionSound() {
   video.currentTime = 0;
   video.muted = false;
   video.style.display = "none"; // ← 出題時は音だけ
-  //video.play().catch((e) => console.warn("音声再生エラー:", e));
+  video.play().catch((e) => console.warn("音声再生エラー:", e));
 
   // 2択（画像＋文字、左右ランダム）
   const opts = [
@@ -271,39 +272,40 @@ function renderQuestionSound() {
     { img: q.choice2_img, text: q.choice2_text, correct: false },
   ].sort(() => Math.random() - 0.5);
 
-  // コンテナ生成
-  const container = document.createElement("div");
-  container.className = "choice-container";
-  container.style.display = "flex";
-  container.style.justifyContent = "center";
-  container.style.gap = "20px";
+  // ★ 形クイズと同じ 3マスぶんを使う
+  // 上2マス → 実際の選択肢 / 下1マス → ダミー（見えない）
+  const slots = [...opts, { dummy: true }];
 
-  opts.forEach((o) => {
+  slots.forEach((o) => {
     const div = document.createElement("div");
     div.className = "choice-item";
 
-    const img = document.createElement("img");
-    img.src = o.img;
-    img.alt = o.text;
+    if (o.dummy) {
+      // 下のダミー：場所だけ取って見えなくする
+      div.style.visibility = "hidden";
+      div.style.pointerEvents = "none";
+    } else {
+      const img = document.createElement("img");
+      img.src = o.img;
+      img.alt = o.text;
 
-    const label = document.createElement("p");
-    label.textContent = o.text;
-    label.style.marginTop = "6px";
-    label.style.fontSize = "1.2em";
-    label.style.fontWeight = "bold";
+      const label = document.createElement("p");
+      label.textContent = o.text;
+      label.style.marginTop = "6px";
+      label.style.fontSize = "1.2em";
+      label.style.fontWeight = "bold";
 
-    div.appendChild(img);
-    div.appendChild(label);
+      div.appendChild(img);
+      div.appendChild(label);
 
-    div.onclick = () => {
-      video.pause(); // 出題音を止める
-      handleAnswerSound(o.correct, q); // ← 音クイズ専用判定へ
-    };
+      div.onclick = () => {
+        video.pause(); // 出題音を止める
+        handleAnswerSound(o.correct, q);
+      };
+    }
 
-    container.appendChild(div);
+    choices.appendChild(div);
   });
-
-  choices.appendChild(container);
 
   // ★ 音クイズ用キャラを表示、形クイズ用は消す
   const shapeHelper = document.getElementById("shape-helper");
@@ -311,17 +313,7 @@ function renderQuestionSound() {
   if (shapeHelper) shapeHelper.style.display = "none";
   if (soundHelper) soundHelper.style.display = "block";
 
-  // まずクイズ画面を表示
   show("quiz-screen");
-
-  // 画面表示が落ち着いてから音だけ再生＋スクロール再リセット
-  setTimeout(() => {
-    video.play().catch((e) => console.warn("音声再生エラー:", e));
-
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  }, 80);
 }
 
 

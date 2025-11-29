@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9.2
+   🎯 2:3 固定レイアウト　ver2.9.3
 
    ============================== */
 
@@ -508,6 +508,48 @@ button:disabled {
   transform: translateY(2px);
   box-shadow: 0 1px 0 #f1a000;
 }
+
+/* タイトル下部の「えほん」「クレジット」を横ならびに */
+.title-sub-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* 絵本ボタン（画像＋セリフ） */
+.book-sub-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  min-width: 0;        /* 画像サイズにあわせる */
+}
+
+/* 絵本を抱えたほうれんそうくん画像 */
+.book-icon {
+  height: 60px;        /* クレジットボタンと同じくらいの高さ感 */
+  width: auto;
+  display: block;
+}
+
+/* 「えほんもあるよ！」のセリフ */
+.book-speech {
+  margin-left: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ff8c00;
+  white-space: nowrap;
+}
+
+/* クレジットボタンを少し小さめにしてバランスを取る */
+.credit-sub-btn {
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  margin-top: 0;
+}
+
 
 /* チュートリアル本文 */
 .tutorial-body {

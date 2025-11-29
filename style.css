@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11.6
+   🎯 2:3 固定レイアウト　ver2.11.7
 
    ============================== */
 
@@ -283,35 +283,6 @@ button:disabled {
   }
 }
 
-/* ==============================
-   🎵 音クイズ（2択専用レイアウト）
-   ============================== */
-
-/* JS が作る .choice-container 用
-   → 2択のときだけ使われる */
-.choice-container {
-  grid-column: 1 / 3;  /* 3択用グリッドをまたいで中央表示 */
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 5vw;
-  margin-top: 1vh; /* 緑の枠のすぐ下あたり */
-}
-
-.choice-container .choice-item {
-  max-width: 160px;
-}
-
-.choice-container .choice-item p {
-  font-size: 1rem;
-}
-
-@media (min-width: 768px) {
-  .choice-container {
-    gap: 2vw;
-  }
-}
 
 /* ==============================
    🎬 判定・答えあわせ・結果画面

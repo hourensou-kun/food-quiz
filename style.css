@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.6
+   🎯 2:3 固定レイアウト　ver2.7
 
    ============================== */
 
@@ -28,6 +28,8 @@ body {
   background-color: #fffef6;  /* うすいクリーム色 */
   border-radius: 22px;
   overflow: hidden;
+　box-shadow: 0 18px 30px rgba(0, 0, 0, 0.25);
+
 
   display: flex;
   justify-content: center;
@@ -248,7 +250,7 @@ button:disabled {
 /* 正方形のカード（共通） */
 .choice-item {
   width: 100%;
-  max-width: 190px;
+  max-width: 160px;
   aspect-ratio: 1 / 1;
 
   background-color: #e0f7ff;
@@ -267,7 +269,7 @@ button:disabled {
 }
 
 .choice-item img {
-  width: 85%;
+  width: 90%;
   height: auto;
   object-fit: contain;
   margin-bottom: 6px;
@@ -275,7 +277,7 @@ button:disabled {
 
 .choice-item p {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #333;
 }
@@ -288,7 +290,7 @@ button:disabled {
 /* スマホ：カード少し小さく */
 @media (max-width: 768px) {
   .choice-item {
-    max-width: 160px;
+    max-width: 140px;
   }
 }
 
@@ -313,7 +315,7 @@ button:disabled {
 }
 
 .choice-container .choice-item p {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -455,7 +457,7 @@ button:disabled {
 
 /* クイズ画面上部を少し下げる（メニューボタンと重ならないように） */
 #quiz-screen {
-  padding-top: 10vh; /* ← 数値で調整可能（5〜8vhが最適） */
+  padding-top: 9vh; /* ← 数値で調整可能（5〜8vhが最適） */
 }
 
 /* 問題選択画面のクイズ＋サブボタンの並び */

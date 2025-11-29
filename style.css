@@ -1,5 +1,6 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.2
+   🎯 2:3 固定レイアウト　ver2.3
+
    ============================== */
 
 html,
@@ -62,7 +63,7 @@ body {
 
   /* ここがポイント：背景を透明にして、
      外側のマス目模様を見えるようにする */
-  /*background: transparent;
+  background: transparent;
 
   animation: fadein 0.3s ease;
   opacity: 0;

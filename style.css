@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11.10
+   🎯 2:3 固定レイアウト　ver2.11.11
 
    ============================== */
 
@@ -163,7 +163,7 @@ button:disabled {
   box-sizing: border-box;
 
   /* 上・左右・下の余白（必要ならあとで微調整してOK） */
-  padding: 8vh 4vw 10vh;
+  padding: 10vh 4vw 10vh;
 
   /* ★ここがポイント：縦方向を「上そろえ」にする */
   display: flex;
@@ -429,7 +429,7 @@ button:disabled {
    ============================== */
 #menu-btn {
   position: absolute;
-  top: 0vh;
+  top: 1vh;
   right: 1.5vw;
   width: 14vw;
   max-width: 70px;
@@ -638,7 +638,7 @@ button:disabled {
   #sound-helper {
     width: 72%;
     max-width: 270px;
-    bottom: 1vh;         /* 画面の下にくっつきすぎないように */
+    bottom: 0vh;         /* 画面の下にくっつきすぎないように */
   }
 
   /* 下の余白も少し減らす（全体が上に寄る） */

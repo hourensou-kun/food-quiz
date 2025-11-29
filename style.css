@@ -629,3 +629,25 @@ button:disabled {
   border-radius: 14px;
 }
 
+/* 絵本紹介・クレジットは中だけスクロールできるようにする */
+#book-screen .menu-panel,
+#credit-screen .menu-panel {
+  max-height: 78vh;         /* カードの高さの中におさめる */
+  overflow-y: auto;
+}
+
+/* スマホのときは文字少し小さめにして余裕を作る */
+@media (max-width: 480px) {
+  #book-screen .tutorial-body {
+    font-size: 0.9rem;
+  }
+  #book-screen ruby rt {
+    font-size: 0.55em;
+  }
+
+  #credit-screen p {
+    font-size: 1.0rem;
+  }
+}
+
+

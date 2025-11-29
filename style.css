@@ -369,6 +369,8 @@ button:disabled {
   margin: 1vh 0;
   color: #555;
 }
+
+
 /* ===== 🔙 戻るボタン ===== */
 .back-button {
   position: absolute;
@@ -453,7 +455,7 @@ button:disabled {
 
 /* クイズ画面上部を少し下げる（メニューボタンと重ならないように） */
 #quiz-screen {
-  padding-top: 11vh; /* ← 数値で調整可能（5〜8vhが最適） */
+  padding-top: 10vh; /* ← 数値で調整可能（5〜8vhが最適） */
 }
 
 /* 問題選択画面のクイズ＋サブボタンの並び */

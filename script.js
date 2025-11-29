@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.9.2
+// やさいクイズ script.js（BGM + 効果音つき）1.10.0
 // ==============================
 
 let quizData = [];
@@ -80,24 +80,35 @@ document.addEventListener("click", (e) => {
 // 画面切り替え
 // ==============================
 function show(id) {
+  // 画面切り替え
   document.querySelectorAll(".screen").forEach((s) =>
     s.classList.remove("active")
   );
-  document.getElementById(id).classList.add("active");
 
-  // 画面ごとのBGM（保険でここでも制御しておく）
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add("active");
+
+  // 🔸 クイズ画面を開くたびにスクロール位置を強制リセット
+  if (id === "quiz-screen") {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
+  // 画面ごとのBGM
   if (id === "title-screen" || id === "select-screen") {
     // タイトル系画面
     setBGM("title", 1.0);
+
   } else if (id === "quiz-screen") {
     // クイズ画面
     if (currentMode === "sound") {
-      setBGM("quiz", 0.1); // 音クイズは小さめ
+      setBGM("quiz", 0.3); // 音クイズは小さめ
     } else if (currentMode === "shape") {
       setBGM("quiz", 1.0); // 形クイズは普通の音量
     }
   }
 }
+
 
 // ==============================
 // CSV読み込み

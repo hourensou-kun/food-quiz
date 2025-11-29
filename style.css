@@ -1,5 +1,6 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.0
+   🎯 2:3 固定レイアウト　ver2.10.1
+
 
    ============================== */
 
@@ -195,21 +196,23 @@ button:disabled {
   gap: 2vw;
 }
 
-/* 形クイズ用キャラ画像（右側にちょこんと） */
-#shape-helper {
-  display: none;           /* JS で切り替え */
-  max-width: 32%;
+/* 形クイズのほうれんそうキャラ */
+.shape-helper-img {
+  flex: 0 0 auto;
+  align-self: center;
+
+  width: 28vw;         /* 端末に合わせた可変サイズ */
+  max-width: 180px;    /* 大きくなりすぎないように上限 */
+  height: auto;
+}
+/* 音クイズのほうれんそうキャラ（下に小さめ） */
+.sound-helper-img {
+  margin-top: 1.5vh;
+  width: 60vw;        /* 画面幅の 6割くらい */
+  max-width: 260px;   /* 上限 */
   height: auto;
 }
 
-/* 音クイズ用キャラ画像（選択肢の下に中央配置） */
-#sound-helper {
-  display: none;           /* JS で切り替え */
-  width: 70%;
-  max-width: 320px;
-  height: auto;
-  margin: 8px auto 0;
-}
 
 /* スマホで横幅がきつい場合は少し小さく */
 @media (max-width: 480px) {
@@ -270,17 +273,29 @@ button:disabled {
    ============================== */
 
 /* 3択のときは #choices 直下に .choice-item が3つ入る */
+/* 3択・2択 共通のラッパー */
 #choices {
   width: 100%;
   max-width: 92%;
   margin-top: 0vh;
 
+  /* 左にカード、右にキャラを並べるため flex に変更 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3vw;
+}
+
+/* 形クイズ用：3択のグリッド部分 */
+.choices-grid {
+  flex: 0 1 auto;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* 上2・下1 */
   grid-auto-rows: 1fr;
   gap: 2vh 4vw;
   justify-items: center;
 }
+
 
 /* 正方形のカード（共通） */
 .choice-item {
@@ -577,10 +592,6 @@ button:disabled {
   transform: translateY(2px);
   box-shadow: 0 1px 0 #f1a000;
 }
-
-
-
-
 
 
 /* チュートリアル本文 */

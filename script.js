@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.9.2
+// やさいクイズ script.js（BGM + 効果音つき）1.9.0
 // ==============================
 
 let quizData = [];
@@ -122,27 +122,21 @@ const pickRandom = (arr, n = 3) =>
 // ==============================
 
 // ---- 問題表示 ----
-// ---- 問題表示（クイズ1：形）----
 function renderQuestion() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   currentMode = "shape";
+  // クイズ用BGM（普通の音量）
   setBGM("quiz", 1.0);
 
   const questionText = document.getElementById("question-text");
   const questionImage = document.getElementById("question-image");
-  const choicesWrap = document.getElementById("choices");
+  const choices = document.getElementById("choices");
 
   questionText.textContent = q.question || "";
   questionImage.src = q.image || "";
-
-  // ← いったん中身を空にする
-  choicesWrap.innerHTML = "";
-
-  // ★ 左側：3択用のグリッド
-  const grid = document.createElement("div");
-  grid.className = "choices-grid";
+  choices.innerHTML = "";
 
   const opts = [
     q.choice1_img || q.choice1
@@ -168,23 +162,17 @@ function renderQuestion() {
     div.appendChild(img);
 
     div.onclick = () => handleAnswer(o.correct, q);
-    grid.appendChild(div);
+    choices.appendChild(div);
   });
 
-  // ★ 右側：ほうれんそうキャラ
-  const helper = document.createElement("img");
-  helper.src = "image/shape_hourensou.png";
-  helper.alt = "いろとかたちをよくみてみよう";
-  helper.className = "shape-helper-img";
-
-  // ラッパー(#choices)にグリッドとキャラを横並びで入れる
-  choicesWrap.appendChild(grid);
-  choicesWrap.appendChild(helper);
+  // ★ 形クイズ用キャラを表示、音クイズ用は消す
+  const shapeHelper = document.getElementById("shape-helper");
+  const soundHelper = document.getElementById("sound-helper");
+  if (shapeHelper) shapeHelper.style.display = "block";
+  if (soundHelper) soundHelper.style.display = "none";
 
   show("quiz-screen");
 }
-
-
 
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
@@ -237,37 +225,42 @@ function showAnswer(q) {
 // ==============================
 
 // ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
-// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   currentMode = "sound";
+  // クイズ用BGM（小さめ）
   setBGM("quiz", 0.1);
 
+  // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
 
-  const choicesWrap = document.getElementById("choices");
-  choicesWrap.innerHTML = "";  // リセット
+  const choices = document.getElementById("choices");
+  choices.innerHTML = ""; // ← 前問のHTMLを確実にリセット
 
-  // 出題音だけ再生
+  // 出題時に「音声だけ」再生（映像非表示）
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "none";
+  video.style.display = "none"; // ← 出題時は音だけ
   video.play().catch((e) => console.warn("音声再生エラー:", e));
 
-  // 2択
+  // 2択（画像＋文字、左右ランダム）
   const opts = [
     { img: q.choice1_img, text: q.choice1_text, correct: true },
     { img: q.choice2_img, text: q.choice2_text, correct: false },
   ].sort(() => Math.random() - 0.5);
 
+  // コンテナ生成
   const container = document.createElement("div");
   container.className = "choice-container";
+  container.style.display = "flex";
+  container.style.justifyContent = "center";
+  container.style.gap = "20px";
 
   opts.forEach((o) => {
     const div = document.createElement("div");
@@ -280,32 +273,31 @@ function renderQuestionSound() {
     const label = document.createElement("p");
     label.textContent = o.text;
     label.style.marginTop = "6px";
-    label.style.fontSize = "1.1rem";
+    label.style.fontSize = "1.2em";
     label.style.fontWeight = "bold";
 
     div.appendChild(img);
     div.appendChild(label);
 
     div.onclick = () => {
-      video.pause();
-      handleAnswerSound(o.correct, q);
+      video.pause(); // 出題音を止める
+      handleAnswerSound(o.correct, q); // ← 音クイズ専用判定へ
     };
 
     container.appendChild(div);
   });
 
-  // ★ 下に小さめキャラ
-  const helper = document.createElement("img");
-  helper.src = "image/sound_hourensou.png";
-  helper.alt = "耳をすませて、よくきいてみよう！";
-  helper.className = "sound-helper-img";
+  choices.appendChild(container);
+    choices.appendChild(container);
 
-  choicesWrap.appendChild(container);
-  choicesWrap.appendChild(helper);
+  // ★ 音クイズ用キャラを表示、形クイズ用は消す
+  const shapeHelper = document.getElementById("shape-helper");
+  const soundHelper = document.getElementById("sound-helper");
+  if (shapeHelper) shapeHelper.style.display = "none";
+  if (soundHelper) soundHelper.style.display = "block";
 
   show("quiz-screen");
 }
-
 
 
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
@@ -675,6 +667,5 @@ if (bookBackBtn) {
     show("title-screen");
   };
 }
-
 
 

@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9
+   🎯 2:3 固定レイアウト　ver2.9.1
 
    ============================== */
 
@@ -381,14 +381,22 @@ button:disabled {
   line-height: 1.5;
 }
 
-/* 🔽 タイトル用クレジットボタン（sub-btnの派生） */
-.credit-sub-btn {
-  margin-top: 4vh;      /* ボタンの下の方に表示 */
-  margin-bottom: 2vh;
+
+/* 🔽 タイトルのクレジットボタンを最下部に固定 */
+#title-screen .credit-sub-btn {
+  position: absolute;
+  bottom: 3vh;   /* ← この値で高さ調整（もっと下なら2vh・1vh） */
+  left: 50%;
+  transform: translateX(-50%);
+
   font-size: 0.95rem;
-  padding: 6px 14px;
+  padding: 6px 16px;
+
+  /* 余白を少し狭くして compact に */
   width: auto;
+  white-space: nowrap;
 }
+
 
 
 

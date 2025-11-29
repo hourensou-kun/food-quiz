@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.7
+// やさいクイズ script.js（BGM + 効果音つき）1.8
 // ==============================
 
 let quizData = [];
@@ -634,19 +634,24 @@ function startCountdown(nextAction) {
 }
 
 // ==============================
-// 📚 絵本紹介画面の遷移
+// 📕 絵本紹介画面（タイトルのボタン）
 // ==============================
 
-// タイトル → 絵本紹介
-document.getElementById("book-info-btn").onclick = () => {
-  show("book-info-screen");
-  setBGM("title", 1.0); // タイトル系BGMキープ
-};
+// タイトル画面の「絵本もあるよ！🥦」ボタン
+const bookInfoBtn = document.getElementById("book-info-btn");
+if (bookInfoBtn) {
+  bookInfoBtn.onclick = () => {
+    show("book-screen");
+  };
+}
 
-// 絵本紹介 → タイトル
-document.getElementById("book-info-back-btn").onclick = () => {
-  show("title-screen");
-  setBGM("title", 1.0);
-};
+// 絵本紹介からタイトルに戻るボタン
+const bookBackBtn = document.getElementById("book-back-btn");
+if (bookBackBtn) {
+  bookBackBtn.onclick = () => {
+    show("title-screen");
+  };
+}
+
 
 

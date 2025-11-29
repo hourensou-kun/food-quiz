@@ -1,7 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.1
-
-
+   🎯 2:3 固定レイアウト　ver2.10.2
    ============================== */
 
 html,
@@ -351,7 +349,6 @@ button:disabled {
 /* JS が作る .choice-container 用
    → 2択のときだけ使われる */
 .choice-container {
-  grid-column: 1 / 3;  /* 3択用グリッドをまたいで中央表示 */
   width: 100%;
   display: flex;
   justify-content: center;

@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9.6
+   🎯 2:3 固定レイアウト　ver2.9.7
 
    ============================== */
 
@@ -353,47 +353,77 @@ button:disabled {
   margin: 16px 0 8px;
 }
 
-/* ===== クレジット画面 ===== */
-#credit-screen {
-  padding: 4vh 5vw;
+/* ------------------------------
+   🌟 クレジット画面（かわいいデザイン）
+   ------------------------------ */
+
+#credit-screen .menu-panel {
+  background: #fffbe8;
+  border-radius: 24px;
+  border: 3px solid #ffb980;
+  padding: 20px 24px;
+  max-width: 90%;
+  width: 520px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  max-height: 78vh; /* はみ出し防止 */
+  overflow-y: auto;
 }
 
-#credit-screen h2 {
-  font-size: 2rem;
-  margin-bottom: 2vh;
-  color: #444;
+/* 中の文章ボックス */
+.credit-body {
+  width: 85%;
+  background: #fffdf5;
+  padding: 20px 24px;
+  border-radius: 16px;
+  border: 2px solid #ffe0a0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-#credit-screen p {
+/* セクションタイトル（絵本紹介とおそろい） */
+.credit-section-title {
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: 4px;
   font-size: 1.2rem;
-  margin: 1vh 0;
+  color: #ff9800;
+}
+
+/* 文章 */
+#credit-screen p {
+  margin: 6px 0;
   color: #555;
 }
 
-/* クレジットの補足文章（薄く小さめ） */
+/* Special Thanks の薄字 */
 .credit-note {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 3vh;
-  max-width: 90%;
-  line-height: 1.5;
-}
-
-
-/* 🔽 タイトルのクレジットボタンを最下部に固定 */
-#title-screen .credit-sub-btn {
-  position: absolute;
-  bottom: 3vh;   /* ← この値で高さ調整（もっと下なら2vh・1vh） */
-  left: 50%;
-  transform: translateX(-50%);
-
   font-size: 0.95rem;
-  padding: 6px 16px;
-
-  /* 余白を少し狭くして compact に */
-  width: auto;
-  white-space: nowrap;
+  color: #777;
+  margin-top: 12px;
 }
+
+/* スマホ向け微調整 */
+@media (max-width: 480px) {
+  .credit-body {
+    font-size: 1rem;
+    padding: 16px 18px;
+  }
+  .credit-section-title {
+    font-size: 1.1rem;
+  }
+  .credit-note {
+    font-size: 0.85rem;
+  }
+}
+
 
 
 

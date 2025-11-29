@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11.2
+   🎯 2:3 固定レイアウト　ver2.11.3
 
    ============================== */
 
@@ -154,18 +154,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
-
 /* ==============================
-   🎨 問題画面（クイズ1・2 共通・統一版）
+   🎨 問題画面（クイズ1・2 共通）
    ============================== */
 
 #quiz-screen {
-  position: relative;
-  padding: 10vh 4vw 10vh;  /* 上 10vh / 左右 4vw / 下 10vh */
+  position: relative;         /* 助っ人キャラの絶対配置用 */
+  padding: 10vh 4vw 12vh;     /* 上・左右・下の余白をまとめて指定 */
   box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }

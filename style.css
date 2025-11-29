@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11.1
+   🎯 2:3 固定レイアウト　ver2.11.2
 
    ============================== */
 
@@ -631,7 +631,7 @@ button:disabled {
   display: none;              /* JSで on/off */
   position: absolute;
   right: 9vw;                 /* 右からの距離（調整したければここ） */
-  bottom: 15vh;                /* 下からの距離 */
+  bottom: 9vh;                /* 下からの距離 */
   width: 35%;                 /* 全体に対する幅の割合 */
   max-width: 250px;           /* 大きくなり過ぎないように */
   height: auto;
@@ -642,7 +642,7 @@ button:disabled {
   display: none;              /* JSで on/off */
   position: absolute;
   left: 50%;
-  bottom: 2vh;
+  bottom: -4vh;
   transform: translateX(-50%);  /* 真ん中にくるように */
   width: 50%;
   max-width: 250px;
@@ -663,7 +663,7 @@ button:disabled {
   #sound-helper {
     width: 72%;
     max-width: 270px;
-    bottom: 0vh;         /* 画面の下にくっつきすぎないように */
+    bottom: -4vh;         /* 画面の下にくっつきすぎないように */
   }
 
   /* 下の余白も少し減らす（全体が上に寄る） */

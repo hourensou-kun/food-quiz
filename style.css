@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.1
+   🎯 2:3 固定レイアウト　ver2.10.2
 
    ============================== */
 
@@ -624,47 +624,48 @@ button:disabled {
 }
 
 /* ==============================
-   🥦 クイズ画面のキャラ画像
+   🥦 助っ人キャラの配置を調整
    ============================== */
 
-/* 共通：最初は非表示、絶対配置 */
-#shape-helper,
-#sound-helper {
-  position: absolute;
-  display: none;
-  pointer-events: none; /* タップ判定を邪魔しない */
+/* クイズ画面全体を relative にして、子要素を絶対配置できるようにする */
+#quiz-screen {
+  position: relative;
+  padding-bottom: 16vh;  /* 下に少し余白を作って絵が収まるようにする */
 }
 
-/* 形クイズ用：カードの右側あたりに出す */
+/* ★ 形クイズ用：右下の空白におさめる */
 #shape-helper {
-  right: 4vw;
-  bottom: 9vh;
-  width: 24vw;
-  max-width: 150px;
+  display: none;              /* JSで on/off */
+  position: absolute;
+  right: 5vw;                 /* 右からの距離（調整したければここ） */
+  bottom: 5vh;                /* 下からの距離 */
+  width: 26%;                 /* 全体に対する幅の割合 */
+  max-width: 190px;           /* 大きくなり過ぎないように */
   height: auto;
 }
 
-/* 音クイズ用：選択肢の下で中央寄せ */
+/* ★ 音クイズ用：下中央の空白におさめる */
 #sound-helper {
+  display: none;              /* JSで on/off */
+  position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  bottom: 6vh;
-  width: 70%;
-  max-width: 280px;
+  bottom: 4vh;
+  transform: translateX(-50%);  /* 真ん中にくるように */
+  width: 58%;
+  max-width: 260px;
   height: auto;
 }
 
-/* スマホで少し小さく調整 */
+/* スマホでもはみ出しにくくする微調整 */
 @media (max-width: 480px) {
   #shape-helper {
-    width: 28vw;
-    max-width: 140px;
-    bottom: 8vh;
+    width: 28%;
+    bottom: 4vh;
   }
+
   #sound-helper {
-    width: 80%;
-    max-width: 260px;
-    bottom: 5vh;
+    width: 62%;
+    bottom: 3vh;
   }
 }
 

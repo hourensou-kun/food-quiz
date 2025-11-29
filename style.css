@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9.9
+   🎯 2:3 固定レイアウト　ver2.9.10
 
    ============================== */
 
@@ -483,21 +483,6 @@ button:disabled {
 #menu-screen,
 #tutorial-screen {
   background: rgba(0, 0, 0, 0.25); /* うっすら暗くして「上に出た感」を出す */
-}
-
-.menu-panel {
-  background: #fffbe8;
-  border-radius: 24px;
-  border: 3px solid #ffb980;
-  padding: 20px 24px;
-  max-width: 90%;
-  width: 520px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.22);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
 
 .menu-panel h2 {

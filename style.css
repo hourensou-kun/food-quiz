@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9.10
+   🎯 2:3 固定レイアウト　ver2.9.11
 
    ============================== */
 
@@ -120,7 +120,7 @@ body {
 }
 
 #title-screen h1 {
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   margin-bottom: 24px;
   color: #ff9800;
   text-shadow: 1px 1px 0 #fff, 2px 2px 4px rgba(0, 0, 0, 0.3);

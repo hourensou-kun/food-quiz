@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.6
+   🎯 2:3 固定レイアウト　ver2.10.7
 
    ============================== */
 
@@ -300,7 +300,7 @@ button:disabled {
 
 @media (min-width: 768px) {
   .choice-container {
-    gap: 3vw;
+    gap: 2vw;
   }
 }
 
@@ -638,7 +638,7 @@ button:disabled {
   display: none;              /* JSで on/off */
   position: absolute;
   right: 9vw;                 /* 右からの距離（調整したければここ） */
-  bottom: 30vh;                /* 下からの距離 */
+  bottom: 15vh;                /* 下からの距離 */
   width: 35%;                 /* 全体に対する幅の割合 */
   max-width: 250px;           /* 大きくなり過ぎないように */
   height: auto;
@@ -663,14 +663,14 @@ button:disabled {
     width: 42%;          /* 少し大きく */
     max-width: 230px;
     right: 6vw;          /* 右端からすこしだけ余白 */
-    bottom: 14vh;        /* 下からの距離を上げる（空白の中に入るぐらい） */
+    bottom: 20vh;        /* 下からの距離を上げる（空白の中に入るぐらい） */
   }
 
   /* 音クイズ用：下すぎないように少し上＆大きめ */
   #sound-helper {
     width: 72%;
     max-width: 270px;
-    bottom: 8vh;         /* 画面の下にくっつきすぎないように */
+    bottom: 10vh;         /* 画面の下にくっつきすぎないように */
   }
 
   /* 下の余白も少し減らす（全体が上に寄る） */

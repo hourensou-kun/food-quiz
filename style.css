@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.9.11
+   🎯 2:3 固定レイアウト　ver2.10.0
 
    ============================== */
 
@@ -183,6 +183,43 @@ button:disabled {
   box-sizing: border-box;
   align-items: center;
   justify-content: flex-start;
+}
+/* 形クイズ用：選択肢＋キャラを横並びにするラッパー */
+.choices-and-helper {
+  width: 100%;
+  max-width: 92%;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2vw;
+}
+
+/* 形クイズ用キャラ画像（右側にちょこんと） */
+#shape-helper {
+  display: none;           /* JS で切り替え */
+  max-width: 32%;
+  height: auto;
+}
+
+/* 音クイズ用キャラ画像（選択肢の下に中央配置） */
+#sound-helper {
+  display: none;           /* JS で切り替え */
+  width: 70%;
+  max-width: 320px;
+  height: auto;
+  margin: 8px auto 0;
+}
+
+/* スマホで横幅がきつい場合は少し小さく */
+@media (max-width: 480px) {
+  #shape-helper {
+    max-width: 36%;
+  }
+  #sound-helper {
+    width: 80%;
+    max-width: 280px;
+  }
 }
 
 /* ピンクの問題文帯 */

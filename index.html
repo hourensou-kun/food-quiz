@@ -1,4 +1,4 @@
-<!--ver.1.1-->
+<!--ver.1.2-->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -34,14 +34,29 @@
 
 
   <!-- ① タイトル画面（active を外す！） -->
-  <section id="title-screen" class="screen">
-    <h1>やさいクイズ！</h1>
-    <button id="start-btn">スタート</button>
-      <button id="book-info-btn">🥦</button>
-   <button id="credit-btn" class="sub-btn credit-sub-btn">クレジット</button>
-     
+ <section id="title-screen" class="screen">
+  <h1>やさいクイズ！</h1>
+  <button id="start-btn">スタート</button>
 
-  </section>
+  <!-- 👇 絵本＆クレジットを横ならびに -->
+  <div class="title-sub-row">
+    <!-- 絵本ボタン（画像＋セリフ） -->
+    <button id="book-info-btn" class="sub-btn book-sub-btn">
+      <img
+        src="image/book_hourensou.png"
+        alt="えほんもあるよ！"
+        class="book-icon"
+      />
+      <span class="book-speech">えほんもあるよ！</span>
+    </button>
+
+    <!-- クレジット（今はテキストのまま） -->
+    <button id="credit-btn" class="sub-btn credit-sub-btn">
+      クレジット
+    </button>
+  </div>
+</section>
+
 
   <!-- ⑨ 絵本紹介画面 -->
 <section id="book-screen" class="screen">

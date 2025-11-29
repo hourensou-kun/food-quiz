@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.10.4
+   🎯 2:3 固定レイアウト　ver2.10.5
 
    ============================== */
 
@@ -282,7 +282,7 @@ button:disabled {
    → 2択のときだけ使われる */
 .choice-container {
   grid-column: 1 / 3;  /* 3択用グリッドをまたいで中央表示 */
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -291,7 +291,7 @@ button:disabled {
 }
 
 .choice-container .choice-item {
-  max-width: 210px;
+  max-width: 160px;
 }
 
 .choice-container .choice-item p {

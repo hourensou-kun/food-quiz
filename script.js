@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.9.1
+// やさいクイズ script.js（BGM + 効果音つき）1.9.2
 // ==============================
 
 let quizData = [];
@@ -174,8 +174,6 @@ function renderQuestion() {
   show("quiz-screen");
 }
 
-  show("quiz-screen");
-}
 
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {

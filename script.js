@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.0
+// やさいクイズ script.js（BGM + 効果音つき）1.10.1
 // ==============================
 
 let quizData = [];
@@ -89,11 +89,6 @@ function show(id) {
   if (!el) return;
   el.classList.add("active");
 
-  // 🔸 クイズ画面を開くたびにスクロール位置を強制リセット
-  if (id === "quiz-screen") {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }
-
   // 画面ごとのBGM
   if (id === "title-screen" || id === "select-screen") {
     // タイトル系画面
@@ -106,6 +101,15 @@ function show(id) {
     } else if (currentMode === "shape") {
       setBGM("quiz", 1.0); // 形クイズは普通の音量
     }
+  }
+
+  // 🔸 クイズ系の画面では、少し待ってからスクロール位置を強制リセット
+  if (id === "quiz-screen" || id === "answer-screen" || id === "judge-screen") {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }, 80); // 50〜100ms くらいがちょうどよい
   }
 }
 
@@ -259,7 +263,7 @@ function renderQuestionSound() {
   video.currentTime = 0;
   video.muted = false;
   video.style.display = "none"; // ← 出題時は音だけ
-  video.play().catch((e) => console.warn("音声再生エラー:", e));
+  //video.play().catch((e) => console.warn("音声再生エラー:", e));
 
   // 2択（画像＋文字、左右ランダム）
   const opts = [
@@ -299,7 +303,7 @@ function renderQuestionSound() {
     container.appendChild(div);
   });
 
-    choices.appendChild(container);
+  choices.appendChild(container);
 
   // ★ 音クイズ用キャラを表示、形クイズ用は消す
   const shapeHelper = document.getElementById("shape-helper");
@@ -307,7 +311,17 @@ function renderQuestionSound() {
   if (shapeHelper) shapeHelper.style.display = "none";
   if (soundHelper) soundHelper.style.display = "block";
 
+  // まずクイズ画面を表示
   show("quiz-screen");
+
+  // 画面表示が落ち着いてから音だけ再生＋スクロール再リセット
+  setTimeout(() => {
+    video.play().catch((e) => console.warn("音声再生エラー:", e));
+
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }, 80);
 }
 
 

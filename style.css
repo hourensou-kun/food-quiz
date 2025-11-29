@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11
+   🎯 2:3 固定レイアウト　ver2.11.1
 
    ============================== */
 
@@ -154,17 +154,22 @@ button:disabled {
   cursor: not-allowed;
 }
 
+
 /* ==============================
-   🎨 問題画面（クイズ1・2 共通）
+   🎨 問題画面（クイズ1・2 共通・統一版）
    ============================== */
 
 #quiz-screen {
-　position: relative;
-  padding: 3vh 4vw 4vh;
+  position: relative;
+  padding: 10vh 4vw 10vh;  /* 上 10vh / 左右 4vw / 下 10vh */
   box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
+
 
 
 /* ピンクの問題文帯 */
@@ -494,10 +499,6 @@ button:disabled {
   margin: 0 0 8px;
 }
 
-/* クイズ画面上部を少し下げる（メニューボタンと重ならないように） */
-#quiz-screen {
-  padding-top: 10vh; /* ← 数値で調整可能（5〜8vhが最適） */
-}
 
 /* 問題選択画面のクイズ＋サブボタンの並び */
 .quiz-item {
@@ -623,15 +624,7 @@ button:disabled {
   }
 }
 
-/* ==============================
-   🥦 助っ人キャラの配置を調整
-   ============================== */
 
-/* クイズ画面全体を relative にして、子要素を絶対配置できるようにする */
-#quiz-screen {
-  position: relative;
-  padding-bottom: 16vh;  /* 下に少し余白を作って絵が収まるようにする */
-}
 
 /* ★ 形クイズ用：右下の空白におさめる */
 #shape-helper {

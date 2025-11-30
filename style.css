@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.12.6
+   🎯 2:3 固定レイアウト　ver2.13.0
 
    ============================== */
 
@@ -687,4 +687,19 @@ button:disabled {
   object-fit: contain;
 }
 
+.book-cover {
+  width: 85%;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.book-cover img {
+  width: 80%;
+  max-width: 260px;     /* スマホでも大きすぎない */
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  background: #fff;
+}
 

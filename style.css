@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.12.5
+   🎯 2:3 固定レイアウト　ver2.12.6
 
    ============================== */
 
@@ -305,6 +305,25 @@ button:disabled {
   font-weight: bold;
   color: #ff7043;
   text-shadow: 0 3px 0 #fff;
+}
+
+/* 判定イラスト（せいかい／ざんねん） */
+#judge-image {
+  display: block;
+  margin: 0 auto;       /* 中央寄せ */
+  max-width: 70%;       /* 画面の 70% まで */
+  max-height: 55vh;     /* 画面の縦の 55% まで */
+  height: auto;
+  object-fit: contain;  /* はみ出さないように収める */
+}
+
+
+/* スマホは少し小さめに */
+@media (max-width: 480px) {
+  #judge-image {
+    max-width: 65%;
+    max-height: 45vh;
+  }
 }
 
 #answer-screen h2,

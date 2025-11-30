@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.11.11
+   🎯 2:3 固定レイアウト　ver2.12
 
    ============================== */
 
@@ -181,7 +181,7 @@ button:disabled {
   background-color: #ffe3dd;
   border: 2px solid #f7b2a2;
   border-radius: 14px;
-  padding: 10px 16px;
+  padding: 8px 55px;
   width: 100%;
   max-width: 92%;
   font-size: 1.2rem;
@@ -196,7 +196,7 @@ button:disabled {
   width: 100%;
   max-width: 92%;
   margin: 0 auto 3vh;
-  padding: 2vh 3vw;
+  padding: 2vh 2vw;
   box-sizing: border-box;
 
   background-color: #eaffea;
@@ -251,14 +251,14 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 1px;
   box-sizing: border-box;
 
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .choice-item img {
-  width: 90%;
+  width: 100%;
   height: auto;
   object-fit: contain;
   margin-bottom: 6px;
@@ -279,7 +279,7 @@ button:disabled {
 /* スマホ：カード少し小さく */
 @media (max-width: 768px) {
   .choice-item {
-    max-width: 140px;
+    max-width: 160px;
   }
 }
 

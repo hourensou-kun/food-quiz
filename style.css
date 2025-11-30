@@ -699,7 +699,5 @@ button:disabled {
   max-width: 260px;     /* スマホでも大きすぎない */
   height: auto;
   border-radius: 12px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-  background: #fff;
 }
 

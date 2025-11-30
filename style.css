@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.12.2
+   🎯 2:3 固定レイアウト　ver2.12.3
 
    ============================== */
 
@@ -251,7 +251,7 @@ button:disabled {
 /* 正方形のカード（共通） */
 .choice-item {
   width: 100%;
-  max-width: 160px;
+  max-width: 150px;
   aspect-ratio: 1 / 1;
 
   background-color: #e0f7ff;
@@ -291,7 +291,7 @@ button:disabled {
 /* スマホ：カード少し小さく */
 @media (max-width: 768px) {
   .choice-item {
-    max-width: 140px;
+    max-width: 135px;
   }
 }
 
@@ -414,8 +414,6 @@ button:disabled {
     font-size: 0.85rem;
   }
 }
-
-
 
 
 

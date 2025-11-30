@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.11.2
+// やさいクイズ script.js（BGM + 効果音つき）1.11.3
 // ==============================
 
 let quizData = [];
@@ -438,7 +438,7 @@ function openTutorial(forcedType) {
     titleEl.textContent = "〜あそびかた〜";
     bodyEl.innerHTML = `
       <p>1. <ruby><rb>上</rb><rt>うえ</rt></ruby>の <ruby><rb>写真</rb><rt>しゃしん</rt></ruby>を <ruby><rb>見</rb><rt>み</rt></ruby>て、<ruby><rb>野菜</rb><rt>やさい</rt></ruby>を <ruby><rb>切</rb><rt>き</rt></ruby>ったときの<ruby><rb>形</rb><rt>かたち</rt></ruby>を　かんがえてみよう。</p>
-      <p>2. 3つのうち、「これだ！」と <ruby><rb>思</rb><rt>思</rt></ruby>う <ruby><rb>形</rb><rt>かたち</rt></ruby>を タップしよう。</p>
+      <p>2. 3つのうち、「これだ！」と <ruby><rb>思</rb><rt>おも</rt></ruby>う <ruby><rb>形</rb><rt>かたち</rt></ruby>を タップしよう。</p>
       <p>3. <ruby><rb>全部</rb><rt>ぜんぶ</rt></ruby>で　3<ruby><rb>問</rb><rt>もん</rt></ruby>といたら、ゲームクリア！</p>
       <p> むずかしさ：★☆☆</p>
     `;

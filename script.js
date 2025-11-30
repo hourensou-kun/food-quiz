@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.5
+// やさいクイズ script.js（BGM + 効果音つき）1.10.6
 // ==============================
 
 let quizData = [];
@@ -194,8 +194,8 @@ function renderQuestion() {
 function handleAnswer(isCorrect, q) {
   const judgeImg = document.getElementById("judge-image");
 judgeImg.src = isCorrect
-  ? "./image/true_hourensou.png"
-  : "./image/false_hourensou.png";
+  ? "./image/true_hourensou.PNG"
+  : "./image/false_hourensou.PNG";
 
 
   // 効果音
@@ -324,8 +324,8 @@ function renderQuestionSound() {
 function handleAnswerSound(isCorrect, q) {
   const judgeImg = document.getElementById("judge-image");
 judgeImg.src = isCorrect
-  ? "./image/true_hourensou.png"
-  : "./image/false_hourensou.png";
+  ? "./image/true_hourensou.PNG"
+  : "./image/false_hourensou.PNG";
 
 
   const se = isCorrect ? seCorrect : seWrong;

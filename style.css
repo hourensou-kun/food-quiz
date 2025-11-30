@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.0
+   🎯 2:3 固定レイアウト　ver2.13.1
 
    ============================== */
 
@@ -270,7 +270,7 @@ button:disabled {
 }
 
 .choice-item img {
-  width: 100%;
+  width: 85%;
   height: auto;
   object-fit: contain;
   margin-bottom: 6px;

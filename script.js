@@ -35,6 +35,11 @@ const seWrong   = new Audio("music/Short_Accent10-1(Low).mp3");
 const seButton  = new Audio("music/Inspiration03-1(High).mp3");
 const seResult  = new Audio("music/Phrase02-1.mp3");
 
+seCorrect.volume = 0.5;
+seWrong.volume = 0.5;
+seButton.volume = 0.5;
+seResult.volume = 0.5;
+
 /**
  * BGMを切り替えて再生する
  * @param {"title"|"quiz"|null} type

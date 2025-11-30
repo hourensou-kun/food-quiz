@@ -660,9 +660,12 @@ button:disabled {
 }
 
 #judge-image {
-  width: 70%;
-  max-width: 360px;
+  width: 65vw;         /* 画面幅に比例 → スマホで安定 */
+  max-width: 300px;    /* 大きすぎ防止 */
   height: auto;
-  margin-bottom: 2vh;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+  object-fit: contain;
 }
+
 

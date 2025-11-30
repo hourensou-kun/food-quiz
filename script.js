@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.4
+// やさいクイズ script.js（BGM + 効果音つき）1.10.5
 // ==============================
 
 let quizData = [];
@@ -192,8 +192,11 @@ function renderQuestion() {
 
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
-  const judgeText = document.getElementById("judge-text");
-  judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
+  const judgeImg = document.getElementById("judge-image");
+judgeImg.src = isCorrect
+  ? "./image/true_hourensou.png"
+  : "./image/false_hourensou.png";
+
 
   // 効果音
   const se = isCorrect ? seCorrect : seWrong;
@@ -319,8 +322,11 @@ function renderQuestionSound() {
 
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
 function handleAnswerSound(isCorrect, q) {
-  const judgeText = document.getElementById("judge-text");
-  judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
+  const judgeImg = document.getElementById("judge-image");
+judgeImg.src = isCorrect
+  ? "./image/true_hourensou.png"
+  : "./image/false_hourensou.png";
+
 
   const se = isCorrect ? seCorrect : seWrong;
   se.currentTime = 0;

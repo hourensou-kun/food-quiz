@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.3
+   🎯 2:3 固定レイアウト　ver2.13.4
    ============================== */
 
 html,
@@ -287,32 +287,35 @@ button:disabled {
   box-shadow: 0 2px 0 rgba(248, 182, 168, 0.8);
 }
 
-/* ===============================
-   🎵 音クイズ専用：カード内容をきれいに収める
-   =============================== */
-
+/* =========================================
+   🎵 音クイズ専用：カード内の余白を "詰める"
+   ========================================= */
 .choice-container .choice-item {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  /* 上下に余裕を持たせる */
+  justify-content: center;    /* まん中寄せ */
   align-items: center;
-  padding: 6px;
+  padding: 4px;               /* ← 前より少なめにする */
 }
 
+/* 画像をもう少し大きめ＆余白も少なく */
 .choice-container .choice-item img {
-  width: 80%;
+  width: 88%;                 /* ← 80% → 88% にUP */
   height: auto;
-  max-height: 60%;     /* カードの中で画像がデカくなりすぎない */
-  margin-top: 4px;
-  margin-bottom: 4px;
+  max-height: 65%;            /* ← 60% → 65% に拡大 */
+  margin-top: 2px;            /* ← 4px → 2px に詰める */
+  margin-bottom: 2px;         /* ← 4px → 2px に詰める */
 }
 
+/* 文字の余白をもっと詰める */
 .choice-container .choice-item p {
-  margin: 0 4px 8px;
-  font-size: 0.95rem;
-  line-height: 1.2;
+  margin: 0;
+  margin-top: 4px;            /* 画像との距離を調整 */
+  font-size: 1rem;            /* そのまま */
+  line-height: 1.1;           /* 行間を詰める */
   text-align: center;
 }
+
 
 
 /* スマホ：カード少し小さく */

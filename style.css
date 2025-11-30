@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.12.1
+   🎯 2:3 固定レイアウト　ver2.12.2
 
    ============================== */
 
@@ -223,19 +223,30 @@ button:disabled {
    🎨 3択レイアウト（クイズ1）
    ============================== */
 
-/* 3択のときは #choices 直下に .choice-item が3つ入る */
 #choices {
-  width: 100%;
-  max-width: 92%;
-  margin-top: 0vh;
-　 margin: 0 auto 3vh;
+  /* ★ 横幅はカード分だけにする */
+  width: auto;
+  max-width: none;
+
+  margin: 0 auto;               /* かたまり全体を中央寄せ */
 
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 上2・下1 */
+  /* 上2・下1 はそのまま。1枚あたりの幅を指定しておく */
+  grid-template-columns: repeat(2, 160px);
   grid-auto-rows: 1fr;
+
   gap: 2vh 4vw;
-  justify-items: center;
+  justify-content: center;      /* グリッド全体を中央に */
+  justify-items: center;        /* 各セルの中身も中央 */
 }
+
+/* スマホでちょっとだけ小さめに */
+@media (max-width: 768px) {
+  #choices {
+    grid-template-columns: repeat(2, 140px);
+  }
+}
+
 
 /* 正方形のカード（共通） */
 .choice-item {

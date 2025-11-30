@@ -279,7 +279,7 @@ button:disabled {
 /* スマホ：カード少し小さく */
 @media (max-width: 768px) {
   .choice-item {
-    max-width: 160px;
+    max-width: 140px;
   }
 }
 

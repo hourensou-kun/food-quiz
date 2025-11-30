@@ -1,6 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.2
-
+   🎯 2:3 固定レイアウト　ver2.13.3
    ============================== */
 
 html,
@@ -287,6 +286,34 @@ button:disabled {
   transform: scale(0.96);
   box-shadow: 0 2px 0 rgba(248, 182, 168, 0.8);
 }
+
+/* ===============================
+   🎵 音クイズ専用：カード内容をきれいに収める
+   =============================== */
+
+.choice-container .choice-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* 上下に余裕を持たせる */
+  align-items: center;
+  padding: 6px;
+}
+
+.choice-container .choice-item img {
+  width: 80%;
+  height: auto;
+  max-height: 60%;     /* カードの中で画像がデカくなりすぎない */
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.choice-container .choice-item p {
+  margin: 0 4px 8px;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
 
 /* スマホ：カード少し小さく */
 @media (max-width: 768px) {

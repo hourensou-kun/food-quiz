@@ -228,7 +228,7 @@ button:disabled {
   width: 100%;
   max-width: 92%;
   margin-top: 0vh;
-　margin: 0 auto;
+　 margin: 0 auto 3vh;
 
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* 上2・下1 */

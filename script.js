@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.6
+// やさいクイズ script.js（BGM + 効果音つき）1.11.0
 // ==============================
 
 let quizData = [];
@@ -70,13 +70,22 @@ function setBGM(type, volume = 0.5) {
     });
 }
 
-// すべてのボタンに「ポチッ」SEをつける
 document.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    seButton.currentTime = 0;
-    seButton.play().catch(() => {});
+  let el = e.target;
+
+  // クリックされた要素から親方向へ探索
+  while (el) {
+    // onclick がある要素（＝クリックで何かが起こる要素）
+    if (typeof el.onclick === "function" || el.hasAttribute("onclick")) {
+      // 効果音を鳴らす
+      seButton.currentTime = 0;
+      seButton.play().catch(() => {});
+      break;
+    }
+    el = el.parentElement;
   }
 });
+
 
 
 

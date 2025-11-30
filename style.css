@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.1
+   🎯 2:3 固定レイアウト　ver2.13.2
 
    ============================== */
 
@@ -277,7 +277,7 @@ button:disabled {
 }
 
 .choice-item p {
-  margin: 0;
+  margin: 1vh;
   font-size: 1rem;
   font-weight: bold;
   color: #333;

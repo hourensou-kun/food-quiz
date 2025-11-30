@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.3
+// やさいクイズ script.js（BGM + 効果音つき）1.10.4
 // ==============================
 
 let quizData = [];
@@ -408,10 +408,10 @@ function openTutorial(forcedType) {
     // 🎵 音クイズの説明
     titleEl.textContent = "〜あそびかた〜";
     bodyEl.innerHTML = `
-      <p>1. <ruby><rb>問題</rb><rt>もんだい</rt></ruby>う が　はじまったら、<ruby><rb>音</rb><rt>おと</rt></ruby>をよく きいてね。</p>
-      <p>2. ２つのうち、「このたべものの<ruby><rb>音</rb><rt>おと</rt></ruby>だ！」と <ruby><rb>思</rb><rt>おも</rt></ruby>った ほうを タップしよう。</p>
+      <p>1. <ruby><rb>問題</rb><rt>もんだい</rt></ruby>がはじまったら、<ruby><rb>音</rb><rt>おと</rt></ruby>をよく きいてね。</p>
+      <p>2. ２つのうち、「このたべものの<ruby><rb>音</rb><rt>おと</rt></ruby>だ！」と <ruby><rb>思</rb><rt>おも</rt></ruby>うものをタップしよう。</p>
       <p>3. <ruby><rb>全部</rb><rt>ぜんぶ</rt></ruby>で　3<ruby><rb>問</rb><rt>もん</rt></ruby>といたら、ゲームクリア！</p>
-      <p> むずかしさ：★☆☆</p>
+      <p> むずかしさ：★★★</p>
     `;
   } else {
     // 🥦 形クイズの説明（デフォルト）
@@ -420,7 +420,7 @@ function openTutorial(forcedType) {
       <p>1. <ruby><rb>上</rb><rt>うえ</rt></ruby>の <ruby><rb>写真</rb><rt>しゃしん</rt></ruby>を <ruby><rb>見</rb><rt>み</rt></ruby>て、<ruby><rb>野菜</rb><rt>やさい</rt></ruby>を <ruby><rb>切</rb><rt>き</rt></ruby>ったときの<ruby><rb>形</rb><rt>かたち</rt></ruby>を　かんがえてみよう。</p>
       <p>2. 3つのうち、「これだ！」と <ruby><rb>思</rb><rt>思</rt></ruby>う <ruby><rb>形</rb><rt>かたち</rt></ruby>を タップしよう。</p>
       <p>3. <ruby><rb>全部</rb><rt>ぜんぶ</rt></ruby>で　3<ruby><rb>問</rb><rt>もん</rt></ruby>といたら、ゲームクリア！</p>
-      <p> むずかしさ：★★★</p>
+      <p> むずかしさ：★☆☆</p>
     `;
   }
 

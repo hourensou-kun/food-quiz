@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.10.2
+// やさいクイズ script.js（BGM + 効果音つき）1.10.3
 // ==============================
 
 let quizData = [];
@@ -92,14 +92,14 @@ function show(id) {
   // 画面ごとのBGM
   if (id === "title-screen" || id === "select-screen") {
     // タイトル系画面
-    setBGM("title", 1.0);
+    setBGM("title", 0.7);
 
   } else if (id === "quiz-screen") {
     // クイズ画面
     if (currentMode === "sound") {
-      setBGM("quiz", 0.3); // 音クイズは小さめ
+      setBGM("quiz", 0); // 音クイズは小さめ
     } else if (currentMode === "shape") {
-      setBGM("quiz", 1.0); // 形クイズは普通の音量
+      setBGM("quiz", 0.7); // 形クイズは普通の音量
     }
   }
 
@@ -241,7 +241,6 @@ function showAnswer(q) {
 // ==============================
 
 // ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
-// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
@@ -321,7 +320,7 @@ function renderQuestionSound() {
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
 function handleAnswerSound(isCorrect, q) {
   const judgeText = document.getElementById("judge-text");
-  judgeText.textContent = isCorrect ? "⭕ せいかい！" : "❌ ざんねん！";
+  judgeText.textContent = isCorrect ? "せいかい！" : "ざんねん！";
 
   const se = isCorrect ? seCorrect : seWrong;
   se.currentTime = 0;
@@ -349,7 +348,7 @@ function showAnswerSound(q) {
 
   const next = document.getElementById("next-btn");
   next.textContent =
-    current >= quizData.length - 1 ? "けっかをみる ▶️" : "つぎのもんだいへ ▶️";
+    current >= quizData.length - 1 ? "けっかをみる" : "つぎのもんだいへ";
 
   next.onclick = () => {
     video.pause();
@@ -378,7 +377,7 @@ function renderResult() {
 
   // BGMはタイトル用に戻す
   currentMode = null;
-  setBGM("title", 1.0);
+  setBGM("title", 0.7);
 
   show("end-screen");
 }
@@ -407,20 +406,20 @@ function openTutorial(forcedType) {
 
   if (type === "sound") {
     // 🎵 音クイズの説明
-    titleEl.textContent = "やさいをきったらどんなおと？ のあそびかた";
+    titleEl.textContent = "〜あそびかた〜";
     bodyEl.innerHTML = `
-      <p>1. おとが なったら、どちらの たべものを きっている おとか よく きいてね。</p>
-      <p>2. ２つのうち、「これだ！」と おもった ほうを タップしよう。</p>
-      <p>3. ぜんぶで　3もんといたら、ゲームクリア！</p>
+      <p>1. <ruby><rb>問題</rb><rt>もんだい</rt></ruby>う が　はじまったら、<ruby><rb>音</rb><rt>おと</rt></ruby>をよく きいてね。</p>
+      <p>2. ２つのうち、「このたべものの<ruby><rb>音</rb><rt>おと</rt></ruby>だ！」と <ruby><rb>思</rb><rt>おも</rt></ruby>った ほうを タップしよう。</p>
+      <p>3. <ruby><rb>全部</rb><rt>ぜんぶ</rt></ruby>で　3<ruby><rb>問</rb><rt>もん</rt></ruby>といたら、ゲームクリア！</p>
       <p> むずかしさ：★☆☆</p>
     `;
   } else {
     // 🥦 形クイズの説明（デフォルト）
-    titleEl.textContent = "やさいをきったらどんなかたち？ のあそびかた";
+    titleEl.textContent = "〜あそびかた〜";
     bodyEl.innerHTML = `
-      <p>1. うえの しゃしんを みて、やさいを きったときのかたちを　かんがえてみよう。</p>
-      <p>2. 3つのうち、「これだ！」と おもった かたちを タップして こたえよう。</p>
-      <p>3. ぜんぶで　3もんといたら、ゲームクリア！</p>
+      <p>1. <ruby><rb>上</rb><rt>うえ</rt></ruby>の <ruby><rb>写真</rb><rt>しゃしん</rt></ruby>を <ruby><rb>見</rb><rt>み</rt></ruby>て、<ruby><rb>野菜</rb><rt>やさい</rt></ruby>を <ruby><rb>切</rb><rt>き</rt></ruby>ったときの<ruby><rb>形</rb><rt>かたち</rt></ruby>を　かんがえてみよう。</p>
+      <p>2. 3つのうち、「これだ！」と <ruby><rb>思</rb><rt>思</rt></ruby>う <ruby><rb>形</rb><rt>かたち</rt></ruby>を タップしよう。</p>
+      <p>3. <ruby><rb>全部</rb><rt>ぜんぶ</rt></ruby>で　3<ruby><rb>問</rb><rt>もん</rt></ruby>といたら、ゲームクリア！</p>
       <p> むずかしさ：★★★</p>
     `;
   }

@@ -307,7 +307,34 @@ button:disabled {
 }
 
 
+/* ========================================
+   🎯 形クイズ（3択）：画像だけ真ん中〜少し下に
+   ======================================== */
 
+/* 3択の .choice-item （#choices 直下だけ） */
+#choices > .choice-item {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 画像を中央よりちょっと下に・大きめに */
+#choices > .choice-item img {
+  position: absolute;
+  top: 50%;             /* ← ここで「少し下」に調整（50〜65%くらいで好み調整） */
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 88%;           /* ← 画像の大きさ（85〜95%で調整） */
+  height: auto;
+  object-fit: contain;
+  margin: 0;
+}
+
+/* 形クイズでは文字は使わないので非表示 */
+#choices > .choice-item p {
+  display: none !important;
+}
 
 
 
@@ -716,32 +743,5 @@ button:disabled {
 }
 
 
-/* ========================================
-   🎯 形クイズ（3択）：画像だけ真ん中〜少し下に
-   ======================================== */
 
-/* 3択の .choice-item （#choices 直下だけ） */
-#choices > .choice-item {
-  position: relative;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* 画像を中央よりちょっと下に・大きめに */
-#choices > .choice-item img {
-  position: absolute;
-  top: 50%;             /* ← ここで「少し下」に調整（50〜65%くらいで好み調整） */
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 88%;           /* ← 画像の大きさ（85〜95%で調整） */
-  height: auto;
-  object-fit: contain;
-  margin: 0;
-}
-
-/* 形クイズでは文字は使わないので非表示 */
-#choices > .choice-item p {
-  display: none !important;
-}
 

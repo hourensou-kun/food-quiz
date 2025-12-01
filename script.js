@@ -221,7 +221,7 @@ judgeImg.src = isCorrect
   show("judge-screen");
 
   // 1秒後に答えあわせへ
-  setTimeout(() => showAnswer(q), 2000);
+  setTimeout(() => showAnswer(q), 1500);
 }
 
 // ---- 答えあわせ画面（クイズ1）----

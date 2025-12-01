@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.12
+   🎯 2:3 固定レイアウト　ver2.13.13
    ============================== */
 
 html,
@@ -249,6 +249,7 @@ button:disabled {
 
 /* 正方形のカード（共通） */
 .choice-item {
+  position: relative;          /* ← 文字を絶対配置するため */
   width: 100%;
   max-width: 150px;
   aspect-ratio: 1 / 1;
@@ -259,35 +260,36 @@ button:disabled {
   box-shadow: 0 5px 0 rgba(248, 182, 168, 0.8);
 
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: center;     /* 中央寄せは画像だけに効くようになる */
   align-items: center;
-
-  /* 余白をかなり減らす */
-  padding: 4px 6px 2px;
+  padding: 6px 8px 26px;       /* ← 下だけ多め（文字のスペース） */
   box-sizing: border-box;
 
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* 画像：大きめ＆下の余白をなくす */
+/* 画像：なるべく大きく真ん中に */
 .choice-item img {
-  width: 90%;          /* 少し大きめ */
-  height: auto;
+  width: 90%;
+  height: 80%;                 /* 高さも広く使う */
   object-fit: contain;
-  margin-bottom: 0;    /* 下のスキマをゼロに */
 }
 
-/* 文字：上にギュッと寄せる（画像側に少し食い込む） */
+/* 文字：カードの下に固定して、好きなだけ近づける */
 .choice-item p {
-  margin-top: -30px;          /* ← 思いっきりマイナスにしてみる */
-  margin-bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;                 /* ← ここを 0〜10px くらいで調整すると上下に動く */
+  margin: 0;
+  text-align: center;
+
   font-size: 1rem;
   font-weight: bold;
   color: #333;
   line-height: 1.1;
-  background: rgba(255, 0, 0, 0.3);  /* 一瞬だけ背景色をつけて確認用 */
 }
+
 
 
 

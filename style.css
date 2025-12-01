@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.14.8
+   🎯 2:3 固定レイアウト　ver2.14.9
    ============================== */
 
 html,
@@ -247,9 +247,13 @@ button:disabled {
 }
 
 
-/* 正方形のカード（共通） */
+
+/* ========================================
+   🔷 共通：選択肢カードの基本デザイン
+   ======================================== */
+
 .choice-item {
-  position: relative;          /* ← 文字を絶対配置するため */
+  position: relative;
   width: 100%;
   max-width: 150px;
   aspect-ratio: 1 / 1;
@@ -260,27 +264,27 @@ button:disabled {
   box-shadow: 0 5px 0 rgba(248, 182, 168, 0.8);
 
   display: flex;
-  justify-content: center;     /* 中央寄せは画像だけに効くようになる */
+  justify-content: center;
   align-items: center;
-  padding: 6px 8px 26px;       /* ← 下だけ多め（文字のスペース） */
+  padding: 6px 8px 26px; /* ← 音クイズ用：文字のスペースを確保 */
   box-sizing: border-box;
 
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* 画像：なるべく大きく真ん中に */
+/* 共通：カードの画像 */
 .choice-item img {
   width: 90%;
-  height: 80%;                 /* 高さも広く使う */
+  height: 80%;
   object-fit: contain;
 }
 
-/* 文字：カードの下に固定して、好きなだけ近づける */
-/*.choice-item p {
+/* 共通：カードの文字（形クイズでは後で非表示になる） */
+.choice-item p {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 6px;                 /* ← ここを 0〜10px くらいで調整すると上下に動く */
+  bottom: 6px;
   margin: 0;
   text-align: center;
 
@@ -288,16 +292,15 @@ button:disabled {
   font-weight: bold;
   color: #333;
   line-height: 1.1;
-}*/
+}
 
-
+/* 押したとき */
 .choice-item:active {
-  transform: scale(0.96);
+  transform: scale(0.95);
   box-shadow: 0 2px 0 rgba(248, 182, 168, 0.8);
 }
 
-
-/* スマホ：カード少し小さく */
+/* スマホで少し小さく */
 @media (max-width: 768px) {
   .choice-item {
     max-width: 135px;
@@ -306,44 +309,53 @@ button:disabled {
 
 
 /* ========================================
-   🎯 形クイズ（3択）：画像だけ真ん中〜少し下に
+   🍏 形クイズ（3択）は文字なし・画像だけ大きく中央
    ======================================== */
 
-/* 3択の .choice-item （#choices 直下だけ） */
+/* 形クイズ：#choices の直下が .choice-item */
 #choices > .choice-item {
-  position: relative;
-  padding: 0;
+  padding: 0;          /* 文字スペース不要なのでゼロ */
   overflow: hidden;
 }
 
-/* 画像を中央よりちょっと下に・大きめに */
+/* 形クイズの画像：中央に大きく配置 */
 #choices > .choice-item img {
   position: absolute;
-  top: 50%;             /* ← ここで「少し下」に調整（50〜65%くらいで好み調整） */
+  top: 54%;            /* ← 好みで 50〜62% 調整可 */
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 88%;           /* ← 画像の大きさ（85〜95%で調整） */
+  width: 92%;          /* ← 大きさ（85〜95%）調整可 */
   height: auto;
   object-fit: contain;
   margin: 0;
 }
 
-/* 形クイズでは文字は使わないので非表示 */
+/* 形クイズでは文字はいらない */
 #choices > .choice-item p {
   display: none;
 }
 
-/* 🎵 音クイズ（2択）のときは文字を表示する */
-#choices .choice-container .choice-item p {
-  display: block;
-  margin-top: 4px;
-  margin-bottom: 0;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  line-height: 1.2;
+
+/* ========================================
+   🎵 音クイズ（2択）は文字を表示
+   ======================================== */
+
+.choice-container .choice-item {
+  padding: 6px 8px 26px; /* 音クイズは文字ありなので元のレイアウトを継続 */
 }
+
+.choice-container .choice-item img {
+  position: static;
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+}
+
+.choice-container .choice-item p {
+  display: block;
+}
+
 
 
 

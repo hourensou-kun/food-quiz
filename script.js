@@ -706,17 +706,4 @@ if (bookBackBtn) {
 }
 
 
-function handleOrientation() {
-  const warning = document.getElementById("rotate-warning");
-  
-  if (window.matchMedia("(orientation: landscape)").matches && window.innerWidth < 900) {
-    warning.style.display = "flex";
-  } else {
-    warning.style.display = "none";
-  }
-}
-
-window.addEventListener("orientationchange", handleOrientation);
-window.addEventListener("resize", handleOrientation);
-handleOrientation();
 

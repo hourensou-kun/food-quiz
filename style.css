@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.14.3
+   🎯 2:3 固定レイアウト　ver2.14.4
    ============================== */
 
 html,
@@ -306,26 +306,37 @@ button:disabled {
   }
 }
 
+
+
 /* ========================================
-   🎯 形クイズ専用：画像を完全ど真ん中に固定
+   🎯 形クイズ専用レイアウト（p なし版）
    ======================================== */
+
+/* カード全体 */
 #choices.choice-2 .choice-item {
   position: relative;
-  padding: 0;               /* 余白なし */
-  overflow: hidden;         /* はみ出し防止 */
+  padding: 0;
+  overflow: hidden;
 }
 
-/* 画像：文字の影響を受けず完全中央に固定 */
+/* 画像のみ配置：中央より少し下に寄せる */
 #choices.choice-2 .choice-item img {
   position: absolute;
-  top: 50%;
+  top: 58%;                 /* ← ★ 少し下に寄せたい場合はここを増やす (55~62%) */
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 85%;               /* ← 画像を大きく（調整可：80〜95%） */
+  
+  width: 88%;               /* ← ★ 画像の大きさ（85〜95%で調整できる） */
   height: auto;
   object-fit: contain;
   margin: 0;
 }
+
+/* 形クイズでは文字(p)は非表示にする */
+#choices.choice-2 .choice-item p {
+  display: none !important;
+}
+
 
 
 

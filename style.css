@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.5
+   🎯 2:3 固定レイアウト　ver2.13.6
    ============================== */
 
 html,
@@ -312,7 +312,7 @@ button:disabled {
 
 /* 文字は上に食い込ませて重なり気味に */
 .choice-container .choice-item p {
-  margin: -4px 0 0;          /* ← マイナスで画像側に食い込ませる */
+  margin: -8px 0 0;          /* ← マイナスで画像側に食い込ませる */
   font-size: 1rem;
   line-height: 1;            /* 行間もキュッと */
   text-align: center;

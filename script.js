@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.12.1
+// やさいクイズ script.js（BGM + 効果音つき）1.11.3
 // ==============================
 
 let quizData = [];
@@ -256,66 +256,74 @@ function showAnswer(q) {
 // ==============================
 // 🎵 クイズ2：やさいをきったらどんなおと？
 // ==============================
-// ===== 音クイズ用：問題表示 =====
+
+// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   currentMode = "sound";
-  setBGM("quiz", 0.1); // クイズBGM
+  // クイズ用BGM（小さめ）
+  setBGM("quiz", 0.1);
 
-  // 問題文＆イラスト
+  // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
 
   const choices = document.getElementById("choices");
-  choices.innerHTML = "";   // 👈 前の問題を完全リセット
+  choices.innerHTML = ""; // ← 前問のHTMLを確実にリセット
 
-  // 出題時：動画は「音だけ再生」
+  // 出題時に「音声だけ」再生（映像非表示）
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "none";
-  video.play().catch(e => console.warn("音声再生エラー:", e));
+  video.style.display = "none"; // ← 出題時は音だけ
+  video.play().catch((e) => console.warn("音声再生エラー:", e));
 
-  // 2択データ（画像＋テキスト）
+  // 2択（画像＋文字、左右ランダム）
   const opts = [
     { img: q.choice1_img, text: q.choice1_text, correct: true },
     { img: q.choice2_img, text: q.choice2_text, correct: false },
   ].sort(() => Math.random() - 0.5);
 
-  // #choices の中に 1つだけコンテナを作る
-  const container = document.createElement("div");
-  container.className = "choice-container";
+  // ★ 形クイズと同じ 3マスぶんを使う
+  // 上2マス → 実際の選択肢 / 下1マス → ダミー（見えない）
+  const slots = [...opts, { dummy: true }];
 
-  opts.forEach(o => {
+  slots.forEach((o) => {
     const div = document.createElement("div");
     div.className = "choice-item";
 
-    const img = document.createElement("img");
-    img.src = o.img;
-    img.alt = o.text;
+    if (o.dummy) {
+      // 下のダミー：場所だけ取って見えなくする
+      div.style.visibility = "hidden";
+      div.style.pointerEvents = "none";
+    } else {
+      const img = document.createElement("img");
+      img.src = o.img;
+      img.alt = o.text;
 
-    // ★ ここが一番大事：文字用 <p> をちゃんと作る！
-    const label = document.createElement("p");
-    label.textContent = o.text;
+      const label = document.createElement("p");
+      label.textContent = o.text;
+      label.style.marginTop = "6px";
+      label.style.fontSize = "1.2em";
+      label.style.fontWeight = "bold";
 
-    div.appendChild(img);
-    div.appendChild(label);
+      div.appendChild(img);
+      div.appendChild(label);
 
-    div.onclick = () => {
-      video.pause();
-      handleAnswerSound(o.correct, q);
-    };
+      div.onclick = () => {
+        video.pause(); // 出題音を止める
+        handleAnswerSound(o.correct, q);
+      };
+    }
 
-    container.appendChild(div);
+    choices.appendChild(div);
   });
 
-  choices.appendChild(container);
-
-  // キャラの表示切り替え
+  // ★ 音クイズ用キャラを表示、形クイズ用は消す
   const shapeHelper = document.getElementById("shape-helper");
   const soundHelper = document.getElementById("sound-helper");
   if (shapeHelper) shapeHelper.style.display = "none";
@@ -323,7 +331,6 @@ function renderQuestionSound() {
 
   show("quiz-screen");
 }
-
 
 
 
@@ -697,5 +704,3 @@ if (bookBackBtn) {
     show("title-screen");
   };
 }
-
-

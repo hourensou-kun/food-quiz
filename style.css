@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.9
+   🎯 2:3 固定レイアウト　ver2.13.10
    ============================== */
 
 html,
@@ -294,39 +294,6 @@ button:disabled {
   box-shadow: 0 2px 0 rgba(248, 182, 168, 0.8);
 }
 
-/* =========================================
-   🎵 音クイズ専用：カード内の余白を "詰める"
-   ========================================= */
-/* 音クイズ：カード内をかなり詰めるレイアウト */
-.choice-container .choice-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;              /* ほぼ余白なし */
-  box-sizing: border-box;
-}
-
-/* 画像を大きめに＆下の余白ゼロ */
-.choice-container .choice-item img {
-  width: 92%;                /* 大きめに表示 */
-  height: auto;
-  max-height: 72%;           /* かなり広く使う */
-  margin-top: 0;
-  margin-bottom: 0;          /* 文字とほぼくっつく */
-  object-fit: contain;
-}
-
-/* 文字は上に食い込ませて重なり気味に */
-.choice-container .choice-item p {
-  margin: -8px 0 0;          /* ← マイナスで画像側に食い込ませる */
-  font-size: 1rem;
-  line-height: 1;            /* 行間もキュッと */
-  text-align: center;
-}
-
-
-
 
 /* スマホ：カード少し小さく */
 @media (max-width: 768px) {
@@ -498,7 +465,7 @@ button:disabled {
    ============================== */
 #menu-btn {
   position: absolute;
-  top: 1vh;
+  top: 1.5vh;
   right: 1.5vw;
   width: 14vw;
   max-width: 70px;

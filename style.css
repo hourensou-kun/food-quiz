@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.16.1
+   🎯 2:3 固定レイアウト　ver2.16.2
    ============================== */
 
 html,
@@ -746,7 +746,7 @@ button:disabled {
 }
 
 #rotate-warning {
-  /* ふだんは非表示のまま */
+  /* ふだんは非表示のまま（JSで切り替える） */
   display: none;
 
   position: fixed;
@@ -761,11 +761,4 @@ button:disabled {
   font-weight: bold;
   color: #ff7043;
   text-align: center;
-}
-
-/* 横向きのときだけ表示 */
-@media screen and (orientation: landscape) and (max-width: 900px) {
-  #rotate-warning {
-    display: flex;
-  }
 }

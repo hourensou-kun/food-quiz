@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.12.0
+// やさいクイズ script.js（BGM + 効果音つき）1.12.1
 // ==============================
 
 let quizData = [];
@@ -706,4 +706,28 @@ if (bookBackBtn) {
 }
 
 
+// ==============================
+// 📱 端末が横向きのときの警告表示
+// ==============================
+window.addEventListener("DOMContentLoaded", () => {
+  const rotateWarning = document.getElementById("rotate-warning");
+  if (!rotateWarning) return; // 念のため保険
+
+  function handleOrientation() {
+    const isMobileWidth = window.innerWidth <= 900;
+    const isLandscape   = window.innerWidth > window.innerHeight;
+
+    // スマホサイズ ＋ 横向き のときだけ表示
+    if (isMobileWidth && isLandscape) {
+      rotateWarning.style.display = "flex";
+    } else {
+      rotateWarning.style.display = "none";
+    }
+  }
+
+  // 初回＆画面サイズ変更・回転のたびにチェック
+  handleOrientation();
+  window.addEventListener("resize", handleOrientation);
+  window.addEventListener("orientationchange", handleOrientation);
+});
 

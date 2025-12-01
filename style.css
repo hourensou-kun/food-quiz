@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.14.4
+   🎯 2:3 固定レイアウト　ver2.14.5
    ============================== */
 
 html,
@@ -307,35 +307,6 @@ button:disabled {
 }
 
 
-
-/* ========================================
-   🎯 形クイズ専用レイアウト（p なし版）
-   ======================================== */
-
-/* カード全体 */
-#choices.choice-2 .choice-item {
-  position: relative;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* 画像のみ配置：中央より少し下に寄せる */
-#choices.choice-2 .choice-item img {
-  position: absolute;
-  top: 58%;                 /* ← ★ 少し下に寄せたい場合はここを増やす (55~62%) */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
-  width: 88%;               /* ← ★ 画像の大きさ（85〜95%で調整できる） */
-  height: auto;
-  object-fit: contain;
-  margin: 0;
-}
-
-/* 形クイズでは文字(p)は非表示にする */
-#choices.choice-2 .choice-item p {
-  display: none !important;
-}
 
 
 
@@ -744,3 +715,32 @@ button:disabled {
   border-radius: 12px;
 }
 
+
+/* ========================================
+   🎯 形クイズ専用レイアウト（p なし版）
+   ======================================== */
+
+/* カード全体 */
+#choices.choice-2 .choice-item {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 画像のみ配置：中央より少し下に寄せる */
+#choices.choice-2 .choice-item img {
+  position: absolute;
+  top: 58%;                 /* ← ★ 少し下に寄せたい場合はここを増やす (55~62%) */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 88%;               /* ← ★ 画像の大きさ（85〜95%で調整できる） */
+  height: auto;
+  object-fit: contain;
+  margin: 0;
+}
+
+/* 形クイズでは文字(p)は非表示にする */
+#choices.choice-2 .choice-item p {
+  display: none !important;
+}

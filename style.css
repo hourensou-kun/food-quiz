@@ -356,37 +356,6 @@ button:disabled {
   display: block;
 }
 
-/* ========================================
-   🎵 音クイズ（2択）用：文字をちゃんと表示する
-   ======================================== */
-
-/* 音クイズのカードは普通のレイアウトに戻す */
-.choice-container .choice-item {
-  padding: 6px 8px 10px;   /* 下の余白は少しだけ */
-  overflow: visible;
-}
-
-/* 画像は絶対配置をやめて通常配置に戻す */
-.choice-container .choice-item img {
-  position: static;
-  width: 90%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* 文字も絶対配置をやめて普通に下に並べる */
-.choice-container .choice-item p {
-  position: static;
-  display: block;
-  margin-top: 4px;
-  margin-bottom: 0;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  line-height: 1.2;
-}
-
 
 
 /* ==============================
@@ -794,5 +763,36 @@ button:disabled {
 }
 
 
+
+/* ========================================
+   🎵 音クイズ（2択）：文字を必ず表示させる
+   ======================================== */
+
+/* 音クイズの <p> を強制表示（重要） */
+.choice-container .choice-item p {
+  display: block !important;   /* ★ これで形クイズ用の display:none を上書きする */
+  position: static !important;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  line-height: 1.2;
+}
+
+/* 画像を通常レイアウトに戻す */
+.choice-container .choice-item img {
+  position: static !important;
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 音クイズのカード自体の余白 */
+.choice-container .choice-item {
+  padding: 6px 8px 10px !important;
+  overflow: visible;
+}
 
 

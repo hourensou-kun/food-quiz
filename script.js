@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.12.0
+// やさいクイズ script.js（BGM + 効果音つき）1.12.1
 // ==============================
 
 let quizData = [];
@@ -256,42 +256,41 @@ function showAnswer(q) {
 // ==============================
 // 🎵 クイズ2：やさいをきったらどんなおと？
 // ==============================
-// ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
+// ===== 音クイズ用：問題表示 =====
 function renderQuestionSound() {
   const q = quizData[current];
   if (!q) return renderResult();
 
   currentMode = "sound";
-  // クイズ用BGM（小さめ）
-  setBGM("quiz", 0.1);
+  setBGM("quiz", 0.1); // クイズBGM
 
-  // 問題文と画像
+  // 問題文＆イラスト
   document.getElementById("question-text").textContent = q.question;
   document.getElementById("question-image").src = q.image;
 
   const choices = document.getElementById("choices");
-  choices.innerHTML = ""; // ← 前問のHTMLを確実にリセット
+  choices.innerHTML = "";   // 👈 前の問題を完全リセット
 
-  // 出題時に「音声だけ」再生（映像非表示）
+  // 出題時：動画は「音だけ再生」
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "none"; // ← 出題時は音だけ
-  video.play().catch((e) => console.warn("音声再生エラー:", e));
+  video.style.display = "none";
+  video.play().catch(e => console.warn("音声再生エラー:", e));
 
-  // 2択（画像＋文字、左右ランダム）
+  // 2択データ（画像＋テキスト）
   const opts = [
     { img: q.choice1_img, text: q.choice1_text, correct: true },
     { img: q.choice2_img, text: q.choice2_text, correct: false },
   ].sort(() => Math.random() - 0.5);
 
-  // コンテナ生成（#choices の中に 1つだけ入る）
+  // #choices の中に 1つだけコンテナを作る
   const container = document.createElement("div");
   container.className = "choice-container";
 
-  opts.forEach((o) => {
+  opts.forEach(o => {
     const div = document.createElement("div");
     div.className = "choice-item";
 
@@ -299,7 +298,7 @@ function renderQuestionSound() {
     img.src = o.img;
     img.alt = o.text;
 
-    // ★ ここでラベルを必ず作る！
+    // ★ ここが一番大事：文字用 <p> をちゃんと作る！
     const label = document.createElement("p");
     label.textContent = o.text;
 
@@ -316,7 +315,7 @@ function renderQuestionSound() {
 
   choices.appendChild(container);
 
-  // ★ 音クイズ用キャラを表示、形クイズ用は消す
+  // キャラの表示切り替え
   const shapeHelper = document.getElementById("shape-helper");
   const soundHelper = document.getElementById("sound-helper");
   if (shapeHelper) shapeHelper.style.display = "none";
@@ -324,6 +323,7 @@ function renderQuestionSound() {
 
   show("quiz-screen");
 }
+
 
 
 

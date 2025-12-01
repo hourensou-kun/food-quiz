@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.15.0
+   🎯 2:3 固定レイアウト　ver2.16.0
    ============================== */
 
 html,
@@ -745,3 +745,29 @@ button:disabled {
   display: none;
 }
 
+/* -----------------------------
+   📱 横向き警告（スマホ専用）
+----------------------------- */
+#rotate-warning {
+  display: none;                /* ふだんは非表示 */
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ff7043;
+  text-align: center;
+}
+
+/* 横向きの時だけ出す（スマホ中心） */
+@media screen and (orientation: landscape) and (max-width: 900px) {
+  #rotate-warning {
+    display: flex;
+  }
+}

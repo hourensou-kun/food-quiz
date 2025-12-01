@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.14.11
+   🎯 2:3 固定レイアウト　ver2.14.12
    ============================== */
 
 html,
@@ -762,16 +762,35 @@ button:disabled {
   border-radius: 12px;
 }
 
-
-
 /* ========================================
    🎵 音クイズ（2択）：文字を必ず表示させる
    ======================================== */
 
-/* 音クイズの <p> を強制表示（重要） */
+/* コンテナ自体の並び（2択を横並びに） */
+.choice-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4vw;
+}
+
+/* 音クイズのカード（レイアウトは共通ベースを利用） */
+.choice-container .choice-item {
+  padding: 6px 8px 26px; /* 下に文字ぶんのスペース */
+}
+
+/* 画像は普通のフロー（中央寄せ）で OK */
+.choice-container .choice-item img {
+  position: static;
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 音クイズの <p> を必ず表示 */
 .choice-container .choice-item p {
-  display: block !important;   /* ★ これで形クイズ用の display:none を上書きする */
-  position: static !important;
+  display: block;
+  position: static;
   margin-top: 4px;
   margin-bottom: 0;
   font-size: 1.1rem;
@@ -779,20 +798,6 @@ button:disabled {
   text-align: center;
   color: #333;
   line-height: 1.2;
-}
-
-/* 画像を通常レイアウトに戻す */
-.choice-container .choice-item img {
-  position: static !important;
-  width: 90%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* 音クイズのカード自体の余白 */
-.choice-container .choice-item {
-  padding: 6px 8px 10px !important;
-  overflow: visible;
 }
 
 

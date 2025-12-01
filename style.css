@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.4
+   🎯 2:3 固定レイアウト　ver2.13.5
    ============================== */
 
 html,
@@ -290,31 +290,34 @@ button:disabled {
 /* =========================================
    🎵 音クイズ専用：カード内の余白を "詰める"
    ========================================= */
+/* 音クイズ：カード内をかなり詰めるレイアウト */
 .choice-container .choice-item {
   display: flex;
   flex-direction: column;
-  justify-content: center;    /* まん中寄せ */
+  justify-content: center;
   align-items: center;
-  padding: 4px;               /* ← 前より少なめにする */
+  padding: 2px;              /* ほぼ余白なし */
+  box-sizing: border-box;
 }
 
-/* 画像をもう少し大きめ＆余白も少なく */
+/* 画像を大きめに＆下の余白ゼロ */
 .choice-container .choice-item img {
-  width: 88%;                 /* ← 80% → 88% にUP */
+  width: 92%;                /* 大きめに表示 */
   height: auto;
-  max-height: 65%;            /* ← 60% → 65% に拡大 */
-  margin-top: 2px;            /* ← 4px → 2px に詰める */
-  margin-bottom: 2px;         /* ← 4px → 2px に詰める */
+  max-height: 72%;           /* かなり広く使う */
+  margin-top: 0;
+  margin-bottom: 0;          /* 文字とほぼくっつく */
+  object-fit: contain;
 }
 
-/* 文字の余白をもっと詰める */
+/* 文字は上に食い込ませて重なり気味に */
 .choice-container .choice-item p {
-  margin: 0;
-  margin-top: 4px;            /* 画像との距離を調整 */
-  font-size: 1rem;            /* そのまま */
-  line-height: 1.1;           /* 行間を詰める */
+  margin: -4px 0 0;          /* ← マイナスで画像側に食い込ませる */
+  font-size: 1rem;
+  line-height: 1;            /* 行間もキュッと */
   text-align: center;
 }
+
 
 
 

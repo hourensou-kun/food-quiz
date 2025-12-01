@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.11.3
+// やさいクイズ script.js（BGM + 効果音つき）1.12.0
 // ==============================
 
 let quizData = [];
@@ -704,3 +704,19 @@ if (bookBackBtn) {
     show("title-screen");
   };
 }
+
+
+function handleOrientation() {
+  const warning = document.getElementById("rotate-warning");
+  
+  if (window.matchMedia("(orientation: landscape)").matches && window.innerWidth < 900) {
+    warning.style.display = "flex";
+  } else {
+    warning.style.display = "none";
+  }
+}
+
+window.addEventListener("orientationchange", handleOrientation);
+window.addEventListener("resize", handleOrientation);
+handleOrientation();
+

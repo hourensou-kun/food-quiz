@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.8
+   🎯 2:3 固定レイアウト　ver2.13.9
    ============================== */
 
 html,
@@ -280,7 +280,7 @@ button:disabled {
 
 /* 文字：上にギュッと寄せる（画像側に少し食い込む） */
 .choice-item p {
-  margin-top: -8px;    /* マイナスで上に寄せる */
+  margin-top: -10px;    /* マイナスで上に寄せる */
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: bold;

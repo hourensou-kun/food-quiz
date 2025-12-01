@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.14.12
+   🎯 2:3 固定レイアウト　ver2.14.13
    ============================== */
 
 html,
@@ -763,10 +763,10 @@ button:disabled {
 }
 
 /* ========================================
-   🎵 音クイズ（2択）：文字を必ず表示させる
+   🎵 音クイズ（2択）
    ======================================== */
 
-/* コンテナ自体の並び（2択を横並びに） */
+/* 2択を横並びに */
 .choice-container {
   display: flex;
   justify-content: center;
@@ -774,12 +774,12 @@ button:disabled {
   gap: 4vw;
 }
 
-/* 音クイズのカード（レイアウトは共通ベースを利用） */
+/* カード本体（共通デザインをそのまま使用） */
 .choice-container .choice-item {
-  padding: 6px 8px 26px; /* 下に文字ぶんのスペース */
+  padding: 6px 8px 26px; /* 下に文字のスペース */
 }
 
-/* 画像は普通のフロー（中央寄せ）で OK */
+/* 画像は普通に中央寄せ */
 .choice-container .choice-item img {
   position: static;
   width: 90%;
@@ -787,7 +787,7 @@ button:disabled {
   object-fit: contain;
 }
 
-/* 音クイズの <p> を必ず表示 */
+/* 音クイズの文字を必ず表示 */
 .choice-container .choice-item p {
   display: block;
   position: static;
@@ -799,5 +799,4 @@ button:disabled {
   color: #333;
   line-height: 1.2;
 }
-
 

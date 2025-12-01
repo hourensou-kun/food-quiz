@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.11.3
+// やさいクイズ script.js（BGM + 効果音つき）1.12.0
 // ==============================
 
 let quizData = [];
@@ -256,7 +256,6 @@ function showAnswer(q) {
 // ==============================
 // 🎵 クイズ2：やさいをきったらどんなおと？
 // ==============================
-
 // ---- 音クイズ用：問題表示（音だけ再生＋2択＋文字つき）----
 function renderQuestionSound() {
   const q = quizData[current];
@@ -288,40 +287,34 @@ function renderQuestionSound() {
     { img: q.choice2_img, text: q.choice2_text, correct: false },
   ].sort(() => Math.random() - 0.5);
 
-  // ★ 形クイズと同じ 3マスぶんを使う
-  // 上2マス → 実際の選択肢 / 下1マス → ダミー（見えない）
-  const slots = [...opts, { dummy: true }];
+  // コンテナ生成（#choices の中に 1つだけ入る）
+  const container = document.createElement("div");
+  container.className = "choice-container";
 
-  slots.forEach((o) => {
+  opts.forEach((o) => {
     const div = document.createElement("div");
     div.className = "choice-item";
 
-    if (o.dummy) {
-      // 下のダミー：場所だけ取って見えなくする
-      div.style.visibility = "hidden";
-      div.style.pointerEvents = "none";
-    } else {
-      const img = document.createElement("img");
-      img.src = o.img;
-      img.alt = o.text;
+    const img = document.createElement("img");
+    img.src = o.img;
+    img.alt = o.text;
 
-      const label = document.createElement("p");
-      label.textContent = o.text;
-      label.style.marginTop = "6px";
-      label.style.fontSize = "1.2em";
-      label.style.fontWeight = "bold";
+    // ★ ここでラベルを必ず作る！
+    const label = document.createElement("p");
+    label.textContent = o.text;
 
-      div.appendChild(img);
-      div.appendChild(label);
+    div.appendChild(img);
+    div.appendChild(label);
 
-      div.onclick = () => {
-        video.pause(); // 出題音を止める
-        handleAnswerSound(o.correct, q);
-      };
-    }
+    div.onclick = () => {
+      video.pause();
+      handleAnswerSound(o.correct, q);
+    };
 
-    choices.appendChild(div);
+    container.appendChild(div);
   });
+
+  choices.appendChild(container);
 
   // ★ 音クイズ用キャラを表示、形クイズ用は消す
   const shapeHelper = document.getElementById("shape-helper");

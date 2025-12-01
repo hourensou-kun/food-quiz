@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.13.6
+   🎯 2:3 固定レイアウト　ver2.13.7
    ============================== */
 
 html,
@@ -262,25 +262,32 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1px;
+
+  /* 余白をかなり減らす */
+  padding: 4px 6px 2px;
   box-sizing: border-box;
 
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
+/* 画像：大きめ＆下の余白をなくす */
 .choice-item img {
-  width: 85%;
+  width: 90%;          /* 少し大きめ */
   height: auto;
   object-fit: contain;
-  margin-bottom: 6px;
+  margin-bottom: 0;    /* 下のスキマをゼロに */
 }
 
+/* 文字：上にギュッと寄せる（画像側に少し食い込む） */
 .choice-item p {
-  margin: 1vh;
+  margin-top: -4px;    /* マイナスで上に寄せる */
+  margin-bottom: 0;
   font-size: 1rem;
   font-weight: bold;
   color: #333;
+  line-height: 1.1;
 }
+
 
 .choice-item:active {
   transform: scale(0.96);

@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.14.7
+   🎯 2:3 固定レイアウト　ver2.14.8
    ============================== */
 
 html,
@@ -276,7 +276,7 @@ button:disabled {
 }
 
 /* 文字：カードの下に固定して、好きなだけ近づける */
-.choice-item p {
+/*.choice-item p {
   position: absolute;
   left: 0;
   right: 0;
@@ -288,9 +288,7 @@ button:disabled {
   font-weight: bold;
   color: #333;
   line-height: 1.1;
-}
-
-
+}*/
 
 
 .choice-item:active {
@@ -333,7 +331,18 @@ button:disabled {
 
 /* 形クイズでは文字は使わないので非表示 */
 #choices > .choice-item p {
-  display: none !important;
+  display: none;
+}
+
+/* 🎵 音クイズ（2択）のときは文字を表示する */
+#choices .choice-container .choice-item p {
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
 }
 
 

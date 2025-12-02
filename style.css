@@ -998,7 +998,7 @@ button:disabled {
    ============================== */
 
 #end-screen .result-title {
-  font-size: 1rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  font-size: 1.3rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
   padding: 16px 34px;       /* ← 余白も控えめに */
 }
 

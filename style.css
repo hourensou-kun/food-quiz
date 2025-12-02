@@ -866,7 +866,7 @@ button:disabled {
    🖼 タイトル画像
    ============================== */
 #title-image {
-  width: 90%;          /* おすすめサイズ（大きすぎず見やすい） */
+  width: 105%;          /* おすすめサイズ（大きすぎず見やすい） */
   max-width: 480px;    /* タブレット対応 */
   height: auto;
   margin-bottom: 24px;

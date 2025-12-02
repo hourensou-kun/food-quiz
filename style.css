@@ -993,23 +993,6 @@ button:disabled {
   gap: 10px 16px;
 }
 
-/* スマホ向け微調整（必要なら） */
-@media (max-width: 480px) {
-  .result-card {
-    width: 96%;
-    padding: 16px 14px 20px;
-    gap: 1.2vh;
-  }
-
-  .result-title {
-    font-size: 2.7rem;   /* ← スマホでは少しだけ小さめに */
-    padding: 14px 30px;
-  }
-
-  .score-main {
-    font-size: 4.6rem;
-  }
-}
 
 /* ==============================
    🧁 結果画面タイトルの調整（大きすぎ解消）
@@ -1025,20 +1008,4 @@ button:disabled {
   transform: translateX(-28px); /* ← ほどよく左寄せ */
 }
 
-/* スマホ向け最適化 */
-@media (max-width: 480px) {
-  #end-screen .result-title {
-    font-size: 1.6rem;      /* ← スマホはさらに小さめで見やすく */
-    padding: 14px 28px;
-  }
-
-  #end-screen .score-top {
-    transform: translateX(-24px);
-  }
-}
-
-
-  #end-screen .score-top {
-    transform: translateX(-100px);
-  }
 }

@@ -1013,3 +1013,31 @@ button:disabled {
     margin-bottom: 20px;
   }
 }
+
+
+/* ==============================
+   🧁 結果画面の最終調整（強制上書き）
+   ============================== */
+
+/* けっかはっぴょう を もっと大きく */
+#end-screen .result-title {
+  font-size: 2.8rem;      /* ← ここでサイズ調整（2.6〜3.0で好みでOK） */
+  padding: 20px 44px;     /* ちょっとだけ余白も増やす */
+}
+
+/* 「3問中…」を左に寄せる */
+#end-screen .score-top {
+  transform: translateX(-35px);  /* ← 左に移動（-30〜-45くらいで好み調整OK） */
+}
+
+/* スマホ用（横幅せまいとき）の最終調整 */
+@media (max-width: 480px) {
+  #end-screen .result-title {
+    font-size: 2.4rem;    /* スマホでは少しだけ小さくしてはみ出し防止 */
+    padding: 16px 34px;
+  }
+
+  #end-screen .score-top {
+    transform: translateX(-30px);
+  }
+}

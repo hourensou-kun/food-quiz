@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.2.4
+// やさいクイズ script.js（BGM + 効果音つき）2.2.5
 // ==============================
 
 let quizData = [];
@@ -245,8 +245,6 @@ function renderQuestion() {
 }
 
 
-
-// ---- ○×判定画面（1秒後に自動遷移）----
 // ---- ○×判定画面（1秒後に自動遷移）----
 function handleAnswer(isCorrect, q) {
   // ★ ここで必ず最新の結果をフラグに入れる！
@@ -534,15 +532,16 @@ function renderResult() {
     `せいかい：${score} / ${quizData.length}`;
 
   // 新しいスコアUI書き込み
-  document.getElementById("score-total").textContent =
-    `${quizData.length}<ruby><rb>問</rb><rt>もん</rt></ruby><ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
+  document.getElementById("score-total").innerHTML =
+  `<ruby><rb>${quizData.length}</rb><rt>もん</rt></ruby>ちゅう…`;
 
-  document.getElementById("score-number").textContent = score;
+document.getElementById("score-number").textContent = score;
 
-  document.getElementById("score-message").textContent =
-    score === quizData.length ? "せいかい！パーフェクト！！" :
-    score >= 1 ? "せいかい！！" :
-    "せいかい！またチャレンジしよう！";
+document.getElementById("score-message").textContent =
+  score === quizData.length ? "パーフェクト！！" :
+  score >= 1 ? "がんばったね！" :
+  "またチャレンジしよう！";
+
 
   // SE
   seResult.currentTime = 0;

@@ -1016,7 +1016,7 @@ button:disabled {
    ============================== */
 
 #end-screen .result-title {
-  font-size: 2.4rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  font-size: 1.8rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
   padding: 16px 34px;       /* ← 余白も控えめに */
 }
 
@@ -1028,7 +1028,7 @@ button:disabled {
 /* スマホ向け最適化 */
 @media (max-width: 480px) {
   #end-screen .result-title {
-    font-size: 2.1rem;      /* ← スマホはさらに小さめで見やすく */
+    font-size: 1.6rem;      /* ← スマホはさらに小さめで見やすく */
     padding: 14px 28px;
   }
 
@@ -1039,6 +1039,6 @@ button:disabled {
 
 
   #end-screen .score-top {
-    transform: translateX(-30px);
+    transform: translateX(-100px);
   }
 }

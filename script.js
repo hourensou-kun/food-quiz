@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）3.0.1
+// やさいクイズ script.js（BGM + 効果音つき）3.0.2
 // ==============================
 
 let quizData = [];
@@ -874,7 +874,7 @@ if (bookBackBtn) {
       //rotateWarning.style.display = "flex";
     } 
 //else {
-      rotateWarning.style.display = "none";
+      //rotateWarning.style.display = "none";
     }
   }
 

@@ -497,6 +497,12 @@ button:disabled {
   }
 }
 
+.result-message-answer {
+  text-align: right;      /* 右寄せ */
+  padding-right: 40px;    /* 好きな分右へ調整 */
+  margin-top: 1px;       /* 必要なら上下位置調整 */
+}
+
 
 /* ==============================
    🧩 答えあわせ：比較エリア（横並びコンパクト）

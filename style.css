@@ -1012,22 +1012,31 @@ button:disabled {
 }
 
 /* ==============================
-   🧁 結果画面の最終調整（強制上書き）
+   🧁 結果画面タイトルの調整（大きすぎ解消）
    ============================== */
 
-
-
-/* 「3問中…」を左に寄せる */
-#end-screen .score-top {
-  transform: translateX(-45px);  /* ← 左に移動（-30〜-45くらいで好み調整OK） */
+#end-screen .result-title {
+  font-size: 2.4rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  padding: 16px 34px;       /* ← 余白も控えめに */
 }
 
-/* スマホ用（横幅せまいとき）の最終調整 */
+/* 「3問中…」を左へ寄せる */
+#end-screen .score-top {
+  transform: translateX(-28px); /* ← ほどよく左寄せ */
+}
+
+/* スマホ向け最適化 */
 @media (max-width: 480px) {
   #end-screen .result-title {
-    font-size: 2.4rem;    /* スマホでは少しだけ小さくしてはみ出し防止 */
-    padding: 16px 34px;
+    font-size: 2.1rem;      /* ← スマホはさらに小さめで見やすく */
+    padding: 14px 28px;
   }
+
+  #end-screen .score-top {
+    transform: translateX(-24px);
+  }
+}
+
 
   #end-screen .score-top {
     transform: translateX(-30px);

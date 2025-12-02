@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）3.1.0
+// やさいクイズ script.js（BGM + 効果音つき）3.1.1
 // ==============================
 
 let quizData = [];
@@ -332,21 +332,6 @@ function showAnswer(q) {
     }
   };
 
-  // 🆕 正解メッセージ欄
-const msgBox = document.getElementById("answer-message");
-
-// 形クイズは always 正解の時だけメッセージ表示
-if (lastShapeIsCorrect) {
-  msgBox.style.display = "block";
-
-  // ルビ付きメッセージ（〇〇 に正解の名前が入る）
-  msgBox.innerHTML =
-    `<ruby><rb>${lastShapeCorrect.text}</rb><rt>${lastShapeCorrect.text_furi || ""}</rt></ruby>
-     は、<ruby><rb>切</rb><rt>き</rt></ruby>ると
-     こんな <ruby><rb>形</rb><rt>かたち</rt></ruby> をしてるね！`;
-} else {
-  msgBox.style.display = "none";
-}
 
 
   show("answer-screen");
@@ -493,19 +478,6 @@ function showAnswerSound(q) {
       renderQuestionSound();
     }
   };
-  
-    // 🆕 正解メッセージ欄
-const msgBox = document.getElementById("answer-message");
-
-if (isCorrect) {
-  msgBox.style.display = "block";
-
-  msgBox.innerHTML =
-    `これは <ruby><rb>${q.choice1_text}</rb><rt>${q.choice1_furi || ""}</rt></ruby>
-     の <ruby><rb>音</rb><rt>おと</rt></ruby> だね！`;
-} else {
-  msgBox.style.display = "none";
-}
   
   show("answer-screen");
 }

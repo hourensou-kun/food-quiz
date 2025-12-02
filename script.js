@@ -843,7 +843,7 @@ function startCountdown(nextAction) {
 // 📕 絵本紹介画面（タイトルのボタン）
 // ==============================
 
-// タイトル画面の「絵本もあるよ！🥦」ボタン
+// タイトル画面の「絵本もあるよ！」ボタン
 const bookInfoBtn = document.getElementById("book-info-btn");
 if (bookInfoBtn) {
   bookInfoBtn.onclick = () => {

@@ -312,7 +312,7 @@ function showAnswer(q) {
       const name = lastShapeCorrect.text || "この<ruby><rb>やさい</rb><rt>やさい</rt></ruby>";
       commentEl.innerHTML =
         `${name}を<ruby><rb>切</rb><rt>き</rt></ruby>ると、` +
-        `　こんな<ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
+        `こんな<ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
     }
   }
 

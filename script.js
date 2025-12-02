@@ -535,7 +535,7 @@ function renderResult() {
 
   // 新しいスコアUI書き込み
   document.getElementById("score-total").textContent =
-    `${quizData.length}問中…`;
+    `${quizData.length}<ruby><rb>門</rb><rt>もん</rt></ruby><ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
 
   document.getElementById("score-number").textContent = score;
 

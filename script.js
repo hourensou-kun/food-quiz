@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）1.12.1
+// やさいクイズ script.js（BGM + 効果音つき）2.0.0
 // ==============================
 
 let quizData = [];
@@ -8,6 +8,11 @@ let score = 0;
 let lastScreenId = null;  
 let lastQuizType = null; // "shape" か "sound" を入れる
 let lastGameScreenId = null; // 「ゲームにもどる」用の戻り先
+// 答えあわせ表示用：直前の回答を保存
+let lastSelectedChoice = null;   // { img, text }
+let lastCorrectChoice  = null;   // { img, text }
+let lastIsCorrect      = null;   // true / false
+
 
 
 
@@ -190,7 +195,8 @@ function renderQuestion() {
     img.alt = "せんたくし";
     div.appendChild(img);
 
-    div.onclick = () => handleAnswer(o.correct, q);
+    div.onclick = () => handleAnswer(o, q);
+
     choices.appendChild(div);
   });
 
@@ -205,12 +211,24 @@ function renderQuestion() {
 
 
 // ---- ○×判定画面（1秒後に自動遷移）----
-function handleAnswer(isCorrect, q) {
-  const judgeImg = document.getElementById("judge-image");
-judgeImg.src = isCorrect
-  ? "./image/true_hourensou.png"
-  : "./image/false_hourensou.png";
+function handleAnswer(choice, q) {
+  const isCorrect = choice.correct;
 
+  // 🌟 直前の回答を保存（形クイズは画像だけ）
+  lastSelectedChoice = {
+    img: choice.img,
+    text: ""          // 形クイズはテキストなし
+  };
+  lastCorrectChoice = {
+    img: q.choice1_img || q.choice1,  // CSV 上で正解の画像
+    text: ""
+  };
+  lastIsCorrect = isCorrect;
+
+  const judgeImg = document.getElementById("judge-image");
+  judgeImg.src = isCorrect
+    ? "./image/true_hourensou.png"
+    : "./image/false_hourensou.png";
 
   // 効果音
   const se = isCorrect ? seCorrect : seWrong;
@@ -224,6 +242,7 @@ judgeImg.src = isCorrect
   setTimeout(() => showAnswer(q), 1500);
 }
 
+
 // ---- 答えあわせ画面（クイズ1）----
 // 🔸 クイズ1は動画中もBGMを止めない
 function showAnswer(q) {
@@ -235,6 +254,30 @@ function showAnswer(q) {
   video.muted = false;
   video.currentTime = 0;
   video.play().catch((e) => console.warn("再生エラー:", e));
+
+    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
+  const compareBox  = document.getElementById("answer-compare");
+  const chosenImg   = document.getElementById("chosen-image");
+  const chosenText  = document.getElementById("chosen-text");
+  const correctImg  = document.getElementById("correct-image");
+  const correctText = document.getElementById("correct-text");
+
+  if (
+    compareBox && chosenImg && correctImg &&
+    lastIsCorrect === false && lastSelectedChoice && lastCorrectChoice
+  ) {
+    compareBox.style.display = "flex";
+
+    chosenImg.src  = lastSelectedChoice.img || "";
+    correctImg.src = lastCorrectChoice.img || "";
+
+    if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
+    if (correctText) correctText.textContent = lastCorrectChoice.text || "";
+  } else if (compareBox) {
+    // 正解のときは非表示
+    compareBox.style.display = "none";
+  }
+
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -314,10 +357,11 @@ function renderQuestionSound() {
       div.appendChild(img);
       div.appendChild(label);
 
-      div.onclick = () => {
-        video.pause(); // 出題音を止める
-        handleAnswerSound(o.correct, q);
-      };
+     div.onclick = () => {
+  video.pause(); // 出題音を止める
+  handleAnswerSound(o, q);
+};
+
     }
 
     choices.appendChild(div);
@@ -335,12 +379,24 @@ function renderQuestionSound() {
 
 
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
-function handleAnswerSound(isCorrect, q) {
-  const judgeImg = document.getElementById("judge-image");
-judgeImg.src = isCorrect
-  ? "./image/true_hourensou.png"
-  : "./image/false_hourensou.png";
+function handleAnswerSound(choice, q) {
+  const isCorrect = choice.correct;
 
+  // 🌟 直前の回答を保存（音クイズは画像＋テキスト）
+  lastSelectedChoice = {
+    img: choice.img,
+    text: choice.text
+  };
+  lastCorrectChoice = {
+    img: q.choice1_img,
+    text: q.choice1_text
+  };
+  lastIsCorrect = isCorrect;
+
+  const judgeImg = document.getElementById("judge-image");
+  judgeImg.src = isCorrect
+    ? "./image/true_hourensou.png"
+    : "./image/false_hourensou.png";
 
   const se = isCorrect ? seCorrect : seWrong;
   se.currentTime = 0;
@@ -350,8 +406,9 @@ judgeImg.src = isCorrect
   show("judge-screen");
 
   // 1秒後に答えあわせへ
-  setTimeout(() => showAnswerSound(q), 1000);
+  setTimeout(() => showAnswerSound(q), 1500);
 }
+
 
 // ---- 音クイズ用：答えあわせ（映像＋音で再生）----
 function showAnswerSound(q) {
@@ -365,6 +422,29 @@ function showAnswerSound(q) {
 
   // 音クイズ中はこの画面でも小さいBGMのまま
   setBGM("quiz", 0.1);
+
+    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
+  const compareBox  = document.getElementById("answer-compare");
+  const chosenImg   = document.getElementById("chosen-image");
+  const chosenText  = document.getElementById("chosen-text");
+  const correctImg  = document.getElementById("correct-image");
+  const correctText = document.getElementById("correct-text");
+
+  if (
+    compareBox && chosenImg && correctImg &&
+    lastIsCorrect === false && lastSelectedChoice && lastCorrectChoice
+  ) {
+    compareBox.style.display = "flex";
+
+    chosenImg.src  = lastSelectedChoice.img || "";
+    correctImg.src = lastCorrectChoice.img || "";
+
+    if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
+    if (correctText) correctText.textContent = lastCorrectChoice.text || "";
+  } else if (compareBox) {
+    compareBox.style.display = "none";
+  }
+
 
   const next = document.getElementById("next-btn");
   next.textContent =

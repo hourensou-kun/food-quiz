@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.1
+// やさいクイズ script.js（BGM + 効果音つき）2.2
 // ==============================
 
 let quizData = [];
@@ -276,6 +276,10 @@ function handleAnswer(isCorrect, q) {
 function showAnswer(q) {
   const video = document.getElementById("answer-video");
 
+  // 📝 正解・不正解どちらでも使うメッセージ欄
+  const commentEl = document.getElementById("answer-comment");
+  if (commentEl) commentEl.innerHTML = ""; // いったんリセット
+
   // 🔽 ここから答えくらべエリアの処理
   const compare     = document.getElementById("answer-compare");
   const chosenImg   = document.getElementById("chosen-image");
@@ -283,26 +287,38 @@ function showAnswer(q) {
   const correctImg  = document.getElementById("correct-image");
   const correctText = document.getElementById("correct-text");
 
-  // ★ 間違えたときだけ表示
+  // ★ 間違えたときだけ「あなたがえらんだのは／せいかいはこれ！」を表示
   if (
-    lastShapeIsCorrect === false &&   // ← ここだけで十分！
+    lastShapeIsCorrect === false &&
     lastShapeChosen &&
     lastShapeCorrect
   ) {
     if (compare) compare.style.display = "flex";
 
-    if (chosenImg)  chosenImg.src           = lastShapeChosen.img  || "";
-    if (chosenText) chosenText.textContent  = lastShapeChosen.text || "";
+    if (chosenImg)  chosenImg.src          = lastShapeChosen.img  || "";
+    if (chosenText) chosenText.textContent = lastShapeChosen.text || "";
 
-    if (correctImg)  correctImg.src         = lastShapeCorrect.img  || "";
+    if (correctImg)  correctImg.src          = lastShapeCorrect.img  || "";
     if (correctText) correctText.textContent = lastShapeCorrect.text || "";
+
+    // ❌ 不正解のときは、ここでは特別なメッセージは入れない（必要ならここで書ける）
+    if (commentEl) commentEl.innerHTML = "";
   } else {
+    // ✅ 正解のときは比べるボックスは消して、
+    //    コメントだけ表示する
     if (compare) compare.style.display = "none";
+
+    if (commentEl && lastShapeCorrect) {
+      const name = lastShapeCorrect.text || "この<ruby><rb>やさい</rb><rt>やさい</rt></ruby>";
+      commentEl.innerHTML =
+        `${name}は <ruby><rb>切</rb><rt>き</rt></ruby>ると ` +
+        `こんな <ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
+    }
   }
 
-  // 🔼 ここまでを先頭に差し込むイメージ
-
+  // 🔼 ここまでが答えくらべ & メッセージ
   // 🔽 ここからは元々の showAnswer の処理（動画とボタン）
+
   video.pause();
   video.src = q.answer_video;
   video.style.display = "block";
@@ -455,7 +471,11 @@ function showAnswerSound(q) {
   // 音クイズ中はこの画面でも小さいBGMのまま
   setBGM("quiz", 0.1);
 
-    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
+  // 📝 正解・不正解どちらでも使うメッセージ欄
+  const commentEl = document.getElementById("answer-comment");
+  if (commentEl) commentEl.innerHTML = ""; // いったんリセット
+
+  // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
   const compareBox  = document.getElementById("answer-compare");
   const chosenImg   = document.getElementById("chosen-image");
   const chosenText  = document.getElementById("chosen-text");
@@ -473,10 +493,19 @@ function showAnswerSound(q) {
 
     if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
     if (correctText) correctText.textContent = lastCorrectChoice.text || "";
+
+    // ❌ 間違えたときはコメントは空のまま
+    if (commentEl) commentEl.innerHTML = "";
   } else if (compareBox) {
     compareBox.style.display = "none";
   }
 
+  // ✅ 正解のときだけ「これは〇〇の音だね！」を表示
+  if (commentEl && lastIsCorrect === true && lastCorrectChoice) {
+    const name = lastCorrectChoice.text || "この<ruby><rb>やさい</rb><rt>やさい</rt></ruby>";
+    commentEl.innerHTML =
+      `これは ${name}の <ruby><rb>音</rb><rt>おと</rt></ruby>だね！`;
+  }
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -494,6 +523,7 @@ function showAnswerSound(q) {
 
   show("answer-screen");
 }
+
 
 // ==============================
 // 🎉 結果表示（クイズ1・2共通）

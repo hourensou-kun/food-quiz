@@ -311,8 +311,8 @@ function showAnswer(q) {
     if (commentEl && lastShapeCorrect) {
       const name = lastShapeCorrect.text || "この<ruby><rb>やさい</rb><rt>やさい</rt></ruby>";
       commentEl.innerHTML =
-        `${name}を<ruby><rb>切</rb><rt>き</rt></ruby>ると` +
-        `こんな<ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
+        `${name}を<ruby><rb>切</rb><rt>き</rt></ruby>ると、` +
+        `　こんな<ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
     }
   }
 
@@ -535,14 +535,14 @@ function renderResult() {
 
   // 新しいスコアUI書き込み
   document.getElementById("score-total").textContent =
-    `${quizData.length}<ruby><rb>門</rb><rt>もん</rt></ruby><ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
+    `${quizData.length}<ruby><rt>門</rt><rt>もん</rt></ruby><ruby><rt>中</rt><rt>ちゅう</rt></ruby>…`;
 
   document.getElementById("score-number").textContent = score;
 
   document.getElementById("score-message").textContent =
-    score === quizData.length ? "パーフェクト！！" :
-    score >= 1 ? "正解！！" :
-    "またチャレンジ！";
+    score === quizData.length ? "せいかい！パーフェクト！！" :
+    score >= 1 ? "せいかい！！" :
+    "せいかい！またチャレンジしよう！";
 
   // SE
   seResult.currentTime = 0;

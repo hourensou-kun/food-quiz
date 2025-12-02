@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）3.0.2
+// やさいクイズ script.js（BGM + 効果音つき）3.0.3
 // ==============================
 
 let quizData = [];
@@ -872,14 +872,14 @@ if (bookBackBtn) {
     // スマホサイズ ＋ 横向き のときだけ表示
     //if (isMobileWidth && isLandscape) {
       //rotateWarning.style.display = "flex";
-    } 
+   // } 
 //else {
       //rotateWarning.style.display = "none";
-    }
-  }
+  //  }
+  //}
 
   // 初回＆画面サイズ変更・回転のたびにチェック
   //handleOrientation();
   //window.addEventListener("resize", handleOrientation);
   //window.addEventListener("orientationchange", handleOrientation);
-});
+//});

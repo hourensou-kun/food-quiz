@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver4.2.6
+   🎯 2:3 固定レイアウト　ver4.2.7
    ============================== */
 
 html,
@@ -945,7 +945,6 @@ button:disabled {
 }
 
 
-
 /* 真ん中の大きな数字（正解数） */
 .score-main {
   font-size: 5rem;
@@ -999,13 +998,13 @@ button:disabled {
    ============================== */
 
 #end-screen .result-title {
-  font-size: 1.8rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  font-size: 1.5rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
   padding: 16px 34px;       /* ← 余白も控えめに */
 }
 
 /* 「3問中…」を左へ寄せる */
 #end-screen .score-top {
-  transform: translateX(-28px); /* ← ほどよく左寄せ */
+  transform: translateX(-50px); /* ← ほどよく左寄せ */
 }
 
 }

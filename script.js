@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.0.0
+// やさいクイズ script.js（BGM + 効果音つき）2.1.0
 // ==============================
 
 let quizData = [];
@@ -12,6 +12,10 @@ let lastGameScreenId = null; // 「ゲームにもどる」用の戻り先
 let lastSelectedChoice = null;   // { img, text }
 let lastCorrectChoice  = null;   // { img, text }
 let lastIsCorrect      = null;   // true / false
+
+let lastShapeChosen = null;   // { img, text }
+let lastShapeCorrect = null;  // { img, text }
+let lastShapeIsCorrect = null; // true / false
 
 
 
@@ -161,7 +165,6 @@ function renderQuestion() {
   if (!q) return renderResult();
 
   currentMode = "shape";
-  // クイズ用BGM（普通の音量）
   setBGM("quiz", 1.0);
 
   const questionText = document.getElementById("question-text");
@@ -172,21 +175,35 @@ function renderQuestion() {
   questionImage.src = q.image || "";
   choices.innerHTML = "";
 
+  // ★ 形クイズの選択肢（画像＋名前を入れたい場合は choice*_text を使う）
   const opts = [
     q.choice1_img || q.choice1
-      ? { img: q.choice1_img || q.choice1, correct: true }
+      ? {
+          img: q.choice1_img || q.choice1,
+          text: q.choice1_text || "", // ← CSVにあれば名前を表示できる
+          correct: true,
+        }
       : null,
     q.choice2_img || q.choice2
-      ? { img: q.choice2_img || q.choice2, correct: false }
+      ? {
+          img: q.choice2_img || q.choice2,
+          text: q.choice2_text || "",
+          correct: false,
+        }
       : null,
     q.choice3_img || q.choice3
-      ? { img: q.choice3_img || q.choice3, correct: false }
+      ? {
+          img: q.choice3_img || q.choice3,
+          text: q.choice3_text || "",
+          correct: false,
+        }
       : null,
   ].filter(Boolean);
 
+  // 並びをシャッフル
   opts.sort(() => Math.random() - 0.5);
 
-    opts.forEach((o) => {
+  opts.forEach((o) => {
     const div = document.createElement("div");
     div.className = "choice-item";
 
@@ -195,12 +212,30 @@ function renderQuestion() {
     img.alt = "せんたくし";
     div.appendChild(img);
 
-    div.onclick = () => handleAnswer(o, q);
+    // ★ ここで「あなたが選んだもの」と「正解」を記録する
+    div.onclick = () => {
+      // 選んだもの
+      lastShapeChosen = {
+        img: o.img,
+        text: o.text || "",
+      };
+
+      // 正解（optsの中で correct:true のもの）
+      const correctOpt = opts.find((opt) => opt.correct);
+      lastShapeCorrect = correctOpt
+        ? { img: correctOpt.img, text: correctOpt.text || "" }
+        : null;
+
+      lastShapeIsCorrect = o.correct;
+
+      // 元の判定ロジックはそのまま
+      handleAnswer(o.correct, q);
+    };
 
     choices.appendChild(div);
   });
 
-  // ★ 形クイズ用キャラを表示、音クイズ用は消す
+  // キャラ表示
   const shapeHelper = document.getElementById("shape-helper");
   const soundHelper = document.getElementById("sound-helper");
   if (shapeHelper) shapeHelper.style.display = "block";
@@ -208,6 +243,7 @@ function renderQuestion() {
 
   show("quiz-screen");
 }
+
 
 
 // ---- ○×判定画面（1秒後に自動遷移）----
@@ -246,37 +282,32 @@ function handleAnswer(choice, q) {
 // ---- 答えあわせ画面（クイズ1）----
 // 🔸 クイズ1は動画中もBGMを止めない
 function showAnswer(q) {
-  const video = document.getElementById("answer-video");
+  const compare = document.getElementById("answer-compare");
 
-  video.pause();
-  video.src = q.answer_video;
-  video.style.display = "block";
-  video.muted = false;
-  video.currentTime = 0;
-  video.play().catch((e) => console.warn("再生エラー:", e));
-
-    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
-  const compareBox  = document.getElementById("answer-compare");
-  const chosenImg   = document.getElementById("chosen-image");
-  const chosenText  = document.getElementById("chosen-text");
-  const correctImg  = document.getElementById("correct-image");
+  const chosenImg = document.getElementById("chosen-image");
+  const chosenText = document.getElementById("chosen-text");
+  const correctImg = document.getElementById("correct-image");
   const correctText = document.getElementById("correct-text");
 
+  // ★ 間違えたときだけ表示
   if (
-    compareBox && chosenImg && correctImg &&
-    lastIsCorrect === false && lastSelectedChoice && lastCorrectChoice
+    lastShapeIsCorrect === false &&
+    lastShapeChosen &&
+    lastShapeCorrect
   ) {
-    compareBox.style.display = "flex";
+    compare.style.display = "flex";
 
-    chosenImg.src  = lastSelectedChoice.img || "";
-    correctImg.src = lastCorrectChoice.img || "";
+    chosenImg.src = lastShapeChosen.img;
+    chosenText.textContent = lastShapeChosen.text;
 
-    if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
-    if (correctText) correctText.textContent = lastCorrectChoice.text || "";
-  } else if (compareBox) {
-    // 正解のときは非表示
-    compareBox.style.display = "none";
+    correctImg.src = lastShapeCorrect.img;
+    correctText.textContent = lastShapeCorrect.text;
+
+  } else {
+    compare.style.display = "none";
   }
+
+}
 
 
   const next = document.getElementById("next-btn");

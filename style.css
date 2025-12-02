@@ -361,6 +361,8 @@ button:disabled {
   display: none !important;
 }
 
+
+
 /* =======================
    🎉 けっかはっぴょう画面
    ======================= */
@@ -395,8 +397,8 @@ button:disabled {
 /* 上部のタイトルリボン：大きめに */
 .result-title {
   margin: 0 0 6px;
-  padding: 18px 40px;       /* ← 余白も増やして存在感アップ */
-  font-size: 2.1rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
+  padding: 20px 44px;       /* ← 余白も増やして存在感アップ */
+  font-size: 2.7rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
   color: #ff8c00;
   background: #ffffff;
   border-radius: 999px;
@@ -423,7 +425,7 @@ button:disabled {
 .score-top {
   font-size: 1.2rem;
   color: #555;
-  transform: translateX(-20px);  /* ← 左に寄せる量。お好みなら -15 などに調整してね */
+  transform: translateX(-35px);  /* ← 左に寄せる量。お好みなら -15 などに調整してね */
   margin-bottom: 4px;
 }
 

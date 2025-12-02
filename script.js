@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.1
+// やさいクイズ script.js（BGM + 効果音つき）2.2
 // ==============================
 
 let quizData = [];
@@ -429,7 +429,7 @@ function renderQuestionSound() {
 
 
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
-function handleAnswerSound(choice, q) {
+function handleAnswerSound(isCorrect, q) {
   lastSoundIsCorrect = isCorrect;
   const isCorrect = choice.correct;
 

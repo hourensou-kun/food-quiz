@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver4.2
+   🎯 2:3 固定レイアウト　ver4.2.1
    ============================== */
 
 html,
@@ -397,7 +397,7 @@ button:disabled {
 .result-title {
   margin: 0 0 4px;
   padding: 6px 22px;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: #ff8c00;
   background: #ffffff;
   border-radius: 999px;
@@ -405,13 +405,48 @@ button:disabled {
   box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
 }
 
-/* スコアの数字をどーんと */
+/* ===== スコア表示カード ===== */
+
 #score-text {
-  font-size: 2.4rem;
-  font-weight: bold;
-  color: #e6734a;
-  margin: 4px 0 0;
+  font-size: 0;    /* ← 既存のテキストは隠す */
+  margin: 0;
+  padding: 0;
 }
+
+/* 全体 */
+#score-box {
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* 「3問中…」部分 */
+.score-top {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* 真ん中の大きな数字 */
+.score-main {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ff7b3a;
+  line-height: 1;
+}
+
+.score-unit {
+  font-size: 1.5rem;
+  margin-left: 4px;
+  color: #555;
+}
+
+/* 「正解！！」 */
+.score-bottom {
+  font-size: 1.4rem;
+  color: #ff7b3a;
+  margin-top: 6px;
+}
+
 
 /* お礼メッセージ */
 .result-message {

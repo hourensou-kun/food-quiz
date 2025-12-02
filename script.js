@@ -532,8 +532,9 @@ function renderResult() {
     `せいかい：${score} / ${quizData.length}`;
 
   // 新しいスコアUI書き込み
-  document.getElementById("score-total").innerHTML =
-  `${quizData.length}<ruby><rb>問</rb><rt>もん</rt></ruby><ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
+ document.getElementById("score-total").innerHTML =
+  `<ruby><rb>${quizData.length}問</rb><rt>もん</rt></ruby>
+   <ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
 
 document.getElementById("score-number").textContent = score;
 

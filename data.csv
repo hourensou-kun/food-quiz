@@ -3,7 +3,7 @@ id,question,image,choice1,choice1_img,choice2,choice2_img,choice3,choice3_img,an
 2,トマトをきったらどんなかたち？,image/question_tomato.jpg,トマト,image/tomato_cut1.png,ピーマン,image/greenpepper_cut1.png,なす,image/eggplant_cut1.png,1,video/tomato_1.mp4
 3,ピーマンをきったらどんなかたち？,image/question_greenpepper.jpg,ピーマン,image/greenpepper_cut1.png,たまねぎ,image/onion_cut.png,キャベツ,image/cabbage_cut.png,1,video/greenpepper_1.mp4
 4,きゅうりをきったらどんなかたち？,image/question_cucumber.jpg,きゅうり,image/cucumber_cut.png,れんこん,image/lotusroot_cut.png,トマト,image/tomato_cut1.png,1,video/cucumber.mp4
-5,なすをきったらどんなかたち？,image/question_eggplant.jpg,なす,image/eggplant_cut2.png,たまねぎ,image/onion_cut.png,もも,image/peach_cut1.png,1,video/eggplant_1.mp4
+5,なすをきったらどんなかたち？,image/question_eggplant.jpg,なす,image/eggplant_cut2.png,たまねぎ,image/onion_cut.png,もも,image/peach_cut1.png,1,video/eggplant_2.mp4
 6,ももをきったらどんなかたち？,image/question_peach.jpg,もも,image/peach_cut1.png,れんこん,image/lotusroot_cut.png,キャベツ,image/cabbage_cut.png,1,video/peach.mp4
 7,ぶどうをきったらどんなかたち？,image/question_grape.jpg,ぶどう,image/grape_cut.png,オレンジ,image/orange_cut1.png,きゅうり,image/cucumber_cut.png,1,video/grape.mp4
 8,バナナをきったらどんなかたち？,image/question_banana.jpg,バナナ,image/banana_cut.png,れんこん,image/lotusroot_cut.png,きゅうり,image/cucumber_cut.png,1,video/banana.mp4
@@ -13,6 +13,7 @@ id,question,image,choice1,choice1_img,choice2,choice2_img,choice3,choice3_img,an
 12,オレンジをきったらどんなかたち？,image/question_orange.jpg,オレンジ,image/orange_cut1.png,もも,image/peach_cut1.png,きゅうり,image/cucumber_cut.png,1,video/orange_1.mp4
 13,ねぎをきったらどんなかたち？,image/question_greenonion.jpg,ねぎ,image/greenonion_cut.png,オレンジ,image/orange_cut1.png,キャベツ,image/cabbage_cut.png,1,video/greenonion.mp4
 14,れんこんをきったらどんなかたち？,image/question_lotusroot.jpg,れんこん,image/lotusroot_cut.png,たまねぎ,image/onion_cut.png,もも,image/peach_cut1.png,1,video/lotusroot.mp4
+
 
 
 

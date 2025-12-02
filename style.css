@@ -397,7 +397,7 @@ button:disabled {
 .result-title {
   margin: 0 0 4px;
   padding: 6px 22px;
-  font-size: 3rem;
+  font-size: 5rem;
   color: #ff8c00;
   background: #ffffff;
   border-radius: 999px;
@@ -423,6 +423,7 @@ button:disabled {
 .score-top {
   font-size: 1.1rem;
   color: #555;
+ padding-right: -35px; 
   margin-bottom: 4px;
 }
 
@@ -460,8 +461,8 @@ button:disabled {
 /* 結果発表の「せいかい！」専用 */
 .result-message-answer {
   text-align: right;      /* 右寄せ */
-  padding-right: 20px;    /* 好きな分右へ調整 */
-  margin-top: -6px;       /* 必要なら上下位置調整 */
+  padding-right: 35px;    /* 好きな分右へ調整 */
+  margin-top: 1px;       /* 必要なら上下位置調整 */
 }
 
 

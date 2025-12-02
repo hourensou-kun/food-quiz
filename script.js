@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）3.0.3
+// やさいクイズ script.js（BGM + 効果音つき）3.1.0
 // ==============================
 
 let quizData = [];
@@ -469,41 +469,16 @@ function handleAnswerSound(choice, q) {
 
 // ---- 音クイズ用：答えあわせ（映像＋音で再生）----
 function showAnswerSound(q) {
-
-
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "block"; // ← 映像を見せる
+  video.style.display = "block"; 
   video.play().catch((e) => console.warn("動画再生エラー:", e));
 
-  // 音クイズ中はこの画面でも小さいBGMのまま
+  // 音クイズ中はこの画面でも小さい BGM のまま
   setBGM("quiz", 0.1);
-
-    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
-  const compareBox  = document.getElementById("answer-compare");
-  const chosenImg   = document.getElementById("chosen-image");
-  const chosenText  = document.getElementById("chosen-text");
-  const correctImg  = document.getElementById("correct-image");
-  const correctText = document.getElementById("correct-text");
-
-  if (
-    compareBox && chosenImg && correctImg &&
-    lastIsCorrect === false && lastSelectedChoice && lastCorrectChoice
-  ) {
-    compareBox.style.display = "flex";
-
-    chosenImg.src  = lastSelectedChoice.img || "";
-    correctImg.src = lastCorrectChoice.img || "";
-
-    if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
-    if (correctText) correctText.textContent = lastCorrectChoice.text || "";
-  } else if (compareBox) {
-    compareBox.style.display = "none";
-  }
-
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -515,10 +490,10 @@ function showAnswerSound(q) {
       renderResult();
     } else {
       current++;
-      renderQuestionSound(); // ← 次も音クイズ専用で出題！
+      renderQuestionSound();
     }
   };
-
+  
     // 🆕 正解メッセージ欄
 const msgBox = document.getElementById("answer-message");
 
@@ -531,9 +506,12 @@ if (isCorrect) {
 } else {
   msgBox.style.display = "none";
 }
-
+  
   show("answer-screen");
 }
+
+
+
 
 // ==============================
 // 🎉 結果表示（クイズ1・2共通）

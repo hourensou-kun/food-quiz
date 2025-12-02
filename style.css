@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver4.1
+   🎯 2:3 固定レイアウト　ver4.2
    ============================== */
 
 html,
@@ -361,6 +361,98 @@ button:disabled {
   font-size: 3rem;
   margin: 16px 0 8px;
 }
+
+/* ==============================
+   🎉 けっかはっぴょう画面
+   ============================== */
+
+#end-screen {
+  padding: 4vh 4vw;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 真ん中に出るカード本体 */
+.result-card {
+  width: 92%;
+  max-width: 520px;
+  background: #fffbe8;
+  border-radius: 28px;
+  border: 3px solid #ffd28a;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+
+  padding: 18px 20px 22px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6vh;
+  position: relative;
+}
+
+/* 上部のタイトルリボン */
+.result-title {
+  margin: 0 0 4px;
+  padding: 6px 22px;
+  font-size: 1.6rem;
+  color: #ff8c00;
+  background: #ffffff;
+  border-radius: 999px;
+  border: 2px solid #ffd28a;
+  box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
+}
+
+/* スコアの数字をどーんと */
+#score-text {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #e6734a;
+  margin: 4px 0 0;
+}
+
+/* お礼メッセージ */
+.result-message {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+  color: #555;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ボタンエリア（中央寄せ） */
+.result-buttons {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+}
+
+/* スマホ向けに少しコンパクトに */
+@media (max-width: 480px) {
+  .result-card {
+    width: 96%;
+    padding: 16px 14px 20px;
+    gap: 1.2vh;
+  }
+
+  .result-title {
+    font-size: 1.4rem;
+    padding: 5px 18px;
+  }
+
+  #score-text {
+    font-size: 2.1rem;
+  }
+
+  .result-message {
+    font-size: 0.95rem;
+  }
+}
+
 
 /* ==============================
    🧩 答えあわせ：比較エリア（横並びコンパクト）

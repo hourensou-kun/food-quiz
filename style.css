@@ -979,8 +979,8 @@ button:disabled {
 /* 🔸 結果画面の「せいかい！」だけ右に寄せる */
 .result-message-answer {
   text-align: right;          /* 右寄せ */
-  transform: translateX(70px);/* 右に少しずらす。10〜30あたりで微調整OK */
-  margin-top: -27px;
+  transform: translateX(65px);/* 右に少しずらす。10〜30あたりで微調整OK */
+  margin-top: 20px;
 }
 
 /* ボタンエリア（中央寄せ） */
@@ -999,12 +999,12 @@ button:disabled {
 
 #end-screen .result-title {
   font-size: 1.3rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
-  padding: 16px 34px;       /* ← 余白も控えめに */
+  padding: 16px 30px;       /* ← 余白も控えめに */
 }
 
 /* 「3問中…」を左へ寄せる */
 #end-screen .score-top {
-  transform: translateX(-100px); /* ← ほどよく左寄せ */
+  transform: translateX(-200px); /* ← ほどよく左寄せ */
 }
 
 }

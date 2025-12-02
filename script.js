@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.1.1
+// やさいクイズ script.js（BGM + 効果音つき）2.2.1
 // ==============================
 
 let quizData = [];
@@ -282,33 +282,41 @@ function handleAnswer(choice, q) {
 // ---- 答えあわせ画面（クイズ1）----
 // 🔸 クイズ1は動画中もBGMを止めない
 function showAnswer(q) {
-  const compare = document.getElementById("answer-compare");
+  const video = document.getElementById("answer-video");
 
-  const chosenImg = document.getElementById("chosen-image");
-  const chosenText = document.getElementById("chosen-text");
-  const correctImg = document.getElementById("correct-image");
+  // 🔽 ここから答えくらべエリアの処理
+  const compare     = document.getElementById("answer-compare");
+  const chosenImg   = document.getElementById("chosen-image");
+  const chosenText  = document.getElementById("chosen-text");
+  const correctImg  = document.getElementById("correct-image");
   const correctText = document.getElementById("correct-text");
 
-  // ★ 間違えたときだけ表示
+  // ★ 間違えたときだけ表示（lastShape〜 はさっき用意した変数）
   if (
+    typeof lastShapeIsCorrect !== "undefined" &&
     lastShapeIsCorrect === false &&
     lastShapeChosen &&
     lastShapeCorrect
   ) {
-    compare.style.display = "flex";
+    if (compare) compare.style.display = "flex";
 
-    chosenImg.src = lastShapeChosen.img;
-    chosenText.textContent = lastShapeChosen.text;
+    if (chosenImg)  chosenImg.src           = lastShapeChosen.img || "";
+    if (chosenText) chosenText.textContent  = lastShapeChosen.text || "";
 
-    correctImg.src = lastShapeCorrect.img;
-    correctText.textContent = lastShapeCorrect.text;
-
+    if (correctImg)  correctImg.src         = lastShapeCorrect.img || "";
+    if (correctText) correctText.textContent = lastShapeCorrect.text || "";
   } else {
-    compare.style.display = "none";
+    if (compare) compare.style.display = "none";
   }
+  // 🔼 ここまでを先頭に差し込むイメージ
 
-}
-
+  // 🔽 ここからは元々の showAnswer の処理（動画とボタン）
+  video.pause();
+  video.src = q.answer_video;
+  video.style.display = "block";
+  video.muted = false;
+  video.currentTime = 0;
+  video.play().catch((e) => console.warn("再生エラー:", e));
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -325,7 +333,8 @@ function showAnswer(q) {
   };
 
   show("answer-screen");
-};
+}
+
 
 // ==============================
 // 🎵 クイズ2：やさいをきったらどんなおと？

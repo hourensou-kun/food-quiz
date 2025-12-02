@@ -1021,7 +1021,7 @@ button:disabled {
 
 /* けっかはっぴょう を もっと大きく */
 #end-screen .result-title {
-  font-size: 2rem;      /* ← ここでサイズ調整（2.6〜3.0で好みでOK） */
+  font-size: 1rem;      /* ← ここでサイズ調整（2.6〜3.0で好みでOK） */
   padding: 20px 44px;     /* ちょっとだけ余白も増やす */
 }
 

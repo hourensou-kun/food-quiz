@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.1.0
+// やさいクイズ script.js（BGM + 効果音つき）2.0.0
 // ==============================
 
 let quizData = [];
@@ -12,9 +12,6 @@ let lastGameScreenId = null; // 「ゲームにもどる」用の戻り先
 let lastSelectedChoice = null;   // { img, text }
 let lastCorrectChoice  = null;   // { img, text }
 let lastIsCorrect      = null;   // true / false
-// ★ 形クイズで最後に選んだ選択肢（画像と名前）＆正誤
-let lastShapeChoice = null;   // { img, name }
-let lastShapeCorrect = false;
 
 
 
@@ -174,51 +171,34 @@ function renderQuestion() {
   questionText.textContent = q.question || "";
   questionImage.src = q.image || "";
   choices.innerHTML = "";
+
   const opts = [
     q.choice1_img || q.choice1
-      ? {
-          img: q.choice1_img || q.choice1,
-          name: q.choice1 || q.choice1 || "",  // ← ここで名前をセット
-          correct: true,
-        }
+      ? { img: q.choice1_img || q.choice1, correct: true }
       : null,
     q.choice2_img || q.choice2
-      ? {
-          img: q.choice2_img || q.choice2,
-          name: q.choice2|| q.choice2 || "",
-          correct: false,
-        }
+      ? { img: q.choice2_img || q.choice2, correct: false }
       : null,
     q.choice3_img || q.choice3
-      ? {
-          img: q.choice3_img || q.choice3,
-          name: q.choice3 || q.choice3 || "",
-          correct: false,
-        }
+      ? { img: q.choice3_img || q.choice3, correct: false }
       : null,
   ].filter(Boolean);
 
   opts.sort(() => Math.random() - 0.5);
 
-  opts.forEach((o) => {
+    opts.forEach((o) => {
     const div = document.createElement("div");
     div.className = "choice-item";
 
     const img = document.createElement("img");
     img.src = o.img;
-    img.alt = o.name || "せんたくし";
+    img.alt = "せんたくし";
     div.appendChild(img);
 
-    // ★ ここで「どの選択肢を押したか」覚えてから判定へ
-    div.onclick = () => {
-      lastShapeChoice = { img: o.img, name: o.name || "" };
-      handleAnswer(o.correct, q);
-      lastShapeCorrect = o.correct;
-    };
+    div.onclick = () => handleAnswer(o, q);
 
     choices.appendChild(div);
   });
-
 
   // ★ 形クイズ用キャラを表示、音クイズ用は消す
   const shapeHelper = document.getElementById("shape-helper");
@@ -266,41 +246,6 @@ function handleAnswer(choice, q) {
 // ---- 答えあわせ画面（クイズ1）----
 // 🔸 クイズ1は動画中もBGMを止めない
 function showAnswer(q) {
-  // ★ まず比較パネルの表示を更新（形クイズだけ、間違えたとき）
-  const compare = document.getElementById("answer-compare");
-  const chosenImg = document.getElementById("answer-chosen-img");
-  const chosenName = document.getElementById("answer-chosen-name");
-  const correctImg = document.getElementById("answer-correct-img");
-  const correctName = document.getElementById("answer-correct-name");
-
-  if (
-    compare &&
-    chosenImg &&
-    chosenName &&
-    correctImg &&
-    correctName &&
-    currentMode === "shape"   // ← 形クイズのときだけ
-  ) {
-    if (!lastShapeCorrect && lastShapeChoice) {
-      // ❌ 間違えたとき → パネル表示
-      compare.style.display = "flex";
-
-      // あなたがえらんだのは…
-      chosenImg.src = lastShapeChoice.img;
-      chosenImg.alt = lastShapeChoice.name || "あなたがえらんだもの";
-      chosenName.textContent = lastShapeChoice.name || "";
-
-      // せいかいは これ！
-      correctImg.src = q.answer_img || q.answer_image || q.answer;
-      correctImg.alt = q.answer || "せいかい";
-      correctName.textContent = q.answer || "";
-    } else {
-      // ✅ 正解のときは比較パネルを隠す
-      compare.style.display = "none";
-    }
-  }
-
-  // ここから下は、いままでの showAnswer と同じでOK
   const video = document.getElementById("answer-video");
 
   video.pause();
@@ -309,6 +254,30 @@ function showAnswer(q) {
   video.muted = false;
   video.currentTime = 0;
   video.play().catch((e) => console.warn("再生エラー:", e));
+
+    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
+  const compareBox  = document.getElementById("answer-compare");
+  const chosenImg   = document.getElementById("chosen-image");
+  const chosenText  = document.getElementById("chosen-text");
+  const correctImg  = document.getElementById("correct-image");
+  const correctText = document.getElementById("correct-text");
+
+  if (
+    compareBox && chosenImg && correctImg &&
+    lastIsCorrect === false && lastSelectedChoice && lastCorrectChoice
+  ) {
+    compareBox.style.display = "flex";
+
+    chosenImg.src  = lastSelectedChoice.img || "";
+    correctImg.src = lastCorrectChoice.img || "";
+
+    if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
+    if (correctText) correctText.textContent = lastCorrectChoice.text || "";
+  } else if (compareBox) {
+    // 正解のときは非表示
+    compareBox.style.display = "none";
+  }
+
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -326,7 +295,6 @@ function showAnswer(q) {
 
   show("answer-screen");
 }
-
 
 // ==============================
 // 🎵 クイズ2：やさいをきったらどんなおと？
@@ -842,4 +810,3 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", handleOrientation);
   window.addEventListener("orientationchange", handleOrientation);
 });
-

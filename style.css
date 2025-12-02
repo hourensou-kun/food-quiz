@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver4.0
+   🎯 2:3 固定レイアウト　ver4.1
    ============================== */
 
 html,
@@ -343,8 +343,9 @@ button:disabled {
 
 #answer-screen h2,
 #end-screen h2 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 16px;
+  color: #ff9800;
 }
 
 #answer-video {

@@ -965,7 +965,7 @@ button:disabled {
 .score-bottom {
   font-size: 1.4rem;
   color: #ff7b3a;
-  margin-top: 6px;
+  margin-top: 30px;
 }
 
 /* お礼メッセージ用（別の場所で使っているやつ） */
@@ -980,8 +980,8 @@ button:disabled {
 /* 🔸 結果画面の「せいかい！」だけ右に寄せる */
 .result-message-answer {
   text-align: right;          /* 右寄せ */
-  transform: translateX(20px);/* 右に少しずらす。10〜30あたりで微調整OK */
-  margin-top: 2px;
+  transform: translateX(80px);/* 右に少しずらす。10〜30あたりで微調整OK */
+  margin-top: -27px;
 }
 
 /* ボタンエリア（中央寄せ） */

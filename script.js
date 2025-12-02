@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.0
+// やさいクイズ script.js（BGM + 効果音つき）2.1
 // ==============================
 
 let quizData = [];
@@ -247,19 +247,10 @@ function renderQuestion() {
 
 
 // ---- ○×判定画面（1秒後に自動遷移）----
-function handleAnswer(choice, q) {
-  const isCorrect = choice.correct;
-
-  // 🌟 直前の回答を保存（形クイズは画像だけ）
-  lastSelectedChoice = {
-    img: choice.img,
-    text: ""          // 形クイズはテキストなし
-  };
-  lastCorrectChoice = {
-    img: q.choice1_img || q.choice1,  // CSV 上で正解の画像
-    text: ""
-  };
-  lastIsCorrect = isCorrect;
+// ---- ○×判定画面（1秒後に自動遷移）----
+function handleAnswer(isCorrect, q) {
+  // ★ ここで必ず最新の結果をフラグに入れる！
+  lastShapeIsCorrect = isCorrect;
 
   const judgeImg = document.getElementById("judge-image");
   judgeImg.src = isCorrect
@@ -279,6 +270,7 @@ function handleAnswer(choice, q) {
 }
 
 
+
 // ---- 答えあわせ画面（クイズ1）----
 // 🔸 クイズ1は動画中もBGMを止めない
 function showAnswer(q) {
@@ -291,23 +283,23 @@ function showAnswer(q) {
   const correctImg  = document.getElementById("correct-image");
   const correctText = document.getElementById("correct-text");
 
-  // ★ 間違えたときだけ表示（lastShape〜 はさっき用意した変数）
+  // ★ 間違えたときだけ表示
   if (
-    typeof lastShapeIsCorrect !== "undefined" &&
-    lastShapeIsCorrect === false &&
+    lastShapeIsCorrect === false &&   // ← ここだけで十分！
     lastShapeChosen &&
     lastShapeCorrect
   ) {
     if (compare) compare.style.display = "flex";
 
-    if (chosenImg)  chosenImg.src           = lastShapeChosen.img || "";
+    if (chosenImg)  chosenImg.src           = lastShapeChosen.img  || "";
     if (chosenText) chosenText.textContent  = lastShapeChosen.text || "";
 
-    if (correctImg)  correctImg.src         = lastShapeCorrect.img || "";
+    if (correctImg)  correctImg.src         = lastShapeCorrect.img  || "";
     if (correctText) correctText.textContent = lastShapeCorrect.text || "";
   } else {
     if (compare) compare.style.display = "none";
   }
+
   // 🔼 ここまでを先頭に差し込むイメージ
 
   // 🔽 ここからは元々の showAnswer の処理（動画とボタン）

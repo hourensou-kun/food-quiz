@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.2
+// やさいクイズ script.js（BGM + 効果音つき）2.1
 // ==============================
 
 let quizData = [];
@@ -310,24 +310,6 @@ function showAnswer(q) {
   video.currentTime = 0;
   video.play().catch((e) => console.warn("再生エラー:", e));
 
-  // ★ 正解のときだけ文章を表示
-const comment = document.getElementById("answer-comment");
-
-if (lastShapeIsCorrect === true) {
-  // q.name が CSV にある前提（なければ choice1_text を使ってもOK）
-  const name = q.name || "このやさい";
-
-  comment.innerHTML =
-    `<ruby><rb>${name}</rb><rt>${name}</rt></ruby>は ` +
-    `<ruby><rb>切</rb><rt>き</rt></ruby>ると こんな ` +
-    `<ruby><rb>形</rb><rt>かたち</rt></ruby> をしてるね！`;
-  comment.style.display = "block";
-
-} else {
-  comment.style.display = "none";
-}
-
-
   const next = document.getElementById("next-btn");
   next.textContent =
     current >= quizData.length - 1 ? "けっかをみる" : "つぎのもんだいへ";
@@ -429,8 +411,7 @@ function renderQuestionSound() {
 
 
 // ---- 音クイズ用：判定＆答えあわせ遷移 ----
-function handleAnswerSound(isCorrect, q) {
-  lastSoundIsCorrect = isCorrect;
+function handleAnswerSound(choice, q) {
   const isCorrect = choice.correct;
 
   // 🌟 直前の回答を保存（音クイズは画像＋テキスト）
@@ -495,21 +476,6 @@ function showAnswerSound(q) {
   } else if (compareBox) {
     compareBox.style.display = "none";
   }
-
-  // ★ 正解のときだけ文章を表示
-const comment = document.getElementById("answer-comment");
-
-if (isCorrectSound === true) {
-  const name = q.choice1_text || "このやさい";
-
-  comment.innerHTML =
-    `これは <ruby><rb>${name}</rb><rt>${name}</rt></ruby> の ` +
-    `<ruby><rb>音</rb><rt>おと</rt></ruby> だね！`;
-  comment.style.display = "block";
-
-} else {
-  comment.style.display = "none";
-}
 
 
   const next = document.getElementById("next-btn");

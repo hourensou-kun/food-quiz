@@ -533,7 +533,7 @@ function renderResult() {
 
   // 新しいスコアUI書き込み
  document.getElementById("score-total").innerHTML =
-  `<ruby><rb>${quizData.length}問</rb><rt>もん</rt></ruby>
+  `${quizData.length}<ruby><rb>問</rb><rt>もん</rt></ruby>
    <ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
 
 document.getElementById("score-number").textContent = score;

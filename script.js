@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.2.1
+// やさいクイズ script.js（BGM + 効果音つき）2.2.2
 // ==============================
 
 let quizData = [];
@@ -529,20 +529,32 @@ function showAnswerSound(q) {
 // 🎉 結果表示（クイズ1・2共通）
 // ==============================
 function renderResult() {
-  document.getElementById(
-    "score-text"
-  ).textContent = `せいかい：${score} / ${quizData.length}`;
+  // 元のscore-text（非表示用）
+  document.getElementById("score-text").textContent =
+    `せいかい：${score} / ${quizData.length}`;
 
-  // リザルトSE
+  // 新しいスコアUI書き込み
+  document.getElementById("score-total").textContent =
+    `${quizData.length}問中…`;
+
+  document.getElementById("score-number").textContent = score;
+
+  document.getElementById("score-message").textContent =
+    score === quizData.length ? "パーフェクト！！" :
+    score >= 1 ? "正解！！" :
+    "またチャレンジ！";
+
+  // SE
   seResult.currentTime = 0;
   seResult.play().catch(() => {});
 
-  // BGMはタイトル用に戻す
+  // BGM
   currentMode = null;
   setBGM("title", 0.7);
 
   show("end-screen");
 }
+
 
 // ==============================
 // 📘 チュートリアルを開く

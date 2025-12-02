@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.2
+// やさいクイズ script.js（BGM + 効果音つき）2.2.1
 // ==============================
 
 let quizData = [];
@@ -311,8 +311,8 @@ function showAnswer(q) {
     if (commentEl && lastShapeCorrect) {
       const name = lastShapeCorrect.text || "この<ruby><rb>やさい</rb><rt>やさい</rt></ruby>";
       commentEl.innerHTML =
-        `${name}は <ruby><rb>切</rb><rt>き</rt></ruby>ると ` +
-        `こんな <ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
+        `${name}を<ruby><rb>切</rb><rt>き</rt></ruby>ると` +
+        `こんな<ruby><rb>形</rb><rt>かたち</rt></ruby>をしてるね！`;
     }
   }
 

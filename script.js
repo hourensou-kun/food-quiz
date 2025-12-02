@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）3.0
+// やさいクイズ script.js（BGM + 効果音つき）3.0.1
 // ==============================
 
 let quizData = [];
@@ -310,23 +310,6 @@ function showAnswer(q) {
   }
   // 🔼 ここまでを先頭に差し込むイメージ
 
-// 🆕 正解メッセージ欄
-const msgBox = document.getElementById("answer-message");
-
-// 形クイズは always 正解の時だけメッセージ表示
-if (lastShapeIsCorrect) {
-  msgBox.style.display = "block";
-
-  // ルビ付きメッセージ（〇〇 に正解の名前が入る）
-  msgBox.innerHTML =
-    `<ruby><rb>${lastShapeCorrect.text}</rb><rt>${lastShapeCorrect.text_furi || ""}</rt></ruby>
-     は、<ruby><rb>切</rb><rt>き</rt></ruby>ると
-     こんな <ruby><rb>形</rb><rt>かたち</rt></ruby> をしてるね！`;
-} else {
-  msgBox.style.display = "none";
-}
-
-  
   // 🔽 ここからは元々の showAnswer の処理（動画とボタン）
   video.pause();
   video.src = q.answer_video;
@@ -348,6 +331,23 @@ if (lastShapeIsCorrect) {
       renderQuestion();
     }
   };
+
+  // 🆕 正解メッセージ欄
+const msgBox = document.getElementById("answer-message");
+
+// 形クイズは always 正解の時だけメッセージ表示
+if (lastShapeIsCorrect) {
+  msgBox.style.display = "block";
+
+  // ルビ付きメッセージ（〇〇 に正解の名前が入る）
+  msgBox.innerHTML =
+    `<ruby><rb>${lastShapeCorrect.text}</rb><rt>${lastShapeCorrect.text_furi || ""}</rt></ruby>
+     は、<ruby><rb>切</rb><rt>き</rt></ruby>ると
+     こんな <ruby><rb>形</rb><rt>かたち</rt></ruby> をしてるね！`;
+} else {
+  msgBox.style.display = "none";
+}
+
 
   show("answer-screen");
 }
@@ -471,19 +471,6 @@ function handleAnswerSound(choice, q) {
 function showAnswerSound(q) {
 
 
-  // 🆕 正解メッセージ欄
-const msgBox = document.getElementById("answer-message");
-
-if (isCorrect) {
-  msgBox.style.display = "block";
-
-  msgBox.innerHTML =
-    `これは <ruby><rb>${q.choice1_text}</rb><rt>${q.choice1_furi || ""}</rt></ruby>
-     の <ruby><rb>音</rb><rt>おと</rt></ruby> だね！`;
-} else {
-  msgBox.style.display = "none";
-}
-
   const video = document.getElementById("answer-video");
   video.pause();
   video.src = q.answer_video;
@@ -531,6 +518,19 @@ if (isCorrect) {
       renderQuestionSound(); // ← 次も音クイズ専用で出題！
     }
   };
+
+    // 🆕 正解メッセージ欄
+const msgBox = document.getElementById("answer-message");
+
+if (isCorrect) {
+  msgBox.style.display = "block";
+
+  msgBox.innerHTML =
+    `これは <ruby><rb>${q.choice1_text}</rb><rt>${q.choice1_furi || ""}</rt></ruby>
+     の <ruby><rb>音</rb><rt>おと</rt></ruby> だね！`;
+} else {
+  msgBox.style.display = "none";
+}
 
   show("answer-screen");
 }

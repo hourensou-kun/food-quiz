@@ -428,7 +428,7 @@ button:disabled {
 
 /* 真ん中の大きな数字 */
 .score-main {
-  font-size: 3rem;
+  font-size: 5rem;
   font-weight: 900;
   color: #ff7b3a;
   line-height: 1;

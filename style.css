@@ -396,7 +396,7 @@ button:disabled {
 /* 上部のタイトルリボン */
 .result-title {
   margin: 0 0 4px;
-  padding: 6px 22px;
+  padding: 12px 32px;
   font-size: 5rem;
   color: #ff8c00;
   background: #ffffff;
@@ -423,7 +423,7 @@ button:disabled {
 .score-top {
   font-size: 1.1rem;
   color: #555;
- padding-right: -50px; 
+transform: translateX(-12px);
   margin-bottom: 4px;
 }
 
@@ -499,7 +499,7 @@ button:disabled {
 
 .result-message-answer {
   text-align: right;      /* 右寄せ */
-  padding-right: 40px;    /* 好きな分右へ調整 */
+   transform: translateX(10px);    /* 好きな分右へ調整 */
   margin-top: 1px;       /* 必要なら上下位置調整 */
 }
 

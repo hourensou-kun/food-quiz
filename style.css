@@ -485,7 +485,7 @@ button:disabled {
   }
 
   .result-title {
-    font-size: 2rem;   /* ← スマホでは少しだけ小さめに */
+    font-size: 2.7rem;   /* ← スマホでは少しだけ小さめに */
     padding: 14px 30px;
   }
 

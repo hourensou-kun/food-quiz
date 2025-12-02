@@ -363,136 +363,6 @@ button:disabled {
 
 
 
-/* =======================
-   🎉 けっかはっぴょう画面
-   ======================= */
-
-#end-screen {
-  padding: 4vh 4vw;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 真ん中に出るカード本体 */
-.result-card {
-  width: 92%;
-  max-width: 520px;
-  background: #fffbe8;
-  border-radius: 28px;
-  border: 3px solid #ffd28a;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
-
-  padding: 18px 20px 22px;
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.6vh;
-  position: relative;
-}
-
-/* 上部のタイトルリボン：大きめに */
-.result-title {
-  margin: 0 0 6px;
-  padding: 20px 44px;       /* ← 余白も増やして存在感アップ */
-  font-size: 2.7rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
-  color: #ff8c00;
-  background: #ffffff;
-  border-radius: 999px;
-  border: 2px solid #ffd28a;
-  box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
-}
-
-/* ===== スコア表示カード ===== */
-
-/* もともとの "せいかい：2/3" を隠す */
-#score-text {
-  font-size: 0;
-  margin: 0;
-  padding: 0;
-}
-
-/* スコア全体の箱 */
-#score-box {
-  text-align: center;
-  margin-top: 6px;
-}
-
-/* 「3問中…」部分 → 少し左に寄せる */
-.score-top {
-  font-size: 1.2rem;
-  color: #555;
-  transform: translateX(-35px);  /* ← 左に寄せる量。お好みなら -15 などに調整してね */
-  margin-bottom: 4px;
-}
-
-/* 真ん中の大きな数字（正解数） */
-.score-main {
-  font-size: 5rem;
-  font-weight: 900;
-  color: #ff7b3a;
-  line-height: 1;
-}
-
-/* 「問」 */
-.score-unit {
-  font-size: 1.5rem;
-  margin-left: 4px;
-  color: #555;
-}
-
-/* 「せいかい！！」の行 */
-.score-bottom {
-  font-size: 1.4rem;
-  color: #ff7b3a;
-  margin-top: 6px;
-}
-
-/* お礼メッセージ用（別の場所で使っているやつ） */
-.result-message {
-  margin: 4px 0 0;
-  font-size: 1.05rem;
-  color: #555;
-  text-align: center;
-  line-height: 1.6;
-}
-
-/* 🔸 結果画面の「せいかい！」だけ右に寄せる */
-.result-message-answer {
-  text-align: right;          /* 右寄せ */
-  transform: translateX(20px);/* 右に少しずらす。10〜30あたりで微調整OK */
-  margin-top: 2px;
-}
-
-/* ボタンエリア（中央寄せ） */
-.result-buttons {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 16px;
-}
-
-/* スマホ向け微調整（必要なら） */
-@media (max-width: 480px) {
-  .result-card {
-    width: 96%;
-    padding: 16px 14px 20px;
-    gap: 1.2vh;
-  }
-
-  .result-title {
-    font-size: 2.7rem;   /* ← スマホでは少しだけ小さめに */
-    padding: 14px 30px;
-  }
-
-  .score-main {
-    font-size: 4.6rem;
-  }
-}
 
 
 
@@ -1015,15 +885,137 @@ button:disabled {
 }
 
 
+
+/* =======================
+   🎉 けっかはっぴょう画面
+   ======================= */
+
+#end-screen {
+  padding: 4vh 4vw;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 真ん中に出るカード本体 */
+.result-card {
+  width: 92%;
+  max-width: 520px;
+  background: #fffbe8;
+  border-radius: 28px;
+  border: 3px solid #ffd28a;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+
+  padding: 18px 20px 22px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6vh;
+  position: relative;
+}
+
+/* 上部のタイトルリボン：大きめに */
+.result-title {
+  margin: 0 0 6px;
+  padding: 20px 44px;       /* ← 余白も増やして存在感アップ */
+  font-size: 2.7rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
+  color: #ff8c00;
+  background: #ffffff;
+  border-radius: 999px;
+  border: 2px solid #ffd28a;
+  box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
+}
+
+/* ===== スコア表示カード ===== */
+
+/* もともとの "せいかい：2/3" を隠す */
+#score-text {
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* スコア全体の箱 */
+#score-box {
+  text-align: center;
+  margin-top: 6px;
+}
+
+
+
+/* 真ん中の大きな数字（正解数） */
+.score-main {
+  font-size: 5rem;
+  font-weight: 900;
+  color: #ff7b3a;
+  line-height: 1;
+}
+
+/* 「問」 */
+.score-unit {
+  font-size: 1.5rem;
+  margin-left: 4px;
+  color: #555;
+}
+
+/* 「せいかい！！」の行 */
+.score-bottom {
+  font-size: 1.4rem;
+  color: #ff7b3a;
+  margin-top: 6px;
+}
+
+/* お礼メッセージ用（別の場所で使っているやつ） */
+.result-message {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+  color: #555;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* 🔸 結果画面の「せいかい！」だけ右に寄せる */
+.result-message-answer {
+  text-align: right;          /* 右寄せ */
+  transform: translateX(20px);/* 右に少しずらす。10〜30あたりで微調整OK */
+  margin-top: 2px;
+}
+
+/* ボタンエリア（中央寄せ） */
+.result-buttons {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+}
+
+/* スマホ向け微調整（必要なら） */
+@media (max-width: 480px) {
+  .result-card {
+    width: 96%;
+    padding: 16px 14px 20px;
+    gap: 1.2vh;
+  }
+
+  .result-title {
+    font-size: 2.7rem;   /* ← スマホでは少しだけ小さめに */
+    padding: 14px 30px;
+  }
+
+  .score-main {
+    font-size: 4.6rem;
+  }
+}
+
 /* ==============================
    🧁 結果画面の最終調整（強制上書き）
    ============================== */
 
-/* けっかはっぴょう を もっと大きく */
-#end-screen .result-title {
-  font-size: 1rem;      /* ← ここでサイズ調整（2.6〜3.0で好みでOK） */
-  padding: 20px 44px;     /* ちょっとだけ余白も増やす */
-}
+
 
 /* 「3問中…」を左に寄せる */
 #end-screen .score-top {

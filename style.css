@@ -361,10 +361,9 @@ button:disabled {
   display: none !important;
 }
 
-
-/* ==============================
+/* =======================
    🎉 けっかはっぴょう画面
-   ============================== */
+   ======================= */
 
 #end-screen {
   padding: 4vh 4vw;
@@ -393,11 +392,11 @@ button:disabled {
   position: relative;
 }
 
-/* 上部のタイトルリボン */
+/* 上部のタイトルリボン：大きめに */
 .result-title {
   margin: 0 0 6px;
   padding: 18px 40px;       /* ← 余白も増やして存在感アップ */
-  font-size: 5.5rem;        /* ← ひとまわり大きく */
+  font-size: 2.1rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
   color: #ff8c00;
   background: #ffffff;
   border-radius: 999px;
@@ -407,28 +406,28 @@ button:disabled {
 
 /* ===== スコア表示カード ===== */
 
+/* もともとの "せいかい：2/3" を隠す */
 #score-text {
-  font-size: 0;    /* ← 既存のテキストは隠す */
+  font-size: 0;
   margin: 0;
   padding: 0;
 }
 
-/* 全体 */
+/* スコア全体の箱 */
 #score-box {
   text-align: center;
   margin-top: 6px;
 }
 
-/* 「3問中…」部分 */
-/* ★「3問中…」をさらに左へ寄せる（絶妙バランス） */
+/* 「3問中…」部分 → 少し左に寄せる */
 .score-top {
   font-size: 1.2rem;
   color: #555;
-  transform: translateX(-20px);  /* ← 数値を調整してね！ */
+  transform: translateX(-20px);  /* ← 左に寄せる量。お好みなら -15 などに調整してね */
   margin-bottom: 4px;
 }
 
-/* 真ん中の大きな数字 */
+/* 真ん中の大きな数字（正解数） */
 .score-main {
   font-size: 5rem;
   font-weight: 900;
@@ -436,21 +435,21 @@ button:disabled {
   line-height: 1;
 }
 
+/* 「問」 */
 .score-unit {
   font-size: 1.5rem;
   margin-left: 4px;
   color: #555;
 }
 
-/* 「正解！！」 */
+/* 「せいかい！！」の行 */
 .score-bottom {
   font-size: 1.4rem;
   color: #ff7b3a;
   margin-top: 6px;
 }
 
-
-/* お礼メッセージ */
+/* お礼メッセージ用（別の場所で使っているやつ） */
 .result-message {
   margin: 4px 0 0;
   font-size: 1.05rem;
@@ -459,13 +458,12 @@ button:disabled {
   line-height: 1.6;
 }
 
-/* ★「せいかい！」をもっと右へ寄せる */
+/* 🔸 結果画面の「せいかい！」だけ右に寄せる */
 .result-message-answer {
-  text-align: right;
-  transform: translateX(20px); /* ← 右へ移動（微調整可能） */
+  text-align: right;          /* 右寄せ */
+  transform: translateX(20px);/* 右に少しずらす。10〜30あたりで微調整OK */
   margin-top: 2px;
 }
-
 
 /* ボタンエリア（中央寄せ） */
 .result-buttons {
@@ -475,6 +473,25 @@ button:disabled {
   justify-content: center;
   gap: 10px 16px;
 }
+
+/* スマホ向け微調整（必要なら） */
+@media (max-width: 480px) {
+  .result-card {
+    width: 96%;
+    padding: 16px 14px 20px;
+    gap: 1.2vh;
+  }
+
+  .result-title {
+    font-size: 2rem;   /* ← スマホでは少しだけ小さめに */
+    padding: 14px 30px;
+  }
+
+  .score-main {
+    font-size: 4.6rem;
+  }
+}
+
 
 
 /* ==============================

@@ -1,5 +1,5 @@
 /* ==============================
-   🎯 2:3 固定レイアウト　ver2.16.2
+   🎯 2:3 固定レイアウト　ver3.0.0
    ============================== */
 
 html,
@@ -360,6 +360,65 @@ button:disabled {
   font-size: 3rem;
   margin: 16px 0 8px;
 }
+
+/* ==============================
+   🧩 答えあわせ：まちがえたときの比較表示
+   ============================== */
+
+#answer-compare {
+  width: 100%;
+  max-width: 92%;
+  margin: 8px auto 16px;
+  padding: 8px 4px;
+  box-sizing: border-box;
+
+  display: none;              /* ふだんは非表示（間違えたときだけ JS で表示） */
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.answer-block {
+  flex: 1 1 0;
+  background: #fffdf5;
+  border-radius: 16px;
+  border: 2px solid #ffe0a0;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.answer-block h3 {
+  font-size: 0.95rem;
+  margin: 0 0 4px;
+  color: #ff8c00;
+}
+
+.answer-block img {
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+  margin: 4px auto;
+  display: block;
+}
+
+.answer-block p {
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #555;
+  line-height: 1.3;
+}
+
+/* スマホでは上下にならべる */
+@media (max-width: 480px) {
+  #answer-compare {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 
 /* ------------------------------
    🌟 クレジット画面（かわいいデザイン）

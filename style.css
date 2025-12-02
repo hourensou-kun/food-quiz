@@ -1021,13 +1021,13 @@ button:disabled {
 
 /* けっかはっぴょう を もっと大きく */
 #end-screen .result-title {
-  font-size: 2.8rem;      /* ← ここでサイズ調整（2.6〜3.0で好みでOK） */
+  font-size: 2rem;      /* ← ここでサイズ調整（2.6〜3.0で好みでOK） */
   padding: 20px 44px;     /* ちょっとだけ余白も増やす */
 }
 
 /* 「3問中…」を左に寄せる */
 #end-screen .score-top {
-  transform: translateX(-35px);  /* ← 左に移動（-30〜-45くらいで好み調整OK） */
+  transform: translateX(-45px);  /* ← 左に移動（-30〜-45くらいで好み調整OK） */
 }
 
 /* スマホ用（横幅せまいとき）の最終調整 */

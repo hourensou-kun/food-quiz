@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）3.1.1
+// やさいクイズ script.js（BGM + 効果音つき）2.2.1
 // ==============================
 
 let quizData = [];
@@ -332,8 +332,6 @@ function showAnswer(q) {
     }
   };
 
-
-
   show("answer-screen");
 }
 
@@ -459,11 +457,34 @@ function showAnswerSound(q) {
   video.src = q.answer_video;
   video.currentTime = 0;
   video.muted = false;
-  video.style.display = "block"; 
+  video.style.display = "block"; // ← 映像を見せる
   video.play().catch((e) => console.warn("動画再生エラー:", e));
 
-  // 音クイズ中はこの画面でも小さい BGM のまま
+  // 音クイズ中はこの画面でも小さいBGMのまま
   setBGM("quiz", 0.1);
+
+    // 🔍 間違えたときだけ「あなたのこたえ」と「せいかい」を表示
+  const compareBox  = document.getElementById("answer-compare");
+  const chosenImg   = document.getElementById("chosen-image");
+  const chosenText  = document.getElementById("chosen-text");
+  const correctImg  = document.getElementById("correct-image");
+  const correctText = document.getElementById("correct-text");
+
+  if (
+    compareBox && chosenImg && correctImg &&
+    lastIsCorrect === false && lastSelectedChoice && lastCorrectChoice
+  ) {
+    compareBox.style.display = "flex";
+
+    chosenImg.src  = lastSelectedChoice.img || "";
+    correctImg.src = lastCorrectChoice.img || "";
+
+    if (chosenText)  chosenText.textContent  = lastSelectedChoice.text || "";
+    if (correctText) correctText.textContent = lastCorrectChoice.text || "";
+  } else if (compareBox) {
+    compareBox.style.display = "none";
+  }
+
 
   const next = document.getElementById("next-btn");
   next.textContent =
@@ -475,15 +496,12 @@ function showAnswerSound(q) {
       renderResult();
     } else {
       current++;
-      renderQuestionSound();
+      renderQuestionSound(); // ← 次も音クイズ専用で出題！
     }
   };
-  
+
   show("answer-screen");
 }
-
-
-
 
 // ==============================
 // 🎉 結果表示（クイズ1・2共通）
@@ -811,25 +829,24 @@ if (bookBackBtn) {
 // ==============================
 // 📱 端末が横向きのときの警告表示
 // ==============================
-//window.addEventListener("DOMContentLoaded", () => {
-  //const rotateWarning = document.getElementById("rotate-warning");
-  //if (!rotateWarning) return; // 念のため保険
+window.addEventListener("DOMContentLoaded", () => {
+  const rotateWarning = document.getElementById("rotate-warning");
+  if (!rotateWarning) return; // 念のため保険
 
-  //function handleOrientation() {
-    //const isMobileWidth = window.innerWidth <= 900;
-    //const isLandscape   = window.innerWidth > window.innerHeight;
+  function handleOrientation() {
+    const isMobileWidth = window.innerWidth <= 900;
+    const isLandscape   = window.innerWidth > window.innerHeight;
 
     // スマホサイズ ＋ 横向き のときだけ表示
-    //if (isMobileWidth && isLandscape) {
-      //rotateWarning.style.display = "flex";
-   // } 
-//else {
-      //rotateWarning.style.display = "none";
-  //  }
-  //}
+    if (isMobileWidth && isLandscape) {
+      rotateWarning.style.display = "flex";
+    } else {
+      rotateWarning.style.display = "none";
+    }
+  }
 
   // 初回＆画面サイズ変更・回転のたびにチェック
-  //handleOrientation();
-  //window.addEventListener("resize", handleOrientation);
-  //window.addEventListener("orientationchange", handleOrientation);
-//});
+  handleOrientation();
+  window.addEventListener("resize", handleOrientation);
+  window.addEventListener("orientationchange", handleOrientation);
+});

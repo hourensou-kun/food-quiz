@@ -1,5 +1,5 @@
 // ==============================
-// やさいクイズ script.js（BGM + 効果音つき）2.2.5
+// やさいクイズ script.js（BGM + 効果音つき）2.2.6
 // ==============================
 
 let quizData = [];
@@ -533,7 +533,7 @@ function renderResult() {
 
   // 新しいスコアUI書き込み
   document.getElementById("score-total").innerHTML =
-  `<ruby><rb>${quizData.length}</rb><rt>もん</rt></ruby>ちゅう…`;
+  `${quizData.length}<ruby><rb>問</rb><rt>もん</rt></ruby><ruby><rb>中</rb><rt>ちゅう</rt></ruby>…`;
 
 document.getElementById("score-number").textContent = score;
 

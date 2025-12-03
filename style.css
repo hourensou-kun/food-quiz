@@ -1002,9 +1002,12 @@ button:disabled {
   padding: 16px 30px;       /* ← 余白も控えめに */
 }
 
-/* 「3問中…」を左へ寄せる */
+/* 「3問中…」の大きさアップ ＋ 左寄せ調整 */
 #end-screen .score-top {
-  transform: translateX(-100px); /* ← ほどよく左寄せ */
+  font-size: 1.2rem;       /* ← 大きく（1.3〜1.5がベスト） */
+  transform: translateX(-100px); 
+  margin-bottom: 6px;
 }
+
 
 }

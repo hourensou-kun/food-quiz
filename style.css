@@ -1004,7 +1004,7 @@ button:disabled {
 
 /* 「3問中…」を左へ寄せる */
 #end-screen .score-top {
-  transform: translateX(-200px); /* ← ほどよく左寄せ */
+  transform: translateX(-120px); /* ← ほどよく左寄せ */
 }
 
 }

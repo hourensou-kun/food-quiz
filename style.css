@@ -917,18 +917,17 @@ button:disabled {
   position: relative;
 }
 
-/* 上部のタイトルリボン：大きめに */
-.result-title {
-  margin: 0 0 6px;
-  padding: 20px 44px;       /* ← 余白も増やして存在感アップ */
-  font-size: 2.7rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
+
+#end-screen .result-title {
+  font-size: 1.5rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  padding: 12px 20px;       /* ← 余白も控えめに */
+    margin: 0 0 6px;
   color: #ff8c00;
   background: #ffffff;
   border-radius: 18px;
   border: 2px solid #ffd28a;
   box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
 }
-
 /* ===== スコア表示カード ===== */
 
 /* もともとの "せいかい：2/3" を隠す */
@@ -993,15 +992,6 @@ button:disabled {
 }
 
 
-/* ==============================
-   🧁 結果画面タイトルの調整（大きすぎ解消）
-   ============================== */
-
-#end-screen .result-title {
-  font-size: 1.5rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
-  padding: 12px 20px;       /* ← 余白も控えめに */
-}
-
 /* 「3問中…」の大きさアップ ＋ 左寄せ調整 */
 #end-screen .score-top {
   font-size: 1.2rem;       /* ← 大きく（1.3〜1.5がベスト） */
@@ -1010,4 +1000,4 @@ button:disabled {
 }
 
 
-}
+

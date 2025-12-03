@@ -920,7 +920,7 @@ button:disabled {
 
 #end-screen .result-title {
   font-size: 1.8rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
-  padding: 12px 20px;       /* ← 余白も控えめに */
+  padding: 12px 10px;       /* ← 余白も控えめに */
     margin: 0 0 6px;
   color: #ff8c00;
   background: #ffffff;
@@ -979,7 +979,7 @@ button:disabled {
 /* 🔸 結果画面の「せいかい！」だけ右に寄せる */
 .result-message-answer {
   text-align: right;          /* 右寄せ */
-  transform: translateX(30px);/* 右に少しずらす。10〜30あたりで微調整OK */
+  transform: translateX(37px);/* 右に少しずらす。10〜30あたりで微調整OK */
   margin-top: 20px;
 }
 

@@ -919,7 +919,7 @@ button:disabled {
 
 
 #end-screen .result-title {
-  font-size: 1.5rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  font-size: 1.8rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
   padding: 12px 20px;       /* ← 余白も控えめに */
     margin: 0 0 6px;
   color: #ff8c00;
@@ -928,6 +928,7 @@ button:disabled {
   border: 2px solid #ffd28a;
   box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
 }
+
 /* ===== スコア表示カード ===== */
 
 /* もともとの "せいかい：2/3" を隠す */
@@ -995,7 +996,7 @@ button:disabled {
 /* 「3問中…」の大きさアップ ＋ 左寄せ調整 */
 #end-screen .score-top {
   font-size: 1.2rem;       /* ← 大きく（1.3〜1.5がベスト） */
-  transform: translateX(-100px); 
+  transform: translateX(-90px); 
   margin-bottom: 6px;
 }
 

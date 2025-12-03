@@ -924,7 +924,7 @@ button:disabled {
   font-size: 2.7rem;        /* ← 文字サイズ（スマホでハミ出さないくらい） */
   color: #ff8c00;
   background: #ffffff;
-  border-radius: 999px;
+  border-radius: 18px;
   border: 2px solid #ffd28a;
   box-shadow: 0 4px 0 rgba(255, 210, 138, 0.9);
 }
@@ -979,7 +979,7 @@ button:disabled {
 /* 🔸 結果画面の「せいかい！」だけ右に寄せる */
 .result-message-answer {
   text-align: right;          /* 右寄せ */
-  transform: translateX(65px);/* 右に少しずらす。10〜30あたりで微調整OK */
+  transform: translateX(30px);/* 右に少しずらす。10〜30あたりで微調整OK */
   margin-top: 20px;
 }
 
@@ -998,8 +998,8 @@ button:disabled {
    ============================== */
 
 #end-screen .result-title {
-  font-size: 1.3rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
-  padding: 16px 30px;       /* ← 余白も控えめに */
+  font-size: 1.5rem;        /* ← 少しだけ縮小（2.3〜2.5が丁度いい） */
+  padding: 12px 20px;       /* ← 余白も控えめに */
 }
 
 /* 「3問中…」の大きさアップ ＋ 左寄せ調整 */

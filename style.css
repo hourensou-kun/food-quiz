@@ -760,10 +760,10 @@ button:disabled {
   display: none;              /* JSで on/off */
   position: absolute;
   left: 50%;
-  bottom: 7vh;
-  transform: translateX(-50%);  /* 真ん中にくるように */
+  bottom: -4vh;
+  transform: translateX(-40%);  /* 真ん中にくるように */
   width: 100%;
-  max-width: 250px;
+  max-width: 380px;
   height: auto;
 }
 
@@ -779,9 +779,9 @@ button:disabled {
 
   /* 音クイズ用：下すぎないように少し上＆大きめ */
   #sound-helper {
-    width: 72%;
+    width: 75%;
     max-width: 270px;
-    bottom: 0vh;         /* 画面の下にくっつきすぎないように */
+    bottom: -4vh;         /* 画面の下にくっつきすぎないように */
   }
 
   /* 下の余白も少し減らす（全体が上に寄る） */

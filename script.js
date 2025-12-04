@@ -353,7 +353,7 @@ function renderQuestionSound() {
 
   currentMode = "sound";
   // クイズ用BGM（小さめ）
-  //setBGM("quiz", 0);
+  setBGM(null);
 
   // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
@@ -467,7 +467,7 @@ function showAnswerSound(q) {
   video.play().catch((e) => console.warn("動画再生エラー:", e));
 
   // 音クイズ中はこの画面でも小さいBGMのまま
-  //setBGM("quiz", 0);
+  setBGM(null);
 
   // 📝 正解・不正解どちらでも使うメッセージ欄
   const commentEl = document.getElementById("answer-comment");
@@ -832,7 +832,7 @@ function startCountdown(nextAction) {
 
       // 🔊 BGM を現在のモードの設定音量で再開
       if (currentMode === "sound") {
-        setBGM("quiz", 0.1);   // 音クイズなら小さめ
+        setBGM(null);   // 音クイズなら小さめ
       } else if (currentMode === "shape") {
         setBGM("quiz", 1.0);   // 形なら普通
       }

@@ -979,7 +979,7 @@ button:disabled {
 /* 🔸 結果画面の「せいかい！」だけ右に寄せる */
 .result-message-answer {
   text-align: right;          /* 右寄せ */
-  transform: translateX(37px);/* 右に少しずらす。10〜30あたりで微調整OK */
+  transform: translateX(45px);/* 右に少しずらす。10〜30あたりで微調整OK */
   margin-top: 20px;
 }
 

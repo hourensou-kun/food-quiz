@@ -806,6 +806,7 @@ function startCountdown(nextAction) {
 
   // カウントダウン開始と同時に mp3 を再生
   const seCountdown = new Audio("music/Countdown03-2.mp3");
+  seCountdown.volume = 0.5; 
   seCountdown.currentTime = 0;
   seCountdown.play().catch(()=>{});
 

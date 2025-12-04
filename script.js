@@ -353,7 +353,7 @@ function renderQuestionSound() {
 
   currentMode = "sound";
   // クイズ用BGM（小さめ）
-  setBGM("quiz", 0.1);
+  setBGM("quiz", 0);
 
   // 問題文と画像
   document.getElementById("question-text").textContent = q.question;
@@ -467,7 +467,7 @@ function showAnswerSound(q) {
   video.play().catch((e) => console.warn("動画再生エラー:", e));
 
   // 音クイズ中はこの画面でも小さいBGMのまま
-  setBGM("quiz", 0.1);
+  setBGM("quiz", 0);
 
   // 📝 正解・不正解どちらでも使うメッセージ欄
   const commentEl = document.getElementById("answer-comment");

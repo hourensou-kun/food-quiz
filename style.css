@@ -760,9 +760,9 @@ button:disabled {
   display: none;              /* JSで on/off */
   position: absolute;
   left: 50%;
-  bottom: -4vh;
+  bottom: 7vh;
   transform: translateX(-50%);  /* 真ん中にくるように */
-  width: 50%;
+  width: 100%;
   max-width: 250px;
   height: auto;
 }

@@ -120,7 +120,7 @@ function show(id) {
   } else if (id === "quiz-screen") {
     // クイズ画面
     if (currentMode === "sound") {
-      setBGM("quiz", 0); // 音クイズは小さめ
+     // setBGM("quiz", 0); // 音クイズは小さめ
     } else if (currentMode === "shape") {
       setBGM("quiz", 0.7); // 形クイズは普通の音量
     }

@@ -1011,8 +1011,9 @@ button:disabled {
 .result-message-answer {
   margin-top: 6px;
   width: 100%;
-  text-align: center;  /* 好みで right にしてもOK */
+  text-align: right;  /* 好みで right にしてもOK */
   transform: none;     /* 以前の translateX を無効化 */
+   padding-right: 24px;  
 }
 
 

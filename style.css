@@ -1009,11 +1009,11 @@ button:disabled {
 
 /* 「せいかい！」は数字と独立して中央寄せ */
 .result-message-answer {
-  margin-top: 6px;
+  margin-top: 30px;
   width: 100%;
   text-align: right;  /* 好みで right にしてもOK */
   transform: none;     /* 以前の translateX を無効化 */
-   padding-right: 24px;  
+   padding-right: 220px;  
 }
 
 

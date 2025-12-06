@@ -1013,7 +1013,7 @@ button:disabled {
   width: 100%;
   text-align: right;  /* 好みで right にしてもOK */
   transform: none;     /* 以前の translateX を無効化 */
-   padding-right: 300px;  
+   padding-right: 270px;  
 }
 
 

@@ -951,7 +951,12 @@ button:disabled {
   font-weight: 900;
   color: #ff7b3a;
   line-height: 1;
+
+  display: flex;           /* ← 追加 */
+  align-items: flex-end;   /* ← 数字と「問」と「せいかい！」の下を揃える */
+  gap: 4px;                /* ← 数字と「問」のすき間（お好みで） */
 }
+
 
 /* 「問」 */
 .score-unit {

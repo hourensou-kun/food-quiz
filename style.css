@@ -945,26 +945,6 @@ button:disabled {
 }
 
 
-/* 真ん中の大きな数字（正解数） */
-.score-main {
-  font-size: 5rem;
-  font-weight: 900;
-  color: #ff7b3a;
-  line-height: 1;
-
-  display: flex;           /* ← 追加 */
-  align-items: flex-end;   /* ← 数字と「問」と「せいかい！」の下を揃える */
-  gap: 4px;                /* ← 数字と「問」のすき間（お好みで） */
-}
-
-
-/* 「問」 */
-.score-unit {
-  font-size: 1.5rem;
-  margin-left: 4px;
-  color: #555;
-}
-
 /* 「せいかい！！」の行 */
 .score-bottom {
   font-size: 1.4rem;
@@ -981,17 +961,6 @@ button:disabled {
   line-height: 1.6;
 }
 
-/* 🔸 結果画面の「せいかい！」だけ右に寄せる */
-/* お礼メッセージ（ほかの result-message）は今まで通りでOK */
-
-.result-message-answer {
-  margin-left: auto;      /* ← これで右端までスーッと寄る */
-  padding-right: 20px;    /* ← ちょっと内側に寄せたい場合はここで微調整 */
-  margin-top: 2px;
-
-  text-align: right;
-  /* transform はもういらないので消してOK */
-}
 
 
 /* ボタンエリア（中央寄せ） */
@@ -1011,5 +980,39 @@ button:disabled {
   margin-bottom: 6px;
 }
 
+/* 真ん中の大きな数字まわり */
+.score-main {
+  margin-top: 6px;
+}
+
+/* 数字＋「問」を横並びで中央に */
+.score-number-row {
+  display: flex;
+  justify-content: center;   /* 横方向まんなか */
+  align-items: flex-end;     /* 下そろえ */
+  gap: 6px;                  /* 数字と「問」の間 */
+}
+
+/* 大きい数字 */
+#score-number {
+  font-size: 5rem;
+  font-weight: 900;
+  color: #ff7b3a;
+  line-height: 1;
+}
+
+/* 「問」 */
+.score-unit {
+  font-size: 1.5rem;
+  color: #555;
+}
+
+/* 「せいかい！」は数字と独立して中央寄せ */
+.result-message-answer {
+  margin-top: 6px;
+  width: 100%;
+  text-align: center;  /* 好みで right にしてもOK */
+  transform: none;     /* 以前の translateX を無効化 */
+}
 
 

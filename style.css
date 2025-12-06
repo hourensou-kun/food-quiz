@@ -977,11 +977,17 @@ button:disabled {
 }
 
 /* 🔸 結果画面の「せいかい！」だけ右に寄せる */
+/* お礼メッセージ（ほかの result-message）は今まで通りでOK */
+
 .result-message-answer {
-  text-align: right;          /* 右寄せ */
-  transform: translateX(45px);/* 右に少しずらす。10〜30あたりで微調整OK */
-  margin-top: 20px;
+  margin-left: auto;      /* ← これで右端までスーッと寄る */
+  padding-right: 20px;    /* ← ちょっと内側に寄せたい場合はここで微調整 */
+  margin-top: 2px;
+
+  text-align: right;
+  /* transform はもういらないので消してOK */
 }
+
 
 /* ボタンエリア（中央寄せ） */
 .result-buttons {
